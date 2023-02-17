@@ -1,4 +1,4 @@
-export type tileType = "straight" | "left" | "right";
+export type tileType = "straight" | "curve";
 export type Coordinate = [number, number];
 
 export interface Line {
