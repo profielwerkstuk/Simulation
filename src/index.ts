@@ -8,6 +8,8 @@ const Car = new _Car([100, 100], 8, 16);
 Car.toggleManual();
 Vis.init(Sim);
 
+console.log("bruh")
+
 function render() {
 	Car.update();
 	Vis.update(Sim, Car);

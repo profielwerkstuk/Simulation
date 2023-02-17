@@ -33,6 +33,9 @@ export class Visualiser {
 
 		// Render car
 		this.ctx.fillStyle = "blue";
+		this.ctx.translate((Car.coordinates[0] + Car.width / 2), (Car.coordinates[1] + Car.height / 2));
+		this.ctx.rotate(Car.angle);
+		this.ctx.translate(-(Car.coordinates[0] + Car.width / 2), -(Car.coordinates[1] + Car.height / 2));
 
 		this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
 	}
