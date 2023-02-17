@@ -101,5 +101,18 @@ export class Car {
 		this.angularVelocity *= angularDrag;
 	}
 
+	steer = (forward: boolean, backwards: boolean, left: boolean, right: boolean) => {
+		const canTurn = this.power > turnRequirement || this.reverse;
+
+		if (this.isThrottling !== forward || this.isReversing !== backwards) {
+			this.isThrottling = forward;
+			this.isReversing = backwards;
+		}
+
+		this.isTurningLeft = !!canTurn && left;
+		this.isTurningRight = !!canTurn && right;
+
+	}
+
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 }
