@@ -12,7 +12,7 @@ export class Simulation {
 		public roadResolution: number,
 	) {
 		this.roadGen = new Road(this.tileSize, this.roadResolution, this.roadWidth);
-		this.tiles.push(this.roadGen.createTile("curve", [1, 1], "right", "bottom"));
+		this.tiles.push(this.roadGen.createTile("curve", [0, 0], "right", "bottom"));
 	}
 
 

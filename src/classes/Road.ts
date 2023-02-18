@@ -23,17 +23,17 @@ export class Road {
 			const opposite = this.tileSize - halfEmptySpace
 
 			if (from === "top" || to === "top" || from === "bottom" || to === "bottom") {
-				startingPointA = [halfEmptySpace, this.tileSize]
-				endingPointA = [halfEmptySpace, 0]
+				startingPointA = [halfEmptySpace + topLeft[0], this.tileSize + topLeft[1]]
+				endingPointA = [halfEmptySpace + topLeft[0], topLeft[1]]
 
-				startingPointB = [opposite, this.tileSize]
-				endingPointB = [opposite, 0]
+				startingPointB = [opposite + topLeft[0], this.tileSize + topLeft[1]]
+				endingPointB = [opposite + topLeft[0], topLeft[1]]
 			} else {
-				startingPointA = [0, halfEmptySpace]
-				endingPointA = [this.tileSize, halfEmptySpace]
+				startingPointA = [topLeft[0], halfEmptySpace + topLeft[1]]
+				endingPointA = [this.tileSize + topLeft[0], halfEmptySpace + topLeft[1]]
 
-				startingPointB = [0, opposite]
-				endingPointB = [this.tileSize, opposite]
+				startingPointB = [topLeft[0], opposite + topLeft[1]]
+				endingPointB = [this.tileSize + topLeft[0], opposite + topLeft[1]]
 			}
 
 			lines.push(...[{
@@ -59,26 +59,26 @@ export class Road {
 				let y = round(halfEmptySpace * 3 * Math.sin(angle), this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					pointsA.push([x, y])
+					pointsA.push([x + topLeft[0], y + topLeft[1]])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsB.push([this.tileSize - x, this.tileSize - y])
+					pointsB.push([this.tileSize - x + topLeft[0], this.tileSize - y + topLeft[1]])
 				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsB.push([this.tileSize - x, y])
+					pointsB.push([this.tileSize - x + topLeft[0], y + topLeft[1]])
 				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					pointsA.push([x, this.tileSize - y])
+					pointsA.push([x + topLeft[0], this.tileSize - y + topLeft[1]])
 				}
 
 				x = round(halfEmptySpace * Math.cos(angle), this.resolution)
 				y = round(halfEmptySpace * Math.sin(angle), this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					pointsB.push([x, y])
+					pointsB.push([x + topLeft[0], y + topLeft[1]])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsA.push([this.tileSize - x, this.tileSize - y])
+					pointsA.push([this.tileSize - x + topLeft[0], this.tileSize - y + topLeft[1]])
 				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsA.push([this.tileSize - x, y])
+					pointsA.push([this.tileSize - x + topLeft[0], y + topLeft[1]])
 				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					pointsB.push([x, this.tileSize - y])
+					pointsB.push([x + topLeft[0], this.tileSize - y + topLeft[1]])
 				}
 			}
 
