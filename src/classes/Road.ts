@@ -59,8 +59,7 @@ export class Road {
 		} else { // TODO: Simplify (Group pointsA and pointsB into one array and combine the last two for loops)
 			const angleStep = Math.PI / 2 / this.resolution
 
-			const pointsA: Coordinate[] = []
-			const pointsB: Coordinate[] = []
+			const points: Coordinate[][] = [[], []]
 
 			for (let i = 0; i < this.resolution + 1; i++) {
 				const angle = i * angleStep
@@ -68,61 +67,51 @@ export class Road {
 				const cos = Math.cos(angle)
 				const sin = Math.sin(angle)
 
-				let x = round(halfEmptySpace * 3 * cos, this.resolution)
-				let y = round(halfEmptySpace * 3 * sin, this.resolution)
+				let xA = round(halfEmptySpace * 3 * cos, this.resolution) + topLeft[0]
+				let yA = round(halfEmptySpace * 3 * sin, this.resolution) + topLeft[1]
+
+				let xB = round(halfEmptySpace * cos, this.resolution) + topLeft[0]
+				let yB = round(halfEmptySpace * sin, this.resolution) + topLeft[1]
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					pointsA.push([x + topLeft[0], y + topLeft[1]])
+					points[0].push([xA, yA])
+					points[1].push([xB, yB])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsB.push([this.tileSize - x + topLeft[0], this.tileSize - y + topLeft[1]])
+					points[1].push([this.tileSize - xA, this.tileSize - yA])
+					points[0].push([this.tileSize - xB, this.tileSize - yB])
 				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsB.push([this.tileSize - x + topLeft[0], y + topLeft[1]])
+					points[1].push([this.tileSize - xA, yA])
+					points[0].push([this.tileSize - xB, yB])
 				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					pointsA.push([x + topLeft[0], this.tileSize - y + topLeft[1]])
-				}
-
-				x = round(halfEmptySpace * cos, this.resolution)
-				y = round(halfEmptySpace * sin, this.resolution)
-
-				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					pointsB.push([x + topLeft[0], y + topLeft[1]])
-				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsA.push([this.tileSize - x + topLeft[0], this.tileSize - y + topLeft[1]])
-				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsA.push([this.tileSize - x + topLeft[0], y + topLeft[1]])
-				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					pointsB.push([x + topLeft[0], this.tileSize - y + topLeft[1]])
+					points[0].push([xA, this.tileSize - yA])
+					points[1].push([xB, this.tileSize - yB])
 				}
 			}
 
-			for (let i = 0; i < pointsA.length - 1; i++) {
-				const startingPoint = pointsA[i]
-				const endingPoint = pointsA[i + 1]
+			for (let i = 0; i < points[0].length - 1; i++) {
+				const startingPointA = points[0][i]
+				const endingPointA = points[0][i + 1]
 
-				const slope = round((endingPoint[1] - startingPoint[1]) / (endingPoint[0] - startingPoint[0]), this.resolution)
-				const constant = round(startingPoint[1] - slope * startingPoint[0], this.resolution)
+				const slopeA = round((endingPointA[1] - startingPointA[1]) / (endingPointA[0] - startingPointA[0]), this.resolution)
+				const constantA = round(startingPointA[1] - slopeA * startingPointA[0], this.resolution)
 
-				lines.push({
-					startingPoint: startingPoint,
-					endingPoint: endingPoint,
-					slope: slope,
-					constant: constant
-				})
-			}
+				const startingPointB = points[1][i]
+				const endingPointB = points[1][i + 1]
 
-			for (let i = 0; i < pointsB.length - 1; i++) {
-				const startingPoint = pointsB[i]
-				const endingPoint = pointsB[i + 1]
+				const slopeB = round((endingPointB[1] - startingPointB[1]) / (endingPointB[0] - startingPointB[0]), this.resolution)
+				const constantB = round(startingPointB[1] - slopeB * startingPointB[0], this.resolution)
 
-				const slope = round((endingPoint[1] - startingPoint[1]) / (endingPoint[0] - startingPoint[0]), this.resolution)
-				const constant = round(startingPoint[1] - slope * startingPoint[0], this.resolution)
-
-				lines.push({
-					startingPoint: startingPoint,
-					endingPoint: endingPoint,
-					slope: slope,
-					constant: constant
-				})
+				lines.push(...[{
+					startingPoint: startingPointB,
+					endingPoint: endingPointB,
+					slope: slopeB,
+					constant: constantB
+				}, {
+					startingPoint: startingPointA,
+					endingPoint: endingPointA,
+					slope: slopeA,
+					constant: constantA
+				}])
 			}
 		}
 
