@@ -23,17 +23,17 @@ export class Road {
 			const opposite = this.tileSize - halfEmptySpace
 
 			if (from === "top" || to === "top" || from === "bottom" || to === "bottom") {
-				startingPointA = [halfEmptySpace, -this.tileSize]
+				startingPointA = [halfEmptySpace, this.tileSize]
 				endingPointA = [halfEmptySpace, 0]
 
-				startingPointB = [opposite, -this.tileSize]
+				startingPointB = [opposite, this.tileSize]
 				endingPointB = [opposite, 0]
 			} else {
-				startingPointA = [0, -halfEmptySpace]
-				endingPointA = [this.tileSize, -halfEmptySpace]
+				startingPointA = [0, halfEmptySpace]
+				endingPointA = [this.tileSize, halfEmptySpace]
 
-				startingPointB = [0, -opposite]
-				endingPointB = [this.tileSize, -opposite]
+				startingPointB = [0, opposite]
+				endingPointB = [this.tileSize, opposite]
 			}
 
 			lines.push(...[{
@@ -58,26 +58,26 @@ export class Road {
 				let x = round(halfEmptySpace * 3 * Math.cos(angle), this.resolution)
 				let y = round(halfEmptySpace * 3 * Math.sin(angle), this.resolution)
 
-				if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
+				if (from === "left" && to === "top" || from === "top" && to === "left") {
 					pointsA.push([x, y])
-				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsB.push([this.tileSize - x, this.tileSize - y])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsB.push([x, this.tileSize - y])
-				} else if (from === "left" && to === "top" || from === "top" && to === "left") {
+					pointsB.push([this.tileSize - x, this.tileSize - y])
+				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
+					pointsB.push([this.tileSize - x, y])
+				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
 					pointsA.push([x, this.tileSize - y])
 				}
 
 				x = round(halfEmptySpace * Math.cos(angle), this.resolution)
 				y = round(halfEmptySpace * Math.sin(angle), this.resolution)
 
-				if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
+				if (from === "left" && to === "top" || from === "top" && to === "left") {
 					pointsB.push([x, y])
-				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					pointsA.push([this.tileSize - x, this.tileSize - y])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					pointsA.push([x, this.tileSize - y])
-				} else if (from === "left" && to === "top" || from === "top" && to === "left") {
+					pointsA.push([this.tileSize - x, this.tileSize - y])
+				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
+					pointsA.push([this.tileSize - x, y])
+				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
 					pointsB.push([x, this.tileSize - y])
 				}
 			}
@@ -85,9 +85,6 @@ export class Road {
 			for (let i = 0; i < pointsA.length - 1; i++) {
 				const startingPoint = pointsA[i]
 				const endingPoint = pointsA[i + 1]
-
-				startingPoint[1] -= this.tileSize
-				endingPoint[1] -= this.tileSize
 
 				const slope = round((endingPoint[1] - startingPoint[1]) / (endingPoint[0] - startingPoint[0]), this.resolution)
 				const constant = round(startingPoint[1] - slope * startingPoint[0], this.resolution)
@@ -103,9 +100,6 @@ export class Road {
 			for (let i = 0; i < pointsB.length - 1; i++) {
 				const startingPoint = pointsB[i]
 				const endingPoint = pointsB[i + 1]
-
-				startingPoint[1] -= this.tileSize
-				endingPoint[1] -= this.tileSize
 
 				const slope = round((endingPoint[1] - startingPoint[1]) / (endingPoint[0] - startingPoint[0]), this.resolution)
 				const constant = round(startingPoint[1] - slope * startingPoint[0], this.resolution)

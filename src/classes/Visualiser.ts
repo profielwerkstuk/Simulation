@@ -1,3 +1,4 @@
+import { Coordinate } from "../types.js";
 import type { Car } from "./Car.js";
 import type { Simulation } from "./Simulation.js";
 
@@ -27,16 +28,26 @@ export class Visualiser {
 	}
 
 	update = (Simulation: Simulation, Car: Car) => {
-		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-		this.init(Simulation);
+        this.init(Simulation);
 
-		// Render car
-		this.ctx.fillStyle = "blue";
-		this.ctx.translate((Car.coordinates[0] + Car.width / 2), (Car.coordinates[1] + Car.height / 2));
-		this.ctx.rotate(Car.angle);
-		this.ctx.translate(-(Car.coordinates[0] + Car.width / 2), -(Car.coordinates[1] + Car.height / 2));
+        this.ctx.fillStyle = "red";
+        Simulation.tiles.forEach(tile => {
+            tile.lines.forEach((line: { startingPoint: Coordinate; endingPoint: Coordinate; }) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(...line.startingPoint);
+                this.ctx.lineTo(...line.endingPoint);
+                this.ctx.stroke();
+            })
+        })
 
-		this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
-	}
+        // Render car
+        this.ctx.fillStyle = "blue";
+        this.ctx.translate((Car.coordinates[0] + Car.width / 2), (Car.coordinates[1] + Car.height / 2));
+        this.ctx.rotate(Car.angle);
+        this.ctx.translate(-(Car.coordinates[0] + Car.width / 2), -(Car.coordinates[1] + Car.height / 2));
+
+        this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
+    }
 }

@@ -1,7 +1,8 @@
+import { Tile } from "../types.js";
 import { Road } from "./Road.js";
 
 export class Simulation {
-	public tiles = [];
+	public tiles: Tile[] = [];
 	private roadGen;
 
 	constructor(
@@ -11,6 +12,7 @@ export class Simulation {
 		public roadResolution: number,
 	) {
 		this.roadGen = new Road(this.tileSize, this.roadResolution, this.roadWidth);
+		this.tiles.push(this.roadGen.createTile("curve", [1, 1], "right", "bottom"));
 	}
 
 
