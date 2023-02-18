@@ -2,17 +2,17 @@ import { expect, it, describe, expectTypeOf } from "vitest";
 import { Road } from "../src/classes/Road";
 
 describe("general things", () => {
-  it("roadTest", () => {
+  it("What", () => {
     const road = new Road(40, 5, 20);
-    const straightLtoR = road.createTile("straight", [0, 0], "left", "right");
-    const straightRtoL = road.createTile("straight", [10, 10], "right", "left");
-    const straightTtoB = road.createTile("straight", [20, 20], "top", "bottom");
-    const straightBtoT = road.createTile("straight", [30, 30], "bottom", "top");
+    const straightLtoR = road.createTile({from: "left", to: "right"}, [0, 0]);
+    const straightRtoL = road.createTile({from: "right", to: "left"}, [10, 10]);
+    const straightTtoB = road.createTile({from: "top", to: "bottom"}, [20, 20]);
+    const straightBtoT = road.createTile({from: "bottom", to: "top"}, [30, 30]);
 
-	const curveLtoT = road.createTile("curve", [40, 40], "left", "top");
-	const curveRtoT = road.createTile("curve", [50, 50], "right", "top");
-	const curveLtoB = road.createTile("curve", [60, 60], "left", "bottom");
-	const curveRtoB = road.createTile("curve", [70, 70], "right", "bottom");
+	const curveLtoT = road.createTile({from: "right", to: "top"}, [40, 40]);
+	const curveRtoT = road.createTile({from: "right", to: "top"}, [50, 50]);
+	const curveLtoB = road.createTile({from: "left", to: "bottom"}, [60, 60]);
+	const curveRtoB = road.createTile({from: "right", to: "bottom"}, [70, 70]);
 
     expect(straightLtoR.lines[0].constant).toBe(0);
     expect(straightRtoL.lines[0].constant).toBe(0);
@@ -53,9 +53,9 @@ describe("general things", () => {
 	expect(straightBtoT.lines[1].endingPoint).toEqual([60, 30]);
 
 	expect(curveLtoT.lines[0].startingPoint).toEqual([70, 40]);
-	expect(curveLtoT.lines[4].endingPoint).toEqual([40, 70]);
+	expect(curveLtoT.lines[4].endingPoint).toEqual([80, 50]);
 	expect(curveLtoT.lines[5].startingPoint).toEqual([50, 40]);
-	expect(curveLtoT.lines[9].endingPoint).toEqual([40, 50]);
+	expect(curveLtoT.lines[9].endingPoint).toEqual([80, 70]);
 
 	expect(curveRtoT.lines[0].startingPoint).toEqual([80, 50]);
 	expect(curveRtoT.lines[4].endingPoint).toEqual([90, 60]);

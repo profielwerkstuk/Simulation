@@ -1,5 +1,12 @@
-import type { Coordinate, Line, Tile, tileType } from "../types"
+import type { Coordinate, Line, Tile } from "../types"
 import { round } from "./utils.js";
+
+const directions = ["top", "left", "bottom", "right"]
+
+type tileType = {
+	from: "top" | "left" | "bottom" | "right",
+	to: "top" | "left" | "bottom" | "right",
+}
 
 export class Road {
 	constructor(
@@ -8,12 +15,14 @@ export class Road {
 		public roadWidth: number
 	) { }
 
-	createTile = (type: tileType, topLeft: Coordinate, from: "top" | "bottom" | "left" | "right", to: "top" | "bottom" | "left" | "right"): Tile => {
+	createTile = (type: tileType, topLeft: Coordinate): Tile => {
 		const lines: Line[] = [];
 
 		const halfEmptySpace = (this.tileSize - this.roadWidth) * 0.5
 
-		if (type === "straight") {
+		const { from, to } = type
+
+		if (directions.indexOf(type.from) % 2 == directions.indexOf(type.to) % 2) {
 			let startingPointA: Coordinate = [0, 0];
 			let endingPointA: Coordinate = [0, 0];
 
@@ -55,8 +64,12 @@ export class Road {
 
 			for (let i = 0; i < this.resolution + 1; i++) {
 				const angle = i * angleStep
-				let x = round(halfEmptySpace * 3 * Math.cos(angle), this.resolution)
-				let y = round(halfEmptySpace * 3 * Math.sin(angle), this.resolution)
+
+				const cos = Math.cos(angle)
+				const sin = Math.sin(angle)
+
+				let x = round(halfEmptySpace * 3 * cos, this.resolution)
+				let y = round(halfEmptySpace * 3 * sin, this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
 					pointsA.push([x + topLeft[0], y + topLeft[1]])
@@ -68,8 +81,8 @@ export class Road {
 					pointsA.push([x + topLeft[0], this.tileSize - y + topLeft[1]])
 				}
 
-				x = round(halfEmptySpace * Math.cos(angle), this.resolution)
-				y = round(halfEmptySpace * Math.sin(angle), this.resolution)
+				x = round(halfEmptySpace * cos, this.resolution)
+				y = round(halfEmptySpace * sin, this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
 					pointsB.push([x + topLeft[0], y + topLeft[1]])
@@ -112,8 +125,6 @@ export class Road {
 				})
 			}
 		}
-
-		console.log(lines)
 
 		return {
 			lines: lines,
