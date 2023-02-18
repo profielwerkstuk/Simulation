@@ -56,7 +56,7 @@ export class Road {
 				slope: 0,
 				constant: 0
 			}])
-		} else { // TODO: Simplify (Group pointsA and pointsB into one array and combine the last two for loops)
+		} else {
 			const angleStep = Math.PI / 2 / this.resolution
 
 			const points: Coordinate[][] = [[], []]
