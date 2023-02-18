@@ -10,8 +10,7 @@ export class Simulation {
 		public roadWidth: number,
 		public roadResolution: number,
 	) {
-		this.roadGen = new Road(this.tileSize, this.tileSize, this.roadResolution, this.roadWidth);
-		this.roadGen.createTile("straight", [0, 0], "left", "top");
+		this.roadGen = new Road(this.tileSize, this.roadResolution, this.roadWidth);
 	}
 
 
