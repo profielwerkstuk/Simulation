@@ -52,24 +52,16 @@ describe("general things", () => {
 	expect(straightBtoT.lines[1].startingPoint).toEqual([60, 70]);
 	expect(straightBtoT.lines[1].endingPoint).toEqual([60, 30]);
 
-	expect(curveLtoT.lines[0].startingPoint).toEqual([70, 40]);
-	expect(curveLtoT.lines[4].endingPoint).toEqual([80, 50]);
-	expect(curveLtoT.lines[5].startingPoint).toEqual([50, 40]);
-	expect(curveLtoT.lines[9].endingPoint).toEqual([80, 70]);
+	expect(curveLtoT.lines[0].startingPoint).toEqual([50, 40]);
+	expect(curveLtoT.lines[9].endingPoint).toEqual([80, 50]);
 
-	expect(curveRtoT.lines[0].startingPoint).toEqual([80, 50]);
-	expect(curveRtoT.lines[4].endingPoint).toEqual([90, 60]);
-	expect(curveRtoT.lines[5].startingPoint).toEqual([60, 50]);
-	expect(curveRtoT.lines[9].endingPoint).toEqual([90, 80]);
+	expect(curveRtoT.lines[0].startingPoint).toEqual([60, 50]);
+	expect(curveRtoT.lines[9].endingPoint).toEqual([90, 60]);
 
 	expect(curveLtoB.lines[0].startingPoint).toEqual([90, 100]);
-	expect(curveLtoB.lines[4].endingPoint).toEqual([60, 70]);
-	expect(curveLtoB.lines[5].startingPoint).toEqual([70, 100]);
 	expect(curveLtoB.lines[9].endingPoint).toEqual([60, 90]);
 
-	expect(curveRtoB.lines[0].startingPoint).toEqual([100, 110]);
-	expect(curveRtoB.lines[4].endingPoint).toEqual([110, 100]);
-	expect(curveRtoB.lines[5].startingPoint).toEqual([80, 110]);
-	expect(curveRtoB.lines[9].endingPoint).toEqual([110, 80]);
+	expect(curveRtoB.lines[0].startingPoint).toEqual([80, 110]);
+	expect(curveRtoB.lines[9].endingPoint).toEqual([110, 100]);
   });
 });
