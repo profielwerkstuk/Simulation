@@ -2,7 +2,7 @@ import { expect, it, describe, expectTypeOf } from "vitest";
 import { Road } from "../src/classes/Road";
 
 describe("general things", () => {
-  it("What", () => {
+  it("TileCreation", () => {
     const road = new Road(40, 5, 20);
     const straightLtoR = road.createTile({from: "left", to: "right"}, [0, 0]);
     const straightRtoL = road.createTile({from: "right", to: "left"}, [10, 10]);
