@@ -1,14 +1,14 @@
 import type { Coordinate } from "../types";
 
-const maxPower = 0.075;
+const maxPower = 0.025;
 const maxReverse = 0.0375;
 const powerFactor = 0.001;
 const reverseFactor = 0.0005;
 
 const drag = 0.95;
 const angularDrag = 0.95;
-const turnSpeed = 0.001;
-const turnRequirement = 0.025;
+const turnSpeed = 0.0017;
+const turnRequirement = 0.020;
 
 const wasdKeys: {
 	[key: string]: string;

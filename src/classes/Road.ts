@@ -1,12 +1,5 @@
-import type { Coordinate, Line, Tile } from "../types"
-import { round } from "./utils.js";
-
-const directions = ["top", "left", "bottom", "right"]
-
-type tileType = {
-	from: "top" | "left" | "bottom" | "right",
-	to: "top" | "left" | "bottom" | "right",
-}
+import type { Coordinate, Line, Tile, tileType } from "../types"
+import { round, directions } from "./utils.js";
 
 export class Road {
 	constructor(
@@ -67,24 +60,24 @@ export class Road {
 				const cos = Math.cos(angle)
 				const sin = Math.sin(angle)
 
-				let xA = round(halfEmptySpace * 3 * cos, this.resolution) + topLeft[0]
-				let yA = round(halfEmptySpace * 3 * sin, this.resolution) + topLeft[1]
+				let xA = round(halfEmptySpace * 3 * cos, this.resolution)
+				let yA = round(halfEmptySpace * 3 * sin, this.resolution)
 
-				let xB = round(halfEmptySpace * cos, this.resolution) + topLeft[0]
-				let yB = round(halfEmptySpace * sin, this.resolution) + topLeft[1]
+				let xB = round(halfEmptySpace * cos, this.resolution)
+				let yB = round(halfEmptySpace * sin, this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					points[0].push([xA, yA])
-					points[1].push([xB, yB])
+					points[0].push([xA + topLeft[0], yA + topLeft[1]])
+					points[1].push([xB + topLeft[0], yB + topLeft[1]])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					points[1].push([this.tileSize - xA, this.tileSize - yA])
-					points[0].push([this.tileSize - xB, this.tileSize - yB])
+					points[1].push([this.tileSize - xA + topLeft[0], this.tileSize - yA + topLeft[1]])
+					points[0].push([this.tileSize - xB + topLeft[0], this.tileSize - yB + topLeft[1]])
 				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					points[1].push([this.tileSize - xA, yA])
-					points[0].push([this.tileSize - xB, yB])
+					points[1].push([this.tileSize - xA + topLeft[0], yA + topLeft[1]])
+					points[0].push([this.tileSize - xB + topLeft[0], yB + topLeft[1]])
 				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					points[0].push([xA, this.tileSize - yA])
-					points[1].push([xB, this.tileSize - yB])
+					points[1].push([xA + topLeft[0], this.tileSize - yA + topLeft[1]])
+					points[0].push([xB + topLeft[0], this.tileSize - yB + topLeft[1]])
 				}
 			}
 
@@ -117,7 +110,8 @@ export class Road {
 
 		return {
 			lines: lines,
-			topLeft: topLeft
+			topLeft: topLeft,
+			type: type
 		}
 	}
 }

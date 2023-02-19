@@ -1,5 +1,11 @@
-export type tileType = "straight" | "curve";
 export type Coordinate = [number, number];
+
+export type direction = "top" | "left" | "bottom" | "right";
+
+export type tileType = {
+	from: direction,
+	to: direction,
+}
 
 export interface Line {
 	startingPoint: Coordinate,
@@ -10,5 +16,6 @@ export interface Line {
 
 export interface Tile {
 	lines: Line[],
-	topLeft: Coordinate
+	topLeft: Coordinate,
+	type: tileType
 }
