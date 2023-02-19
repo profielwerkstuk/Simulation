@@ -2,7 +2,7 @@ import { Coordinate, Tile, direction, tileType } from "../types.js";
 import { Road } from "./Road.js";
 import { directions } from "./utils.js";
 
-function generateTile(lastTile: Tile | null = null, tileSize: number): [tileType, Coordinate] {
+function generateTile(lastTile: Tile | null = null, tileSize: number, gridSize: [width: number, height: number]): [tileType, Coordinate] {
 	if (lastTile === null) {
 		return [{from: "top", to: "bottom"}, [0, 0]];
 	}
@@ -14,15 +14,13 @@ function generateTile(lastTile: Tile | null = null, tileSize: number): [tileType
 		disallowedDirections.push("left");
 	} if (lastTile.topLeft[1] <= tileSize) {
 		disallowedDirections.push("top");
-	} else if (lastTile.topLeft[0] >= tileSize*3) {
+	} if (lastTile.topLeft[0] >= tileSize*(gridSize[0]-2)) {
 		disallowedDirections.push("right");
-	} else if (lastTile.topLeft[1] >= tileSize*3) {
+	} if (lastTile.topLeft[1] >= tileSize*(gridSize[1]-2)) {
 		disallowedDirections.push("bottom");
 	}
 
 	const possibleDirections = directions.filter((direction) => !disallowedDirections.includes(direction));
-
-	console.log(possibleDirections)
 
 	const type: tileType = {from, to: possibleDirections[Math.random() * possibleDirections.length | 0]};
 	let cords: Coordinate = [lastTile.topLeft[0], lastTile.topLeft[1]];
@@ -54,7 +52,7 @@ export class Simulation {
 		this.tiles.push(this.roadGen.createTile({from: "top", to: "right"}, [0, 0]))
 
 		setInterval(() => {
-			this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize)))
+			this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 
 			if  (this.tiles.length > 3) {
 				this.tiles.shift();
