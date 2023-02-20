@@ -4,7 +4,7 @@ import { Car as _Car } from "./classes/Car.js";
 
 const Sim = new Simulation([15, 15], 40, 20, 5);
 const Vis = new Visualiser("canvas");
-const Car = new _Car([100, 100], 8, 16);
+const Car = new _Car([100, 100], 4, 8);
 // Car.toggleManual();
 Vis.init(Sim);
 

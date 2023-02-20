@@ -5,11 +5,11 @@ const maxReverse = 0.015;
 const powerFactor = 0.001;
 const reverseFactor = 0.0005;
 
-const drag = 0.95;
+const drag = 0.9;
 const angularDrag = 0.95;
 const turnSpeed = 0.0008;
-const turnRequirement = 0.02;
-const reverseTurnRequirement = 0.05;
+const turnRequirement = 0.0025;
+const reverseTurnRequirement = 0.025;
 
 const wasdKeys: {
 	[key: string]: string;

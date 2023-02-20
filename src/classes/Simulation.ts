@@ -57,7 +57,7 @@ export class Simulation {
 			if  (this.tiles.length > 3) {
 				this.tiles.shift();
 			}
-		}, 100)
+		}, 1000)
 	}
 
 
