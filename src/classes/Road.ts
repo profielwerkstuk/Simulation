@@ -1,4 +1,4 @@
-import type { Coordinate, Line, Tile, tileType } from "../types"
+import type { Coordinate, Line, Tile, tileType } from "../types.js"
 import { round, directions } from "./utils.js";
 
 export class Road {

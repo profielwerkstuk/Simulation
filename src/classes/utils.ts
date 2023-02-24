@@ -1,6 +1,6 @@
 // usefull functions maybe?
 
-import { direction } from "../types";
+import { direction } from "../types.js";
 
 function round(value: number, precision: number) {
     var multiplier = Math.pow(10, Math.round(precision) || 0);

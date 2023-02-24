@@ -1,4 +1,5 @@
-import type { Coordinate } from "../types";
+import type { Coordinate } from "../types.js";
+import { round } from "./utils.js";
 
 const maxPower = 0.025;
 const maxReverse = 0.015;
@@ -57,6 +58,9 @@ export class Car {
 	) { }
 
 	update = () => {
+
+		this.angle = round(this.angle % (Math.PI * 2), 3);
+
 		if (this.manualDrive) {
 			const canTurn = this.power > turnRequirement || this.reverse && reverseTurnRequirement;
 
