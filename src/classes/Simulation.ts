@@ -53,9 +53,9 @@ export class Simulation {
 		this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 		this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 
-		setInterval(() => {
-			dispatchEvent(new Event("nextTile"))
-		}, 1000)
+		// setInterval(() => {
+		// 	dispatchEvent(new Event("nextTile"))
+		// }, 1000)
 
 		addEventListener("nextTile", () => {
 			this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))

@@ -50,6 +50,7 @@ export class Car {
 	private power = 0;
 	private reverse = 0;
 	private manualDrive = false;
+	private gridCords = [0, 0];
 
 	constructor(
 		public coordinates: Coordinate, // Coordinates of the centre of the car
@@ -60,6 +61,24 @@ export class Car {
 	update = () => {
 
 		this.angle = round(this.angle % (Math.PI * 2), 3);
+
+		let x = this.coordinates[0];
+		let y = this.coordinates[1];
+
+		if (this.angle < 0) {
+			x += (this.width / 2) * -this.angle / Math.PI;
+			y += (this.height / 2) * -this.angle / Math.PI;
+		} else if (this.angle > 0) {
+			x -= (this.width / 2) * this.angle / Math.PI;
+			y -= (this.height / 2) * this.angle / Math.PI;
+		}
+
+		if(this.gridCords[0] !== Math.floor(x / 40) || this.gridCords[1] !== Math.floor(y / 40)) {
+			dispatchEvent(new CustomEvent('nextTile'))
+			console.log('next tile')
+		}
+
+		this.gridCords = [Math.floor(x / 40), Math.floor(y / 40)]
 
 		if (this.manualDrive) {
 			const canTurn = this.power > turnRequirement || this.reverse && reverseTurnRequirement;
