@@ -50,8 +50,8 @@ export class Simulation {
 	) {
 		this.roadGen = new Road(this.tileSize, this.roadResolution, this.roadWidth);
 		this.tiles.push(this.roadGen.createTile({from: "top", to: "right"}, [0, 0]))
-		this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
-		this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
+		// this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
+		// this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 
 		// setInterval(() => {
 		// 	dispatchEvent(new Event("nextTile"))
@@ -60,7 +60,7 @@ export class Simulation {
 		addEventListener("nextTile", () => {
 			this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 
-			if  (this.tiles.length > 3) {
+			if  (this.tiles.length > 4) {
 				this.tiles.shift();
 			}
 		})

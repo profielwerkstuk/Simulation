@@ -39,7 +39,7 @@ const keyActive = (key: string) => {
 };
 
 export class Car {
-	public angle = 0; // Angle in rad
+	public angle = 3; // Angle in rad
 	private xVelocity = 0;
 	private yVelocity = 0;
 	private angularVelocity = 0;
