@@ -74,8 +74,7 @@ export class Car {
 		}
 
 		if(this.gridCords[0] !== Math.floor(x / 40) || this.gridCords[1] !== Math.floor(y / 40)) {
-			dispatchEvent(new CustomEvent('nextTile'))
-			console.log('next tile')
+			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse}}))
 		}
 
 		this.gridCords = [Math.floor(x / 40), Math.floor(y / 40)]
