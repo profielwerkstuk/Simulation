@@ -43,6 +43,7 @@ export class Simulation {
 	private roadGen;
 
 	constructor(
+		public id: string,
 		public gridSize: [width: number, height: number],
 		public tileSize: number,
 		public roadWidth: number,
@@ -50,7 +51,8 @@ export class Simulation {
 	) {
 		this.roadGen = new Road(this.tileSize, this.roadResolution, this.roadWidth);
 
-		addEventListener("nextTile", (x) => {
+		addEventListener("nextTile", (x: any) => {
+			if (x.detail.id !== this.id) return;
 			this.tiles.push(this.roadGen.createTile(...generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize)))
 
 			if (this.tiles.length > 3) {

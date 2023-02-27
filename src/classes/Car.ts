@@ -53,6 +53,7 @@ export class Car {
 	private gridCords = [0, 0];
 
 	constructor(
+		public id: string,
 		public coordinates: Coordinate, // Coordinates of the centre of the car
 		public width: number,
 		public height: number,
@@ -74,7 +75,7 @@ export class Car {
 		}
 
 		if(this.gridCords[0] !== Math.floor(x / 40) || this.gridCords[1] !== Math.floor(y / 40)) {
-			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse}}))
+			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
 		}
 
 		this.gridCords = [Math.floor(x / 40), Math.floor(y / 40)]
