@@ -57,6 +57,7 @@ export class Car {
 		public coordinates: Coordinate, // Coordinates of the centre of the car
 		public width: number,
 		public height: number,
+		public tileSize: number,
 	) { }
 
 	update = () => {
@@ -74,11 +75,11 @@ export class Car {
 			y -= (this.height / 2) * this.angle / Math.PI;
 		}
 
-		if(this.gridCords[0] !== Math.floor(x / 40) || this.gridCords[1] !== Math.floor(y / 40)) {
+		if(this.gridCords[0] !== Math.floor(x / this.tileSize) || this.gridCords[1] !== Math.floor(y / this.tileSize)) {
 			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
 		}
 
-		this.gridCords = [Math.floor(x / 40), Math.floor(y / 40)]
+		this.gridCords = [Math.floor(x / this.tileSize), Math.floor(y / this.tileSize)]
 
 		if (this.manualDrive) {
 			const canTurn = this.power > turnRequirement || this.reverse && reverseTurnRequirement;

@@ -67,16 +67,17 @@ export class Road {
 				let yB = round(halfEmptySpace * sin, this.resolution)
 
 				if (from === "left" && to === "top" || from === "top" && to === "left") {
-					points[0].push([xA + topLeft[0], yA + topLeft[1]])
-					points[1].push([xB + topLeft[0], yB + topLeft[1]])
+					console.log("xA", xA)
+					points[1].push([xA / 2 + topLeft[0], yA / 2 + topLeft[1]])
+					points[0].push([xB + topLeft[0], yB + topLeft[1]])
 				} else if (from === "bottom" && to === "right" || from === "right" && to === "bottom") {
-					points[1].push([this.tileSize - xA + topLeft[0], this.tileSize - yA + topLeft[1]])
+					points[1].push([this.tileSize - xA / 2 + topLeft[0], this.tileSize - yA / 2 + topLeft[1]])
 					points[0].push([this.tileSize - xB + topLeft[0], this.tileSize - yB + topLeft[1]])
 				} else if (from === "top" && to === "right" || from === "right" && to === "top") {
-					points[1].push([this.tileSize - xA + topLeft[0], yA + topLeft[1]])
+					points[1].push([this.tileSize - xA / 2 + topLeft[0], yA / 2 + topLeft[1]])
 					points[0].push([this.tileSize - xB + topLeft[0], yB + topLeft[1]])
 				} else if (from === "left" && to === "bottom" || from === "bottom" && to === "left") {
-					points[1].push([xA + topLeft[0], this.tileSize - yA + topLeft[1]])
+					points[1].push([xA / 2 + topLeft[0], this.tileSize - yA / 2 + topLeft[1]])
 					points[0].push([xB + topLeft[0], this.tileSize - yB + topLeft[1]])
 				}
 			}

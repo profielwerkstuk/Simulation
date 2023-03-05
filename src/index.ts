@@ -8,10 +8,12 @@ const S4 = () => {
 	return (((1 + Math.random()) * 65536) | 0).toString(16).substring(1);
 };
 
+const tileSize = 100;
+
 function createEnvironment() {
 	const id = `${S4()+S4()}-${S4()+S4()}`
 
-	const Sim = new Simulation(id, [15, 15], 40, 20, 5);
+	const Sim = new Simulation(id, [15, 15], tileSize, 20, 5);
 
 	// create a canvas element with id ID
 	const canvas = document.createElement("canvas");
@@ -22,7 +24,7 @@ function createEnvironment() {
 
 
 	const Vis = new Visualiser(id);
-	const Car = new _Car(id, [20, 0], 4, 8);
+	const Car = new _Car(id, [20, 0], 4, 8, tileSize);
 	Car.toggleManual();
 	Vis.init(Sim);
 
