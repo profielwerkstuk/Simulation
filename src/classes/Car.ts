@@ -51,6 +51,7 @@ export class Car {
 	private reverse = 0;
 	private manualDrive = false;
 	private gridCords = [0, 0];
+	private spawned = false;
 
 	constructor(
 		public id: string,
@@ -75,9 +76,16 @@ export class Car {
 			y -= (this.height / 2) * this.angle / Math.PI;
 		}
 
-		if(this.gridCords[0] !== Math.floor(x / this.tileSize) || this.gridCords[1] !== Math.floor(y / this.tileSize)) {
+		if (this.coordinates[1] != 0 && !this.spawned) {
+			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
 			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
 		}
+
+		if((this.gridCords[0] !== Math.floor(x / this.tileSize) || this.gridCords[1] !== Math.floor(y / this.tileSize))) {
+			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
+		}
+
+		this.spawned = true;
 
 		this.gridCords = [Math.floor(x / this.tileSize), Math.floor(y / this.tileSize)]
 
