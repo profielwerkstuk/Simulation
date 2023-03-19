@@ -1,4 +1,4 @@
 dist
 node_modules
-OLD
-OLD2
+old_src
+old_tests
