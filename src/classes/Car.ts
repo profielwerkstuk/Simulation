@@ -161,7 +161,7 @@ export class Car {
 		const points = [pointA, pointB, pointC, pointD, pointE] as Coordinate[];
 
 		// Take into account the angle of the car
-		points.forEach(point => {
+		points.forEach((point) => {
 			const s = Math.sin(this.angle);
 			const c = Math.cos(this.angle);
 
@@ -173,23 +173,22 @@ export class Car {
 
 			point[0] = xnew + this.coordinates[0];
 			point[1] = ynew + this.coordinates[1];
-		})
+		});
 
-
-		let lines = points.map(v => getLineFormula(v, this.coordinates));
+		let lines = points.map((v) => getLineFormula(v, this.coordinates));
 
 		lines = lines.map((v, i) => {
 			v.startingPoint = points[i];
 			v.endingPoint = [0, 0];
 
 			const DISTANCE = 40;
-			let angle = Math.atan(lines[i].slope);
-			if (lines[i].slope < 0) angle += Math.PI
+			const dx = v.startingPoint[0] - this.coordinates[0];
+			const dy = v.startingPoint[1] - this.coordinates[1];
+			const segmentLength = Math.sqrt(dx * dx + dy * dy);
+			const scalingFactor = DISTANCE / segmentLength;
 
-			if (i == 4) console.log(angle)
-
-			const delta_x = DISTANCE * Math.cos(angle);
-			const delta_y = DISTANCE * Math.sin(angle);
+			const delta_x = scalingFactor * dx;
+			const delta_y = scalingFactor * dy;
 
 			v.endingPoint[0] = v.startingPoint[0] + delta_x;
 			v.endingPoint[1] = v.startingPoint[1] + delta_y;
@@ -198,7 +197,7 @@ export class Car {
 		});
 
 		return lines;
-	}
+	};
 
 	// getDistances = (tiles: Tile[]) => {
 	// 	interface tempLineType extends Line {
