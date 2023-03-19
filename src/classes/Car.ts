@@ -1,4 +1,5 @@
-import type { Coordinate } from "../types.js";
+import { getIntersect, getLineFormula } from "../Mathamphetamine.js";
+import type { Coordinate, Line, Tile } from "../types.js";
 import { round } from "./utils.js";
 
 const maxPower = 0.025;
@@ -11,6 +12,7 @@ const angularDrag = 0.95;
 const turnSpeed = 0.0008;
 const turnRequirement = 0.0025;
 const reverseTurnRequirement = 0.025;
+const viewDistance = 10;
 
 const wasdKeys: {
 	[key: string]: string;
@@ -77,12 +79,12 @@ export class Car {
 		}
 
 		if (this.coordinates[1] != 0 && !this.spawned) {
-			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
-			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
+			dispatchEvent(new CustomEvent('nextTile', { detail: { speed: this.power - this.reverse, id: this.id } }))
+			dispatchEvent(new CustomEvent('nextTile', { detail: { speed: this.power - this.reverse, id: this.id } }))
 		}
 
-		if((this.gridCords[0] !== Math.floor(x / this.tileSize) || this.gridCords[1] !== Math.floor(y / this.tileSize))) {
-			dispatchEvent(new CustomEvent('nextTile', {detail: {speed: this.power - this.reverse, id: this.id}}))
+		if ((this.gridCords[0] !== Math.floor(x / this.tileSize) || this.gridCords[1] !== Math.floor(y / this.tileSize))) {
+			dispatchEvent(new CustomEvent('nextTile', { detail: { speed: this.power - this.reverse, id: this.id } }))
 		}
 
 		this.spawned = true;
@@ -148,4 +150,92 @@ export class Car {
 	}
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
+
+	getLines = () => {
+		const pointA = [this.coordinates[0] - this.width / 2, this.coordinates[1] - this.height / 4];
+		const pointB = [this.coordinates[0] - this.width / 2, this.coordinates[1] - this.height / 2];
+		const pointC = [this.coordinates[0], this.coordinates[1] - this.height / 2];
+		const pointD = [this.coordinates[0] + this.width / 2, this.coordinates[1] - this.height / 2];
+		const pointE = [this.coordinates[0] + this.width / 2, this.coordinates[1] - this.height / 4];
+
+		const points = [pointA, pointB, pointC, pointD, pointE] as Coordinate[];
+
+		// Take into account the angle of the car
+		points.forEach(point => {
+			const s = Math.sin(this.angle);
+			const c = Math.cos(this.angle);
+
+			point[0] -= this.coordinates[0];
+			point[1] -= this.coordinates[1];
+
+			const xnew = point[0] * c - point[1] * s;
+			const ynew = point[0] * s + point[1] * c;
+
+			point[0] = xnew + this.coordinates[0];
+			point[1] = ynew + this.coordinates[1];
+		})
+
+
+		let lines = points.map(v => getLineFormula(v, this.coordinates));
+
+		lines = lines.map((v, i) => {
+			v.startingPoint = points[i];
+			v.endingPoint = [0, 0];
+
+			const DISTANCE = 40;
+			let angle = Math.atan(lines[i].slope);
+			if (lines[i].slope < 0) angle += Math.PI
+
+			if (i == 4) console.log(angle)
+
+			const delta_x = DISTANCE * Math.cos(angle);
+			const delta_y = DISTANCE * Math.sin(angle);
+
+			v.endingPoint[0] = v.startingPoint[0] + delta_x;
+			v.endingPoint[1] = v.startingPoint[1] + delta_y;
+
+			return v;
+		});
+
+		return lines;
+	}
+
+	// getDistances = (tiles: Tile[]) => {
+	// 	interface tempLineType extends Line {
+	// 		intersections: Coordinate[]
+	// 	};
+
+	// 	const lines = this.getLines() as tempLineType[];
+	// 	lines.forEach(line => line.intersections ??= [])
+
+	// 	// for each line, get all intersections with all lines from tiles and put em in an array
+	// 	// from the array, find the closest intersection
+	// 	// check if the intersection is even on the line
+	// 	// return the points of intersection + distances (points are for drawing)
+
+	// 	lines.forEach(line => {
+	// 		tiles.forEach(tile => {
+	// 			tile.lines.forEach(tileLine => {
+	// 				const lineFormula = getLineFormula(tileLine.startingPoint!, tileLine.endingPoint!);
+
+	// 				const intersect = getIntersect(line, lineFormula);
+
+	// 				if (intersect !== null) {
+	// 					let valid = true;
+
+	// 					const [minX, maxX] = [tileLine.startingPoint![0], tileLine.endingPoint![0]].sort((a, b) => b - a);
+	// 					const [minY, maxY] = [tileLine.startingPoint![1], tileLine.endingPoint![1]].sort((a, b) => b - a);
+
+	// 					// if (intersect[0] < minX || intersect[0] > maxX) valid = false;
+	// 					// if (intersect[1] < minY || intersect[1] > maxY) valid = false;
+
+	// 					if (valid) line.intersections.push(intersect);
+	// 				}
+	// 			})
+	// 		})
+	// 		// console.log(JSON.stringify(line), JSON.stringify(tiles));
+	// 	})
+
+	// 	return lines;
+	// }
 }

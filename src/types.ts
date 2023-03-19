@@ -8,8 +8,8 @@ export type tileType = {
 }
 
 export interface Line {
-	startingPoint: Coordinate,
-	endingPoint: Coordinate,
+	startingPoint?: Coordinate,
+	endingPoint?: Coordinate,
 	slope: number,
 	constant: number
 }
