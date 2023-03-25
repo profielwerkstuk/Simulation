@@ -1,4 +1,4 @@
-import { distanceToLine, getIntersect, getLineFormula } from "../Mathamphetamine.js";
+import { getIntersect, getLineFormula } from "../Mathamphetamine.js";
 import { clamp } from "../utils.js";
 
 import type { Coordinate, Line, Tile } from "../types";
@@ -55,7 +55,7 @@ export class Car {
 		turnSpeed: 0.0008,
 		turnRequirement: 0.0025,
 		reverseTurnRequirement: 0.025,
-		viewDistance: 10
+		viewDistance: 50
 	}
 
 	constructor(
@@ -171,11 +171,10 @@ export class Car {
 			v.startingPoint = points[i];
 			v.endingPoint = [0, 0];
 
-			const DISTANCE = 40;
 			const dx = v.startingPoint[0] - this.coordinates[0];
 			const dy = v.startingPoint[1] - this.coordinates[1];
 			const segmentLength = Math.sqrt(dx * dx + dy * dy);
-			const scalingFactor = DISTANCE / segmentLength;
+			const scalingFactor = this.settings.viewDistance / segmentLength;
 
 			const delta_x = scalingFactor * dx;
 			const delta_y = scalingFactor * dy;
