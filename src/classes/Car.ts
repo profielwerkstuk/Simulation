@@ -55,7 +55,7 @@ export class Car {
 		turnSpeed: 0.0008,
 		turnRequirement: 0.0025,
 		reverseTurnRequirement: 0.025,
-		viewDistance: 50
+		viewDistance: 100
 	}
 
 	constructor(
@@ -188,7 +188,7 @@ export class Car {
 		return lines;
 	};
 
-	getDistances = (tiles: Tile[]) => {
+	getIntersections = (tiles: Tile[]) => {
 		interface tempLineType extends Line {
 			intersections: Coordinate[]
 		};
@@ -200,28 +200,43 @@ export class Car {
 			tiles.forEach(tile => {
 				tile.lines.forEach(tileLine => {
 					const intersect = getIntersect(line, tileLine);
-
-					if (intersect !== null) {
-						let valid = true;
-
-						// Make sure the intersection occurs on the actual ray
-						const [minX, maxX] = [line.startingPoint[0], line.endingPoint[0]].sort((a, b) => a - b);
-						const [minY, maxY] = [line.startingPoint[1], line.endingPoint[1]].sort((a, b) => a - b);
-						if (intersect[0] < minX || intersect[0] > maxX) valid = false;
-						if (intersect[1] < minY || intersect[1] > maxY) valid = false;
-
-						// hier moet je zijn, welkom
-						// er moet hier code zijn die ervoor zorgt dat alleen de punten die op de lijn zelf liggen overblijven
-						// dus binnen de starting en ending point values
-						// klinkt simpel, maar wees gewaarschuwd: hoogmoed komt voor den val
-						// succes dappere programmeur
-
-						if (valid) line.intersections.push(intersect);
-					}
+					if (intersect) line.intersections.push(intersect);
 				})
 			})
 		})
 
-		return lines;
+		// In rare cases, lines might have two intersections, so we pick the closest one
+		lines.forEach(line => {
+			if (line.intersections.length > 1) {
+
+				let lowest = Infinity;
+				let closest: Coordinate;
+
+				line.intersections.forEach(intersection => {
+					const dist = Math.hypot(this.coordinates[0] - intersection[0], this.coordinates[1] - intersection[1])
+					if (dist < lowest) {
+						lowest = dist;
+						closest = intersection;
+					}
+				});
+
+				// Closest will always be defined, but TypeScript disagrees (valid)
+				line.intersections = [closest!]
+			}
+		})
+
+		const intersections: Coordinate[] = [];
+		lines.forEach(line => {
+			intersections.push(line.intersections[0] ?? null)
+		});
+
+		return intersections;
+	}
+
+	getDistances = (tiles: Tile[]) => {
+		return this.getIntersections(tiles).map(v => {
+			if (v) return Math.hypot(this.coordinates[0] - v[0], this.coordinates[1] - v[1])
+			else return null;
+		});
 	}
 }

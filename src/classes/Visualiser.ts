@@ -90,14 +90,10 @@ export class Visualiser {
 			this.ctx.stroke();
 		})
 
-		const intersections = Car.getDistances(this.Simulation.tiles);
-		intersections.forEach(line => {
-			line.intersections.forEach(intersect => {
-				this.ctx.fillStyle = "purple";
-				this.ctx.fillRect(intersect[0] - 2, intersect[1] - 2, 4, 4);
-			})
-		})
-
-
+		const intersections = Car.getIntersections(this.Simulation.tiles);
+		this.ctx.fillStyle = "purple";
+		intersections.forEach(point => {
+			if (point) this.ctx.fillRect(point[0] - 2, point[1] - 2, 4, 4);
+		});
 	}
 }
