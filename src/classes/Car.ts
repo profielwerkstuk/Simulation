@@ -195,15 +195,18 @@ export class Car {
 		};
 
 		let lines = this.getLines() as tempLineType[];
-		lines.forEach(line => line.intersections ??= [])
+		lines.forEach(line => line.intersections ??= []);
 
 		lines.forEach(line => {
 			tiles.forEach(tile => {
 				tile.lines.forEach(tileLine => {
-					const lineFormula = getLineFormula(tileLine.startingPoint!, tileLine.endingPoint!);
+					const intersect = getIntersect(line, tileLine);
 
-					const intersection = getIntersect(line, lineFormula);
-					if (intersection) line.intersections.push(intersection);
+					if (intersect !== null) {
+						let valid = true;
+
+						if (valid) line.intersections.push(intersect);
+					}
 				})
 			})
 		})

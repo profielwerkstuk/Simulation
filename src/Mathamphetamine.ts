@@ -3,7 +3,7 @@ import { Coordinate, Line } from "./types";
 export function getLineFormula(A: Coordinate, B: Coordinate): Line {
 	let slope;
 	if (A[0] - B[0] === 0) {
-		slope = 0; // This is some sketchy hack, dont even worry about it :)
+		slope = 10_000_000_000; // This is some sketchy hack, dont even worry about it :)
 	} else {
 		slope = (A[1] - B[1]) / (A[0] - B[0]);
 	}
