@@ -63,7 +63,9 @@ export class Car {
 		public width: number,
 		public height: number,
 		public tileSize: number,
-	) { }
+	) {
+		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)];
+	}
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
@@ -75,15 +77,6 @@ export class Car {
 		let xCoord = this.coordinates[0];
 		let yCoord = this.coordinates[1];
 
-		// ! UNEXPLAINED (width and height division?)
-		if (this.angle < 0) {
-			xCoord += (this.width / 2) * -this.angle / Math.PI;
-			yCoord += (this.height / 2) * -this.angle / Math.PI;
-		} else if (this.angle > 0) {
-			xCoord -= (this.width / 2) * this.angle / Math.PI;
-			yCoord -= (this.height / 2) * this.angle / Math.PI;
-		}
-
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
 			const event = new CustomEvent("generateTile");
 			dispatchEvent(event);
@@ -93,8 +86,8 @@ export class Car {
 		this.gridCoords = [Math.floor(xCoord / this.tileSize), Math.floor(yCoord / this.tileSize)];
 
 		// Manual drive for testing
+		if (this.manualDrive) this.steer(isKeyDown[keyMap.up], isKeyDown[keyMap.down], isKeyDown[keyMap.left], isKeyDown[keyMap.right]);
 
-		if (this.manualDrive) this.steer(isKeyDown[keyMap.up], isKeyDown[keyMap.down], isKeyDown[keyMap.left], isKeyDown[keyMap.right])
 		// If driving forward, increase the power, else slow down (decrease power)
 		if (this.state.isThrottling) this.power += this.settings.powerFactor;
 		else this.power -= this.settings.powerFactor;

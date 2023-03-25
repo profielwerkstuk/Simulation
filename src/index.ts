@@ -8,7 +8,7 @@ const roadWidth = 60;
 const roadCurveResolution = 5;
 
 const Sim = new Simulation([3, 3], tileSize, roadWidth, roadCurveResolution);
-const Car = new _Car([100, 100], 32, 64, tileSize);
+const Car = new _Car([100, 100], 24, 48, tileSize);
 const Vis = new Visualiser("canvas", Sim);
 Sim.init();
 Vis.init();
