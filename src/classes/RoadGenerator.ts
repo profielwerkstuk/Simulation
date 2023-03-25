@@ -96,10 +96,6 @@ export class RoadGenerator {
 			}
 		}
 
-		if (lines.length === 0) {
-			console.log(type);
-		}
-
 		return {
 			lines: lines,
 			topLeft: topLeft,

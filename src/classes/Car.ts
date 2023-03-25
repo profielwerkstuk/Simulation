@@ -46,7 +46,7 @@ export class Car {
 
 	// Default settings
 	private settings = {
-		maxPower: 0.050,
+		maxPower: 0.100,
 		maxReverse: 0.015,
 		powerFactor: 0.001,
 		reverseFactor: 0.0005,

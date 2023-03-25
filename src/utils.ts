@@ -15,11 +15,18 @@ export function generateTile(lastTile: Tile | null = null, tileSize: number, gri
 	const cameFrom = directions[(directions.indexOf(lastTile.type.to) + 2) % 4];
 	const disallowedDirections: Direction[] = [cameFrom];
 
-	// Just some validating
-	if (lastTile.topLeft[0] <= tileSize) disallowedDirections.push("left");
-	if (lastTile.topLeft[1] <= tileSize) disallowedDirections.push("top");
-	if (lastTile.topLeft[0] >= tileSize * (gridSize[0] - 2)) disallowedDirections.push("right");
-	if (lastTile.topLeft[1] >= tileSize * (gridSize[1] - 2)) disallowedDirections.push("bottom");
+	// validating (but valid)
+	// Check if the next tile would bring you out of bounds
+	const gridCoords = [lastTile.topLeft[0] / tileSize, lastTile.topLeft[1] / tileSize];
+	if (lastTile.type.to === "left") gridCoords[0]--
+	if (lastTile.type.to === "right") gridCoords[0]++
+	if (lastTile.type.to === "bottom") gridCoords[1]++
+	if (lastTile.type.to === "top") gridCoords[1]--
+
+	if (gridCoords[0] - 1 === -1) disallowedDirections.push("left");
+	if (gridCoords[0] + 1 === gridSize[0]) disallowedDirections.push("right");
+	if (gridCoords[1] - 1 === -1) disallowedDirections.push("top");
+	if (gridCoords[1] + 1 === gridSize[1]) disallowedDirections.push("bottom");
 
 	// Randominteger uses some scuffed way of truncating the number
 	const possibleDirections = directions.filter((direction) => !disallowedDirections.includes(direction));
