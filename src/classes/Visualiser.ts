@@ -94,7 +94,7 @@ export class Visualiser {
 		intersections.forEach(line => {
 			line.intersections.forEach(intersect => {
 				this.ctx.fillStyle = "purple";
-				this.ctx.fillRect(intersect[0], intersect[1], 3, 3);
+				this.ctx.fillRect(intersect[0] - 2, intersect[1] - 2, 4, 4);
 			})
 		})
 

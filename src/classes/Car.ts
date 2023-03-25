@@ -1,4 +1,4 @@
-import { getIntersect, getLineFormula } from "../Mathamphetamine.js";
+import { distanceToLine, getIntersect, getLineFormula } from "../Mathamphetamine.js";
 import { clamp } from "../utils.js";
 
 import type { Coordinate, Line, Tile } from "../types";
@@ -204,6 +204,18 @@ export class Car {
 
 					if (intersect !== null) {
 						let valid = true;
+
+						// Make sure the intersection occurs on the actual ray
+						const [minX, maxX] = [line.startingPoint[0], line.endingPoint[0]].sort((a, b) => a - b);
+						const [minY, maxY] = [line.startingPoint[1], line.endingPoint[1]].sort((a, b) => a - b);
+						if (intersect[0] < minX || intersect[0] > maxX) valid = false;
+						if (intersect[1] < minY || intersect[1] > maxY) valid = false;
+
+						// hier moet je zijn, welkom
+						// er moet hier code zijn die ervoor zorgt dat alleen de punten die op de lijn zelf liggen overblijven
+						// dus binnen de starting en ending point values
+						// klinkt simpel, maar wees gewaarschuwd: hoogmoed komt voor den val
+						// succes dappere programmeur
 
 						if (valid) line.intersections.push(intersect);
 					}

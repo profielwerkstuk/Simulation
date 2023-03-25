@@ -27,3 +27,12 @@ export function getIntersect(lineA: Line, lineB: Line): Coordinate | null {
 	const yCoord = lineA.slope * xCoord + lineA.constant;
 	return [xCoord, yCoord];
 }
+
+export function distanceToLine(point: Coordinate, line: Line) {
+	const a = line.slope;
+	const b = -1;
+	const c = -1 * line.constant;
+
+	const distance = Math.abs(a * point[0] + b * point[1] - c) / Math.hypot(a, b);
+	return distance;
+}
