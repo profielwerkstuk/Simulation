@@ -1,4 +1,4 @@
-import { Coordinate, Line } from "./types";
+import type { Coordinate, Line, Tile } from "./types";
 
 export function getLineFormula(A: Coordinate, B: Coordinate): Line {
 	let slope;
@@ -48,5 +48,37 @@ export function getIntersect(lineA: Line, lineB: Line): Coordinate | null {
 	if (!isWithinRange(lineA, x, y) || !isWithinRange(lineB, x, y)) return null;
 
 	return [x, y];
+}
 
+
+export function validatePosition(coordinates: Coordinate, w: number, h: number, angle: number, tiles: Tile[]) {
+	// Extract the rectangle vertices
+	const [cx, cy] = coordinates;
+	const cos_alpha = Math.cos(angle);
+	const sin_alpha = Math.sin(angle);
+
+	// Coordinates as seen from the back of the car
+	const vertices = [
+		[cx + w / 2 * cos_alpha - h / 2 * sin_alpha, cy + w / 2 * sin_alpha + h / 2 * cos_alpha], // back right
+		[cx + w / 2 * cos_alpha + h / 2 * sin_alpha, cy + w / 2 * sin_alpha - h / 2 * cos_alpha], // front right
+		[cx - w / 2 * cos_alpha + h / 2 * sin_alpha, cy - w / 2 * sin_alpha - h / 2 * cos_alpha], // front left
+		[cx - w / 2 * cos_alpha - h / 2 * sin_alpha, cy - w / 2 * sin_alpha + h / 2 * cos_alpha] // back left
+	] as Coordinate[];
+
+	const edges = [
+		getLineFormula(vertices[0], vertices[1]), // right line
+		getLineFormula(vertices[1], vertices[2]), // front line
+		getLineFormula(vertices[2], vertices[3]), // right line
+		getLineFormula(vertices[3], vertices[0]) // back line
+	];
+
+	for (const tile of tiles) {
+		for (const line of tile.lines) {
+			for (const edge of edges) {
+				if (getIntersect(line, edge)) return false
+			}
+		}
+	}
+
+	return true;
 }

@@ -1,4 +1,4 @@
-import { getIntersect, getLineFormula } from "../Mathamphetamine.js";
+import { getIntersect, getLineFormula, validatePosition } from "../Mathamphetamine.js";
 import { clamp } from "../utils.js";
 
 import type { Coordinate, Line, Tile } from "../types";
@@ -69,7 +69,7 @@ export class Car {
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
-	update = () => {
+	update = (tiles: Tile[]) => {
 		// Keep the angle small
 		this.angle = this.angle % (Math.PI * 2);
 
@@ -117,6 +117,12 @@ export class Car {
 		this.velocity.y *= this.settings.drag;
 		this.angle += this.velocity.angular;
 		this.velocity.angular *= this.settings.angularDrag;
+
+		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles);
+		if (!valid) {
+			const event = new CustomEvent("terminateRun");
+			dispatchEvent(event);
+		}
 	}
 
 	steer = (forwards: boolean, backwards: boolean, left: boolean, right: boolean) => {

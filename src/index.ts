@@ -14,11 +14,14 @@ Sim.init();
 Vis.init();
 Car.toggleManual();
 
+let proceed = true;
+addEventListener("terminateRun", () => proceed = false);
+
 function render() {
-	Car.update();
+	Car.update(Sim.tiles);
 	Vis.update(Car);
 
-	requestAnimationFrame(render);
+	if (proceed) requestAnimationFrame(render);
 }
 
 render();
