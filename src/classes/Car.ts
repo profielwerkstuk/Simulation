@@ -46,7 +46,7 @@ export class Car {
 
 	// Default settings
 	private settings = {
-		maxPower: 0.100,
+		maxPower: 0.030,
 		maxReverse: 0.015,
 		powerFactor: 0.001,
 		reverseFactor: 0.0005,
@@ -63,8 +63,12 @@ export class Car {
 		public width: number,
 		public height: number,
 		public tileSize: number,
+		carViewingDistance: number
 	) {
 		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)];
+		this.settings.viewDistance = carViewingDistance;
+		this.settings.maxPower = 1 / 200 * this.width;
+
 	}
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
@@ -118,6 +122,7 @@ export class Car {
 		this.angle += this.velocity.angular;
 		this.velocity.angular *= this.settings.angularDrag;
 
+		// Make sure the car is in a valid position
 		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles);
 		if (!valid) {
 			const event = new CustomEvent("terminateRun");
