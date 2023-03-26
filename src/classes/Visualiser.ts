@@ -1,8 +1,6 @@
 import type { Simulation } from "./Simulation";
 import type { Car } from "./Car";
 
-let logOne = 0;
-
 export class Visualiser {
 	canvas: HTMLCanvasElement;
 	ctx: CanvasRenderingContext2D;
