@@ -88,7 +88,9 @@ export class FancyVisualiser extends Visualiser {
 		this.ctx.rotate(Car.angle);
 		this.ctx.translate(-Car.coordinates[0], -Car.coordinates[1]);
 
-		// this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
+
+		this.ctx.shadowColor = "black";
+		this.ctx.shadowBlur = Math.floor(Car.width / 10);
 		this.ctx.drawImage(
 			img,
 			0,
@@ -100,6 +102,7 @@ export class FancyVisualiser extends Visualiser {
 			Car.width,
 			Car.height
 		);
+		this.ctx.shadowBlur = 0;
 
 		// Draw a red dot in the centre of the car
 		this.ctx.fillStyle = "red"
