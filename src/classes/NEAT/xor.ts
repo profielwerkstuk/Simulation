@@ -1,52 +1,52 @@
-import { ActivationFunctions, NEAT } from './neat.js';
+import { ActivationFunctions, NEAT } from './index.js';
 
-let best: {score: number, genome: any} = {
-    score: 0,
-    genome: null,
+let best: { score: number, genome: any } = {
+	score: 0,
+	genome: null,
 };
 
 async function fitnessFunction(a: any) {
-    let fitness = 4;
-    fitness -= Math.abs(a.activate([1, 1])[0]);
-    fitness -= Math.abs(a.activate([1, 0])[0] - 1);
-    fitness -= Math.abs(a.activate([0, 1])[0] - 1);
-    fitness -= Math.abs(a.activate([0, 0])[0]);
-    if (a.connections.length < 2) fitness *= 0.001;
+	let fitness = 4;
+	fitness -= Math.abs(a.activate([1, 1])[0]);
+	fitness -= Math.abs(a.activate([1, 0])[0] - 1);
+	fitness -= Math.abs(a.activate([0, 1])[0] - 1);
+	fitness -= Math.abs(a.activate([0, 0])[0]);
+	if (a.connections.length < 2) fitness *= 0.001;
 
-    const score = Math.max(fitness, 0.001)
+	const score = Math.max(fitness, 0.001)
 
-    if (score > best.score) {
-        best.score = score;
-        best.genome = a;
-    }
+	if (score > best.score) {
+		best.score = score;
+		best.genome = a;
+	}
 
-    return score;
+	return score;
 };
 
 let config = {
-    populationSize: 9999,
-    structure: {
-        in: 2,
-        hidden: 0,
-        out: 1,
-        activationFunction: ActivationFunctions.RELU
-    },
-    mutationRate: {
-        addNodeMR: 0.005,
-        addConnectionMR: 0.01,
-        removeNodeMR: 0.0001,
-        removeConnectionMR: 0.01,
-        changeWeightMR: 0.1
-    },
-    distanceConstants: {
-        c1: 2,
-        c2: 0.5,
-        c3: 1,
-        compatibilityThreshold: 1.5
-    },
-    fitnessThreshold: 3.5,
-    fitnessFunction: fitnessFunction,
-    maxEpoch: Math.round(Math.exp(50)),
+	populationSize: 9999,
+	structure: {
+		in: 2,
+		hidden: 0,
+		out: 1,
+		activationFunction: ActivationFunctions.RELU
+	},
+	mutationRate: {
+		addNodeMR: 0.005,
+		addConnectionMR: 0.01,
+		removeNodeMR: 0.0001,
+		removeConnectionMR: 0.01,
+		changeWeightMR: 0.1
+	},
+	distanceConstants: {
+		c1: 2,
+		c2: 0.5,
+		c3: 1,
+		compatibilityThreshold: 1.5
+	},
+	fitnessThreshold: 3.5,
+	fitnessFunction: fitnessFunction,
+	maxEpoch: Math.round(Math.exp(50)),
 };
 
 const neat = new NEAT(config);

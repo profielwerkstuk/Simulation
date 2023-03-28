@@ -1,82 +1,73 @@
-import { Node } from "./Neuron.js";
-import { ConnectionStructure, Genome } from "./Genome";
+import type { Node } from "./Neuron";
+import type { Genome } from "./Genome";
+import type { ConnectionStructure } from "./types";
 
-class Connection {
-	weight: number;
-	active: boolean;
-	input: Node;
-	output: Node;
-	innovation: number;
+export class Connection {
+	active = true;
 
-	constructor(input: Node, output: Node, innovation: number, weight?: number) {
-		this.weight = weight ? weight : (Math.random() * 2) - 1;
-		this.active = true;
-		this.input = input;
-		this.output = output;
-		this.innovation = innovation;
+	constructor(
+		public input: Node,
+		public output: Node,
+		public innovation: number,
+		public weight: number = (Math.random() * 2) - 1
+	) { }
+
+	randomizeWeight = () => this.weight = (Math.random() * 2) - 1;
+
+	feedForward = () => {
+		if (this.active) this.output.setValue(this.output.value + (this.input.value * this.weight));
 	}
 
-	randomizeWeight() {
-		this.weight = (Math.random() * 2) - 1;
+	get inputNode() {
+		return this.input
 	}
 
-	feedForward() {
-		if (this.active) {
-			this.output.setValue(this.output.getValue() + (this.input.getValue() * this.weight));
-		}
-	}
-
-	getInputNode(): Node {
-		return this.input;
-	}
-
-	getOutputNode(): Node {
+	get outputNode(): Node {
 		return this.output;
 	}
 
-	activateConnection() {
-		this.active = true;
-	}
+	activateConnection = () => this.active = true;
 
-	deactivateConnection() {
-		this.active = false;
-	}
+	deactivateConnection = () => this.active = false;
 
-	static isRecurrent(connection: Connection, genome: Genome): boolean {
-		let node = connection.getInputNode();
+	static isRecurrent(connection: Connection, genome: Genome) {
+		let node = connection.inputNode;
 		let stack = [connection];
+
 		while (stack.length !== 0) {
 			let connection = stack.shift();
-			if (connection?.getOutputNode().getID() === node.getID()) return true;
+			if (connection?.output.ID === node.ID) return true;
 			stack.push(
-				...genome.connections.filter(gene => gene.getInputNode().getID() === connection?.getOutputNode().getID())
+				...genome.connections.filter(gene => gene.inputNode.ID === connection?.outputNode.ID)
 			);
 		}
+
 		return false;
 	}
 
 	static connectionExists(data: ConnectionStructure, connectionDB: Connection[]): number | undefined {
 		for (let i = 0; i < connectionDB.length; i++) {
-			if (data.fNode.innovation === connectionDB[i].getInputNode().innovation && data.sNode.innovation === connectionDB[i].getOutputNode().innovation) return connectionDB[i].innovation;
+			if (data.fNode.innovation === connectionDB[i].inputNode.innovation && data.sNode.innovation === connectionDB[i].outputNode.innovation) return connectionDB[i].innovation;
 		}
+
 		return undefined;
 	}
 
 	static inputConnectionsOfNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.getInputNode().getID() === node.getID()) result.push(connection);
+			if (connection.inputNode.ID === node.ID) result.push(connection);
 		});
+
 		return result;
 	}
 
 	static outputConnectionsOfNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.getOutputNode().getID() === node.getID()) result.push(connection);
+			if (connection.outputNode.ID === node.ID) result.push(connection);
 		});
+
 		return result;
 	}
 }
-
-export { Connection };

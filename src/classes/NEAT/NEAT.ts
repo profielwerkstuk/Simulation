@@ -1,38 +1,11 @@
-import { Genome, StructureConfig } from "./Genome.js";
-import { Connection } from "./Connection.js";
-import { Node, NodeType } from "./Neuron.js";
+import { Genome } from "./Genome.js";
 import { Species } from "./Species.js";
 
-interface NEATConfig {
-	populationSize: number;
-	structure: StructureConfig;
-	fitnessThreshold: number;
-	maxEpoch: number;
-	mutationRate?: MutationRateConfig;
-	distanceConstants?: DistanceConfig;
-	fitnessFunction: FitnessFunction;
-}
+import type { Connection } from "./Connection.js";
+import type { Node } from "./Neuron.js";
+import type { DistanceConfig, NEATConfig } from "./types.js";
 
-interface MutationRateConfig {
-	addNodeMR: number;
-	addConnectionMR: number;
-	removeNodeMR: number;
-	removeConnectionMR: number;
-	changeWeightMR: number;
-}
-
-interface DistanceConfig {
-	c1: number;
-	c2: number;
-	c3: number;
-	compatibilityThreshold: number;
-}
-
-interface FitnessFunction {
-	(input: Genome): Promise<number>;
-}
-
-class NEAT {
+export class NEAT {
 	config: NEATConfig;
 	species: Species[] = [];
 	nodeInnovation: number;
@@ -42,7 +15,6 @@ class NEAT {
 	epoch: number = 0;
 
 	constructor(config: NEATConfig) {
-
 		this.config = config;
 
 		config.structure.hidden = (config.structure.hidden !== undefined) ? config.structure.hidden : 0;
@@ -78,7 +50,7 @@ class NEAT {
 	speciate() {
 		let genomes: Genome[] = [];
 		for (let i = 0; i < this.species.length; i++) {
-			genomes = genomes.concat(this.species[i].getGenomes());
+			genomes = genomes.concat(this.species[i].genomes);
 		}
 
 		this.species = Species.speciate(genomes, this.config.distanceConstants ?? {} as DistanceConfig);
@@ -99,7 +71,7 @@ class NEAT {
 		});
 
 		for (let i = this.species.length - 1; i >= 0; i--) {
-			if (this.species[i].populationCap === 0 || this.species[i].genomes.length < 1) this.species.splice(i, 1);
+			if (this.species[i].populationCap === 0 || this.species[i]._genomes.length < 1) this.species.splice(i, 1);
 		}
 	}
 
@@ -115,7 +87,7 @@ class NEAT {
 			fitness = [];
 			let genomes: Genome[] = [];
 			for (let i = 0; i < this.species.length; i++) {
-				genomes = genomes.concat(this.species[i].getGenomes());
+				genomes = genomes.concat(this.species[i].genomes);
 			}
 
 			for (let i = 0; i < genomes.length; i++) {
@@ -138,6 +110,3 @@ class NEAT {
 		return
 	}
 }
-
-export { NEAT, Connection, Node, NEATConfig, NodeType, Genome, MutationRateConfig, DistanceConfig, Species };
-export * from "./ActivationFunctions.js";

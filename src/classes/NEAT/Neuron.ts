@@ -1,17 +1,13 @@
-import { IActivationFunction } from "./ActivationFunctions";
-import { Connection } from "./Connection";
+import { NodeType } from "./types.js"
 
-enum NodeType {
-	INPUT = "INPUT",
-	HIDDEN = "HIDDEN",
-	OUTPUT = "OUTPUT"
-}
+import type { ActivationFunction } from "./types";
+import type { Connection } from "./Connection";
 
-class Node {
 
-	value: number;
+export class Node {
+	_value: number;
 	innovation: number;
-	type: NodeType;
+	_type: NodeType;
 	id: string;
 	replacedConnection: Connection;
 	active: boolean = true;
@@ -19,53 +15,53 @@ class Node {
 	inputTimes: number = 0;
 
 	constructor(innovation: number, type: NodeType, replacedConnection?: Connection, id?: string, value?: number) {
-		this.value = value ? value : 0;
+		this._value = value ? value : 0;
 		this.innovation = innovation;
-		this.type = type;
+		this._type = type;
 		this.id = id ? id : this.newID();
 		this.replacedConnection = replacedConnection ?? {} as Connection;
 	}
 
 	setValue(value: number) {
-		this.value = value;
-		if (this.type !== NodeType.INPUT) this.inputTimes++;
+		this._value = value;
+		if (this._type !== NodeType.INPUT) this.inputTimes++;
 	}
 
-	getValue(): number {
-		return this.value;
+	get value() {
+		return this._value;
 	}
 
-	getID(): string {
+	get ID() {
 		return this.id;
 	}
 
-	getType(): NodeType {
-		return this.type;
+	get type(): NodeType {
+		return this._type;
 	}
 
-	applyActivation(func: IActivationFunction) {
-		this.value = func(this.value);
-	}
-
-	setNodeActivation(activation: boolean) {
-		this.active = activation;
-	}
-
-	getState(): boolean {
+	get state() {
 		return this.inputTimes === this.inputCount;
+	}
+
+	applyActivation(func: ActivationFunction) {
+		this._value = func(this._value);
+	}
+
+	set nodeActivation(activation: boolean) {
+		this.active = activation;
 	}
 
 	newID(): string {
 		const S4 = () => {
 			return (((1 + Math.random()) * 65536) | 0).toString(16).substring(1);
 		};
-		return (`${S4()+S4()}-${S4()+S4()}`);
+		return (`${S4() + S4()}-${S4() + S4()}`);
 	}
 
 	static getNodesByType(type: NodeType, nodes: Node[]): Node[] {
 		let result: Node[] = [];
 		for (let i = 0; i < nodes.length; i++) {
-			if (nodes[i].getType() === type) result.push(nodes[i]);
+			if (nodes[i].type === type) result.push(nodes[i]);
 		}
 		return result;
 	}
@@ -77,5 +73,3 @@ class Node {
 		return undefined;
 	}
 }
-
-export { Node, NodeType };
