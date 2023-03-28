@@ -6,23 +6,23 @@ export class Connection {
 	active = true;
 
 	constructor(
-		public input: Node,
-		public output: Node,
+		private input: Node,
+		private output: Node,
 		public innovation: number,
 		public weight: number = (Math.random() * 2) - 1
 	) { }
 
-	randomizeWeight = () => this.weight = (Math.random() * 2) - 1;
+	randomiseWeight = () => this.weight = (Math.random() * 2) - 1;
 
 	feedForward = () => {
 		if (this.active) this.output.setValue(this.output.value + (this.input.value * this.weight));
 	}
 
 	get inputNode() {
-		return this.input
+		return this.input;
 	}
 
-	get outputNode(): Node {
+	get outputNode() {
 		return this.output;
 	}
 

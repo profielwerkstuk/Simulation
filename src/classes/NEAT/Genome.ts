@@ -156,7 +156,7 @@ export class Genome {
 	mutateWeights(rate: number) {
 		for (let i = 0; i < this.connections.length; i++) {
 			if (Math.random() < rate) {
-				this.connections[i].randomizeWeight();
+				this.connections[i].randomiseWeight();
 			}
 		}
 	}
