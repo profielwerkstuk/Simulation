@@ -26,10 +26,6 @@ export class Connection {
 		return this.output;
 	}
 
-	activateConnection = () => this.active = true;
-
-	deactivateConnection = () => this.active = false;
-
 	static isRecurrent(connection: Connection, genome: Genome): boolean {
 		let node = connection.inputNode;
 		let stack = [connection];

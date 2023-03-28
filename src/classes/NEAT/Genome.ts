@@ -168,7 +168,7 @@ export class Genome {
 
 	mutateDeactivateConnection() {
 		let rConnection = this.connections[Math.floor(Math.random() * this.connections.length)];
-		if (rConnection) rConnection.deactivateConnection();
+		if (rConnection) rConnection.active = false;
 	}
 
 	mutateNode(neat: NEAT) {
@@ -176,7 +176,7 @@ export class Genome {
 
 		if (rConnection) {
 			if (!rConnection.active) return;
-			rConnection.deactivateConnection();
+			rConnection.active = false;
 			let iNode = rConnection.inputNode;
 			let oNode = rConnection.outputNode;
 
@@ -193,7 +193,7 @@ export class Genome {
 		if (node.replacedConnection) {
 			node.nodeActivation = false;
 			for (let i = 0; i < this.connections.length; i++) {
-				if (this.connections[i].inputNode.ID === node.ID || this.connections[i].outputNode.ID === node.ID) this.connections[i].deactivateConnection();
+				if (this.connections[i].inputNode.ID === node.ID || this.connections[i].outputNode.ID === node.ID) this.connections[i].active = false;
 			}
 		}
 	}
@@ -228,7 +228,7 @@ export class Genome {
 			let connection = new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight);
 			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight));
 		} else {
-			childConnection.activateConnection();
+			childConnection.active = true;
 		}
 	}
 
