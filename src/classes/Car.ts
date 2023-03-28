@@ -154,13 +154,10 @@ export class Car {
 			const event = new CustomEvent("terminateRun");
 			dispatchEvent(event);
 		}
-
-		// Update the stats
-		this.stats.distanceTravelled += Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
-		this.stats.survivalTime += 1;
 	}
 
 	steer = (forwards: boolean, backwards: boolean, left: boolean, right: boolean) => {
+		// console.log(forwards, backwards, left, right);
 		// Key up/down here can be interchanged with the AI input values;
 
 		// If there is enough power, you can steer + the same for reverse

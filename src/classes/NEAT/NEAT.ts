@@ -119,7 +119,7 @@ class NEAT {
 			}
 
 			for (let i = 0; i < genomes.length; i++) {
-				genomes[i].fitness = Math.max(await this.config.fitnessFunction(genomes[i]), 0.001);
+				genomes[i].fitness = Math.max(await this.config.fitnessFunction(genomes[i]), 0.00001);
 				fitness.push(genomes[i]);
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) throw new Error("Fitness function returned NaN or undefined.");
 			}

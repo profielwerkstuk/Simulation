@@ -27,7 +27,7 @@ const Vis = new Visualiser("canvas", Sim);
 const FancyVis = new FancyVisualiser("canvas", Sim);
 Sim.init();
 Vis.init();
-Car.toggleManual();
+// Car.toggleManual();
 
 let fancy = true;
 
@@ -37,7 +37,10 @@ addEventListener("terminateRun", () => {
 	Car.reset();
 });
 
+let AI = {}
+
 function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
+    AI = a;
     return new Promise((resolve) => {
         Car.reset();
         Sim.reset();
@@ -45,33 +48,57 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
         let fitness = 0.001;
 
 
-        const render = () => {
-            Car.update(Sim.tiles);
-            if (fancy) FancyVis.update(Car);
-            else Vis.update(Car);
+        // const render = () => {
+        //     Car.update(Sim.tiles);
+        //     if (fancy) FancyVis.update(Car);
+        //     else Vis.update(Car);
 
-            const response = a.activate(Car.getDistances(Sim.tiles))
+        //     const response = a.activate(Car.getDistances(Sim.tiles))
+
+        //     console.log(response.reduce((a, b) => a + b, 0));
+
+        //     Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
+
+
+        //     if (Car.stats.survivalTime > 250 && Car.stats.distanceTravelled < 1) {
+        //         fitness = 0;
+        //         resolve(fitness);
+        //     } else if (Car.stats.survivalTime > 99999 || (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 1)) {
+        //         fitness = Car.stats.distanceTravelled;
+        //         resolve(fitness);
+        //     } else {
+        //         requestAnimationFrame(render);
+        //     }
+        // }
+
+        // render();
+
+        let alive = true;
+
+        while (alive) {
+            // Update the stats
+            Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
+            Car.stats.survivalTime += 1;
+
+            const response = a.activate(Car.getDistances(Sim.tiles));
 
             Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
-
             if (Car.stats.survivalTime > 250 && Car.stats.distanceTravelled < 1) {
                 fitness = 0;
-                resolve(fitness);
+                alive = false;
+                resolve(fitness / Car.stats.survivalTime);
             } else if (Car.stats.survivalTime > 99999 || (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 1)) {
-                fitness = Car.stats.distanceTravelled;
+                fitness = Car.stats.distanceTravelled / Car.stats.survivalTime;
+                alive = false;
                 resolve(fitness);
-            } else {
-                requestAnimationFrame(render);
             }
         }
-
-        render();
     });
 }
 
 let config = {
-    populationSize: 10,
+    populationSize: 9999,
     structure: {
         in: 5,
         hidden: 0,
@@ -93,15 +120,22 @@ let config = {
     },
     fitnessThreshold: 3.5,
     fitnessFunction: fitnessFunction,
-    maxEpoch: 100,
+    maxEpoch: 9999,
 };
 
 const neat = new NEAT(config);
-console.log('Starting...');
 
 // on P pressed
 addEventListener("keypress", (e) => {
 	if (e.key === "p") {
+        console.log("Starting...");
 		neat.run();
 	}
 });
+
+// on O pressed
+addEventListener("keypress", (e) => {
+    if (e.key === "o") {
+        console.log(AI);
+    }
+})
