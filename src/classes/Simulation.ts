@@ -1,7 +1,8 @@
 import { generateTile } from "../utils.js";
 import { RoadGenerator } from "./RoadGenerator.js";
 
-import type { Tile } from "../types";
+import type { Coordinate, Tile } from "../types";
+import { getLineFormula, setWalls } from "../Mathamphetamine.js";
 
 export class Simulation {
 	public tiles: Tile[] = [];
@@ -27,8 +28,21 @@ export class Simulation {
 
 	init = () => {
 		this.tiles = [];
-		dispatchEvent(new CustomEvent("generateTile"));
-		dispatchEvent(new CustomEvent("generateTile"));
+		const event = new CustomEvent("generateTile");
+		dispatchEvent(event);
+		dispatchEvent(event);
+
+		const TL = [0, 0] as Coordinate;
+		const BL = [0, this.gridSize[0] * this.tileSize] as Coordinate;
+		const TR = [this.gridSize[1] * this.tileSize, 0] as Coordinate;
+		const BR = [this.gridSize[1] * this.tileSize, this.gridSize[0] * this.tileSize] as Coordinate;
+
+		setWalls([
+			getLineFormula(TL, TR),
+			getLineFormula(TR, BR),
+			getLineFormula(BL, BR),
+			getLineFormula(TL, BL)
+		])
 	}
 
 	reset = () => {

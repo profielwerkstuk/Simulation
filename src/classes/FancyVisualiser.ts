@@ -5,9 +5,13 @@ import type { Direction } from "../types.js";
 
 const directions: Direction[] = ["top", "left", "bottom", "right"];
 
-const img = new Image();
-img.src = "https://cdn.discordapp.com/attachments/926193286278950993/1089557223878967386/image.png";
+const carImage = new Image();
+carImage.src = "https://cdn.discordapp.com/attachments/926193286278950993/1089557223878967386/image.png";
 // img.src = "https://cdn.discordapp.com/attachments/779080769569947681/1089577714618466354/image.png"; kachigga
+
+const grassImage = new Image();
+grassImage.src = "https://media.istockphoto.com/id/474672896/photo/grass-field.jpg?s=612x612&w=0&k=20&c=4DCg7OH6vd9eJYQq1ysujMbgYi2bF-0ff_l8Mx3OOzg=";
+
 
 export class FancyVisualiser extends Visualiser {
 	drawSquares = () => {
@@ -15,8 +19,20 @@ export class FancyVisualiser extends Visualiser {
 			for (let j = 0; j < this.Simulation.gridSize[1]; j++) {
 				const xCoord = i * this.Simulation.tileSize;
 				const yCoord = j * this.Simulation.tileSize;
-				this.ctx.fillStyle = (i + j) % 2 === 0 ? "#97C73C" : "#7F8C46";
-				this.ctx.fillRect(xCoord, yCoord, this.Simulation.tileSize, this.Simulation.tileSize);
+				// this.ctx.fillStyle = (i + j) % 2 === 0 ? "#97C73C" : "#7F8C46";
+				// this.ctx.fillRect(xCoord, yCoord, this.Simulation.tileSize, this.Simulation.tileSize);
+
+				this.ctx.drawImage(
+					grassImage,
+					0,
+					0,
+					grassImage.width,
+					grassImage.height,
+					xCoord,
+					yCoord,
+					this.Simulation.tileSize,
+					this.Simulation.tileSize
+				);
 			}
 		}
 	}
@@ -92,11 +108,11 @@ export class FancyVisualiser extends Visualiser {
 		this.ctx.shadowColor = "black";
 		this.ctx.shadowBlur = Math.floor(Car.width / 10);
 		this.ctx.drawImage(
-			img,
+			carImage,
 			0,
 			0,
-			img.width,
-			img.height,
+			carImage.width,
+			carImage.height,
 			Car.coordinates[0] - Car.width / 2,
 			Car.coordinates[1] - Car.height / 2,
 			Car.width,
@@ -110,26 +126,5 @@ export class FancyVisualiser extends Visualiser {
 
 		// Reset all the canvas transformations of the car
 		this.ctx.resetTransform();
-
-		// const lines = Car.getLines();
-
-		// lines.forEach(p => {
-		// 	if (!p.startingPoint || !p.endingPoint) return;
-
-		// 	this.ctx.fillRect(p.startingPoint[0], p.startingPoint[1], 1, 1)
-
-		// 	this.ctx.strokeStyle = "red";
-		// 	this.ctx.beginPath();
-		// 	this.ctx.moveTo(...p.startingPoint);
-
-		// 	this.ctx.lineTo(...p.endingPoint);
-		// 	this.ctx.stroke();
-		// })
-
-		// const intersections = Car.getIntersections(this.Simulation.tiles);
-		// this.ctx.fillStyle = "purple";
-		// intersections.forEach(point => {
-		// 	if (point) this.ctx.fillRect(point[0] - 2, point[1] - 2, 4, 4);
-		// });
 	}
 }
