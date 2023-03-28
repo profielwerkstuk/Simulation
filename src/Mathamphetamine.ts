@@ -50,6 +50,11 @@ export function getIntersect(lineA: Line, lineB: Line): Coordinate | null {
 	return [x, y];
 }
 
+// This isn't best practice, but who are you to judge
+let walls: Line[] = [];
+export function setWalls(borders: Line[]) {
+	walls = borders;
+}
 
 export function validatePosition(coordinates: Coordinate, w: number, h: number, angle: number, tiles: Tile[]) {
 	// Extract the rectangle vertices
@@ -72,13 +77,24 @@ export function validatePosition(coordinates: Coordinate, w: number, h: number, 
 		getLineFormula(vertices[3], vertices[0]) // back line
 	];
 
+	// Add the walls of the map so the AI doesn't drive backwards (it will)
+	const tempWallTiles = {
+		lines: walls
+	} as Tile;
+	tiles.push(tempWallTiles);
+
 	for (const tile of tiles) {
 		for (const line of tile.lines) {
 			for (const edge of edges) {
-				if (getIntersect(line, edge)) return false
+				if (getIntersect(line, edge)) {
+					tiles.pop(); // remove the wall tiles	
+					return false
+				}
 			}
 		}
 	}
+
+	tiles.pop(); // remove the wall tiles
 
 	return true;
 }

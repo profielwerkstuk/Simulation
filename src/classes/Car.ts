@@ -76,6 +76,7 @@ export class Car {
 		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)];
 		this.settings.viewDistance = carViewingDistance;
 		this.settings.maxPower = 1 / 200 * this.width;
+		this.settings.maxReverse = 1 / 3 * this.settings.maxPower;
 	}
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
