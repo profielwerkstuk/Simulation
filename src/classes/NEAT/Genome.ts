@@ -78,18 +78,18 @@ export class Genome {
 		return this.outputValues;
 	}
 
-	hasConnection(innovation: number): Connection | boolean {
+	hasConnection(innovation: number): Connection | null {
 		for (let i = 0; i < this.connections.length; i++) {
 			if (this.connections[i].innovation === innovation) return this.connections[i];
 		}
-		return false;
+		return null;
 	}
 
-	hasNode(innovation: number): Node | boolean {
+	hasNode(innovation: number): Node | null {
 		for (let i = 0; i < this._nodes.length; i++) {
 			if (this._nodes[i].innovation === innovation) return this._nodes[i];
 		}
-		return false;
+		return null;
 	}
 
 	randomConnectionStructure(): ConnectionStructure | void {
@@ -113,20 +113,17 @@ export class Genome {
 				let newNode = new Node(nInnovation, NodeType.HIDDEN, rConnection);
 				this._nodes.push(newNode);
 				return newNode;
-			} else {
-				// @ts-ignore
-				existing.nodeActivation = true;
-				// @ts-ignore
-				return existing;
 			}
-		} else {
-			neat.nodeInnovation++;
-			let newNode = new Node(neat.nodeInnovation, NodeType.HIDDEN, rConnection);
-			this._nodes.push(newNode);
-			neat.nodeDB.push(newNode);
-			// @ts-ignore
-			return newNode;
+
+			existing.nodeActivation = true;
+			return existing;
 		}
+
+		neat.nodeInnovation++;
+		let newNode = new Node(neat.nodeInnovation, NodeType.HIDDEN, rConnection);
+		this._nodes.push(newNode);
+		neat.nodeDB.push(newNode);
+		return newNode;
 	}
 
 	addConnection(tNodes: ConnectionStructure, neat: NEAT): Connection | void {
@@ -215,8 +212,7 @@ export class Genome {
 			this._nodes.push(iNodeConnection);
 		} else {
 			iNodeConnection = childiNode;
-			// @ts-ignore
-			childiNode.setNodeActivation(true);
+			childiNode.nodeActivation = true;
 		}
 
 		if (!childoNode) {
@@ -224,16 +220,14 @@ export class Genome {
 			this._nodes.push(oNodeConnection);
 		} else {
 			oNodeConnection = childoNode;
-			// @ts-ignore
-			childoNode.setNodeActivation(true);
+			childoNode.nodeActivation = true;
 		}
 
 		let childConnection = this.hasConnection(gene.innovation);
-		if (!childConnection && iNodeConnection != true && oNodeConnection != true) {
+		if (!childConnection) {
 			let connection = new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight);
 			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight));
 		} else {
-			// @ts-ignore
 			childConnection.activateConnection();
 		}
 	}

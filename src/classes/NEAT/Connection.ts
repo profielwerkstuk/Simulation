@@ -30,7 +30,7 @@ export class Connection {
 
 	deactivateConnection = () => this.active = false;
 
-	static isRecurrent(connection: Connection, genome: Genome) {
+	static isRecurrent(connection: Connection, genome: Genome): boolean {
 		let node = connection.inputNode;
 		let stack = [connection];
 
@@ -45,12 +45,12 @@ export class Connection {
 		return false;
 	}
 
-	static connectionExists(data: ConnectionStructure, connectionDB: Connection[]): number | undefined {
+	static connectionExists(data: ConnectionStructure, connectionDB: Connection[]): number | null {
 		for (let i = 0; i < connectionDB.length; i++) {
 			if (data.fNode.innovation === connectionDB[i].inputNode.innovation && data.sNode.innovation === connectionDB[i].outputNode.innovation) return connectionDB[i].innovation;
 		}
 
-		return undefined;
+		return null;
 	}
 
 	static inputConnectionsOfNode(node: Node, connections: Connection[]): Connection[] {
