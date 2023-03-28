@@ -1,8 +1,8 @@
 import { getIntersect, getLineFormula, validatePosition } from "../Mathamphetamine.js";
 import { clamp } from "../utils.js";
+import { Emitter } from "./Emitter.js";
 
 import type { Coordinate, Line, Tile } from "../types";
-
 
 // Manual control code
 const keyMap = {
@@ -15,14 +15,15 @@ const keyMap = {
 const isKeyDown: { [key: string]: boolean } = {};
 Object.values(keyMap).forEach(key => isKeyDown[key] = false);
 
-window.addEventListener("keydown", e => {
-	if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = true;
-});
+if (typeof window !== "undefined") {
+	window.addEventListener("keydown", e => {
+		if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = true;
+	});
 
-window.addEventListener("keyup", e => {
-	if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = false;
-});
-
+	window.addEventListener("keyup", e => {
+		if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = false;
+	});
+}
 
 export class Car {
 	private gridCoords = [0, 0];
@@ -109,8 +110,14 @@ export class Car {
 		let yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
-			const event = new CustomEvent("generateTile");
-			dispatchEvent(event);
+			// NodeJS env
+			if (typeof window !== "undefined") {
+				const emi = new Emitter().emitter;
+				emi.emit("generateTile");
+			} else {
+				const event = new CustomEvent("generateTile");
+				dispatchEvent(event);
+			}
 		}
 
 		// Update the grid coordinates (is floor used correctly?)
@@ -152,8 +159,14 @@ export class Car {
 		// Make sure the car is in a valid position
 		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles);
 		if (!valid) {
-			const event = new CustomEvent("terminateRun");
-			dispatchEvent(event);
+			// NodeJS env
+			if (typeof window !== "undefined") {
+				const emi = new Emitter().emitter;
+				emi.emit("terminateRun");
+			} else {
+				const event = new CustomEvent("terminateRun");
+				dispatchEvent(event);
+			}
 		}
 	}
 
