@@ -32,12 +32,12 @@ export class Genome {
 	}
 
 	get outputValues(): number[] {
-		let oNodes = Node.getNodesByType(NodeType.OUTPUT, this._nodes);
-		oNodes = oNodes.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
+		let outNodes = Node.getNodesByType(NodeType.OUTPUT, this._nodes);
+		outNodes = outNodes.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
+
 		let result: number[] = [];
-		oNodes.forEach(node => {
-			result.push(node.value);
-		});
+		outNodes.forEach(node => result.push(node.value));
+
 		return result;
 	}
 
@@ -177,12 +177,12 @@ export class Genome {
 		if (rConnection) {
 			if (!rConnection.active) return;
 			rConnection.active = false;
-			let iNode = rConnection.inputNode;
-			let oNode = rConnection.outputNode;
+			let inNode = rConnection.inputNode;
+			let outNode = rConnection.outputNode;
 
 			let node = this.addNode(rConnection, neat);
-			let fConnection = { fNode: iNode, sNode: node };
-			let sConnection = { fNode: node, sNode: oNode };
+			let fConnection = { fNode: inNode, sNode: node };
+			let sConnection = { fNode: node, sNode: outNode };
 			this.addConnection(fConnection, neat);
 			this.addConnection(sConnection, neat);
 		}
@@ -199,34 +199,34 @@ export class Genome {
 	}
 
 	addGene(gene: Connection) {
-		let iNode = gene.inputNode;
-		let oNode = gene.outputNode;
+		let inNode = gene.inputNode;
+		let outNode = gene.outputNode;
 
-		let childiNode = this.hasNode(iNode.innovation);
-		let childoNode = this.hasNode(oNode.innovation);
+		let childInNode = this.hasNode(inNode.innovation);
+		let childOutNode = this.hasNode(outNode.innovation);
 
-		let iNodeConnection;
-		let oNodeConnection;
-		if (!childiNode) {
-			iNodeConnection = new Node(iNode.innovation, iNode.type, iNode.replacedConnection);
-			this._nodes.push(iNodeConnection);
+		let inNodeConnection;
+		let outNodeConnection;
+		if (!childInNode) {
+			inNodeConnection = new Node(inNode.innovation, inNode.type, inNode.replacedConnection);
+			this._nodes.push(inNodeConnection);
 		} else {
-			iNodeConnection = childiNode;
-			childiNode.nodeActivation = true;
+			inNodeConnection = childInNode;
+			childInNode.nodeActivation = true;
 		}
 
-		if (!childoNode) {
-			oNodeConnection = new Node(oNode.innovation, oNode.type, oNode.replacedConnection);
-			this._nodes.push(oNodeConnection);
+		if (!childOutNode) {
+			outNodeConnection = new Node(outNode.innovation, outNode.type, outNode.replacedConnection);
+			this._nodes.push(outNodeConnection);
 		} else {
-			oNodeConnection = childoNode;
-			childoNode.nodeActivation = true;
+			outNodeConnection = childOutNode;
+			childOutNode.nodeActivation = true;
 		}
 
 		let childConnection = this.hasConnection(gene.innovation);
 		if (!childConnection) {
-			let connection = new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight);
-			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight));
+			let connection = new Connection(inNodeConnection, outNodeConnection, gene.innovation, gene.weight);
+			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(inNodeConnection, outNodeConnection, gene.innovation, gene.weight));
 		} else {
 			childConnection.active = true;
 		}
