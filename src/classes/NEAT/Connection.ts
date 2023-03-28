@@ -43,13 +43,13 @@ export class Connection {
 
 	static connectionExists(data: ConnectionStructure, connectionDB: Connection[]): number | null {
 		for (let i = 0; i < connectionDB.length; i++) {
-			if (data.fNode.innovation === connectionDB[i].inputNode.innovation && data.sNode.innovation === connectionDB[i].outputNode.innovation) return connectionDB[i].innovation;
+			if (data.firstNode.innovation === connectionDB[i].inputNode.innovation && data.secondNode.innovation === connectionDB[i].outputNode.innovation) return connectionDB[i].innovation;
 		}
 
 		return null;
 	}
 
-	static inputConnectionsOfNode(node: Node, connections: Connection[]): Connection[] {
+	static inputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
 			if (connection.inputNode.ID === node.ID) result.push(connection);
@@ -58,7 +58,7 @@ export class Connection {
 		return result;
 	}
 
-	static outputConnectionsOfNode(node: Node, connections: Connection[]): Connection[] {
+	static outputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
 			if (connection.outputNode.ID === node.ID) result.push(connection);

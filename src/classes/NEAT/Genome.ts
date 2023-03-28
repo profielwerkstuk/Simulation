@@ -45,12 +45,13 @@ export class Genome {
 		for (let i = 0; i < this.connections.length; i++) {
 			result[this.connections[i].innovation] = this.connections[i];
 		}
+
 		return result;
 	}
 
 	activate(input: number[]): number[] {
 		for (let i = 0; i < this._nodes.length; i++) {
-			this._nodes[i].inputCount = Connection.outputConnectionsOfNode(this._nodes[i], this.connections).length;
+			this._nodes[i].inputCount = Connection.outputConnectionsOfirstNode(this._nodes[i], this.connections).length;
 			this._nodes[i].inputTimes = 0;
 			this._nodes[i]._value = 0;
 		}
@@ -63,7 +64,8 @@ export class Genome {
 
 		while (stack.length) {
 			let node = stack.splice(stack.indexOf(stack.filter(n => n.state)[0]), 1)[0];
-			let connections = Connection.inputConnectionsOfNode(node, this.connections);
+			let connections = Connection.inputConnectionsOfirstNode(node, this.connections);
+
 			connections.forEach(connection => {
 				connection.feedForward();
 				if (connection.outputNode.state) {
@@ -81,25 +83,29 @@ export class Genome {
 		for (let i = 0; i < this.connections.length; i++) {
 			if (this.connections[i].innovation === innovation) return this.connections[i];
 		}
+
 		return null;
 	}
 
-	hasNode(innovation: number): Node | null {
+	hasecondNode(innovation: number): Node | null {
 		for (let i = 0; i < this._nodes.length; i++) {
 			if (this._nodes[i].innovation === innovation) return this._nodes[i];
 		}
+
 		return null;
 	}
 
 	randomConnectionStructure(): ConnectionStructure | void {
 		let tries = 0;
-		let fNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
-		let sNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
-		while (fNode.id === sNode.id || (fNode.type === NodeType.INPUT && sNode.type === NodeType.INPUT) || (fNode.type === NodeType.OUTPUT && sNode.type === NodeType.OUTPUT)) {
-			sNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+		let firstNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+		let secondNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+
+		while (firstNode.id === secondNode.id || (firstNode.type === NodeType.INPUT && secondNode.type === NodeType.INPUT) || (firstNode.type === NodeType.OUTPUT && secondNode.type === NodeType.OUTPUT)) {
+			secondNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
 			tries++;
 		}
-		if (!(tries > 20 || fNode.type === NodeType.OUTPUT || sNode.type === NodeType.INPUT)) return { fNode: fNode, sNode: sNode };
+
+		if (!(tries > 20 || firstNode.type === NodeType.OUTPUT || secondNode.type === NodeType.INPUT)) return { firstNode: firstNode, secondNode: secondNode };
 		else return;
 	}
 
@@ -107,7 +113,7 @@ export class Genome {
 		let nInnovation = Node.nodeExists(rConnection.innovation, neat.nodeDB);
 
 		if (nInnovation) {
-			let existing = this.hasNode(nInnovation);
+			let existing = this.hasecondNode(nInnovation);
 			if (!existing) {
 				let newNode = new Node(nInnovation, NodeType.HIDDEN, rConnection);
 				this._nodes.push(newNode);
@@ -130,7 +136,7 @@ export class Genome {
 		if (innovation) {
 			let existing = this.hasConnection(innovation);
 			if (!existing) {
-				let newConnection = new Connection(tNodes.fNode, tNodes.sNode, innovation);
+				let newConnection = new Connection(tNodes.firstNode, tNodes.secondNode, innovation);
 				if (Connection.isRecurrent(newConnection, this)) {
 					return;
 				} else {
@@ -140,7 +146,7 @@ export class Genome {
 			}
 		} else {
 			neat.connectionInnovation++;
-			let newConnection = new Connection(tNodes.fNode, tNodes.sNode, neat.connectionInnovation);
+			let newConnection = new Connection(tNodes.firstNode, tNodes.secondNode, neat.connectionInnovation);
 			if (!Connection.isRecurrent(newConnection, this)) {
 				neat.connectionDB.push(newConnection);
 				this.connections.push(newConnection);
@@ -180,8 +186,8 @@ export class Genome {
 			let outNode = rConnection.outputNode;
 
 			let node = this.addNode(rConnection, neat);
-			let fConnection = { fNode: inNode, sNode: node };
-			let sConnection = { fNode: node, sNode: outNode };
+			let fConnection = { firstNode: inNode, secondNode: node };
+			let sConnection = { firstNode: node, secondNode: outNode };
 			this.addConnection(fConnection, neat);
 			this.addConnection(sConnection, neat);
 		}
@@ -201,8 +207,8 @@ export class Genome {
 		let inNode = gene.inputNode;
 		let outNode = gene.outputNode;
 
-		let childInNode = this.hasNode(inNode.innovation);
-		let childOutNode = this.hasNode(outNode.innovation);
+		let childInNode = this.hasecondNode(inNode.innovation);
+		let childOutNode = this.hasecondNode(outNode.innovation);
 
 		let inNodeConnection;
 		let outNodeConnection;

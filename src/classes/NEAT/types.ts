@@ -12,8 +12,8 @@ export interface StructureConfig {
 }
 
 export interface ConnectionStructure {
-	fNode: Node,
-	sNode: Node,
+	firstNode: Node,
+	secondNode: Node,
 }
 
 export interface NEATConfig {
