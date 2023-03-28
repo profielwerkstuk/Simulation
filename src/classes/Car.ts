@@ -48,6 +48,7 @@ export class Car {
 		tilesChecked: 0,
 		survivalTime: 0,
 		distanceTravelled: 0,
+		timesHit: -1,
 	}
 
 	tiles: Tile[] = []
@@ -81,7 +82,7 @@ export class Car {
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
-	reset = () => {
+	reset = (full = false) => {
 		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize)];
 		this.angle = Math.PI;
 		this.power = 0;
@@ -92,11 +93,13 @@ export class Car {
 			angular: 0
 		}
 
-		this.stats = {
+		if (full) this.stats = {
 			tilesChecked: 0,
 			survivalTime: 0,
 			distanceTravelled: 0,
+			timesHit: -1,
 		}
+		else this.stats.timesHit++;
 	}
 
 	update = (tiles: Tile[]) => {
@@ -158,7 +161,6 @@ export class Car {
 	}
 
 	steer = (forwards: boolean, backwards: boolean, left: boolean, right: boolean) => {
-		// console.log(forwards, backwards, left, right);
 		// Key up/down here can be interchanged with the AI input values;
 
 		// If there is enough power, you can steer + the same for reverse

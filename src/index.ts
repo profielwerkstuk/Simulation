@@ -29,7 +29,7 @@ Sim.init();
 Vis.init();
 // Car.toggleManual();
 
-let fancy = true;
+let fancy = false;
 
 addEventListener("terminateRun", () => {
 	Vis.init();
@@ -42,63 +42,59 @@ let AI = {}
 function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
     AI = a;
     return new Promise((resolve) => {
-        Car.reset();
+        Car.reset(true);
         Sim.reset();
 
-        let fitness = 0.001;
+        const render = () => {
+            Car.update(Sim.tiles);
+            if (fancy) FancyVis.update(Car);
+            else Vis.update(Car);
 
-
-        // const render = () => {
-        //     Car.update(Sim.tiles);
-        //     if (fancy) FancyVis.update(Car);
-        //     else Vis.update(Car);
-
-        //     const response = a.activate(Car.getDistances(Sim.tiles))
-
-        //     console.log(response.reduce((a, b) => a + b, 0));
-
-        //     Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
-
-
-        //     if (Car.stats.survivalTime > 250 && Car.stats.distanceTravelled < 1) {
-        //         fitness = 0;
-        //         resolve(fitness);
-        //     } else if (Car.stats.survivalTime > 99999 || (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 1)) {
-        //         fitness = Car.stats.distanceTravelled;
-        //         resolve(fitness);
-        //     } else {
-        //         requestAnimationFrame(render);
-        //     }
-        // }
-
-        // render();
-
-        let alive = true;
-
-        while (alive) {
-            // Update the stats
             Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
             Car.stats.survivalTime += 1;
 
-            const response = a.activate(Car.getDistances(Sim.tiles));
+            const response = a.activate(Car.getDistances(Sim.tiles))
 
             Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
-            if (Car.stats.survivalTime > 250 && Car.stats.distanceTravelled < 1) {
-                fitness = 0;
-                alive = false;
-                resolve(fitness / Car.stats.survivalTime);
-            } else if (Car.stats.survivalTime > 99999 || (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 1)) {
-                fitness = Car.stats.distanceTravelled / Car.stats.survivalTime;
-                alive = false;
-                resolve(fitness);
+            if (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 0.1) {
+                console.log("Fitness: ", Car.stats.distanceTravelled / Car.stats.survivalTime);
+                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+            } else if (Car.stats.survivalTime > 999999) {
+                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+            } else {
+                requestAnimationFrame(render);
             }
         }
+
+        render();
+
+        // let alive = true;
+
+        // while (alive) {
+        //     // Update the stats
+        //     Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
+        //     Car.stats.survivalTime += 1;
+
+        //     const response = a.activate(Car.getDistances(Sim.tiles));
+
+        //     Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
+
+        //     if (Car.stats.survivalTime > 250 && Car.stats.distanceTravelled < 1) {
+        //         fitness = 0;
+        //         alive = false;
+        //         resolve(fitness / Car.stats.survivalTime);
+        //     } else if (Car.stats.survivalTime > 99999 || (Car.stats.survivalTime > 100 && Car.velocity.x + Car.velocity.y < 1)) {
+        //         fitness = Car.stats.distanceTravelled / Car.stats.survivalTime;
+        //         alive = false;
+        //         resolve(fitness);
+        //     }
+        // }
     });
 }
 
 let config = {
-    populationSize: 9999,
+    populationSize: 25,
     structure: {
         in: 5,
         hidden: 0,
@@ -106,11 +102,11 @@ let config = {
         activationFunction: ActivationFunctions.SIGMOID
     },
     mutationRate: {
-        addNodeMR: 0.005,
-        addConnectionMR: 0.01,
-        removeNodeMR: 0.0001,
-        removeConnectionMR: 0.01,
-        changeWeightMR: 0.1
+        addNodeMR: 0.7,
+        addConnectionMR: 0.4,
+        removeNodeMR: 0.00001,
+        removeConnectionMR: 0.001,
+        changeWeightMR: 0.2
     },
     distanceConstants: {
         c1: 2,
@@ -132,10 +128,3 @@ addEventListener("keypress", (e) => {
 		neat.run();
 	}
 });
-
-// on O pressed
-addEventListener("keypress", (e) => {
-    if (e.key === "o") {
-        console.log(AI);
-    }
-})
