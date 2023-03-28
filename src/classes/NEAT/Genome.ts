@@ -8,12 +8,11 @@ export class Genome {
 	private _nodes: Node[] = [];
 	connections: Connection[] = [];
 	fitness: number = 0;
-	config: StructureConfig;
 	activationFunction: ActivationFunction;
 
 	constructor(config: StructureConfig) {
 		this.activationFunction = config.activationFunction;
-		this.config = config;
+
 		for (let i = 0; i < config.in; i++) {
 			this._nodes.push(new Node(i, NodeType.INPUT));
 		}
