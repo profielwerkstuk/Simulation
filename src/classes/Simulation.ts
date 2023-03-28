@@ -4,7 +4,7 @@ import { RoadGenerator } from "./RoadGenerator.js";
 import type { Tile } from "../types";
 
 export class Simulation {
-	readonly tiles: Tile[] = [];
+	public tiles: Tile[] = [];
 	private roadGenerator: RoadGenerator;
 
 	constructor(
@@ -26,8 +26,12 @@ export class Simulation {
 	}
 
 	init = () => {
-		const event = new CustomEvent("generateTile");
-		dispatchEvent(event);
-		dispatchEvent(event);
+		this.tiles = [];
+		dispatchEvent(new CustomEvent("generateTile"));
+		dispatchEvent(new CustomEvent("generateTile"));
+	}
+
+	reset = () => {
+		this.init();
 	}
 }

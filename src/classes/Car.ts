@@ -38,11 +38,19 @@ export class Car {
 		isTurningLeft: false,
 		isTurningRight: false
 	}
-	private velocity = {
+	public velocity = {
 		x: 0,
 		y: 0,
 		angular: 0
 	}
+
+	stats = {
+		tilesChecked: 0,
+		survivalTime: 0,
+		distanceTravelled: 0,
+	}
+
+	tiles: Tile[] = []
 
 	// Default settings
 	private settings = {
@@ -68,12 +76,30 @@ export class Car {
 		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)];
 		this.settings.viewDistance = carViewingDistance;
 		this.settings.maxPower = 1 / 200 * this.width;
-
 	}
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
+	reset = () => {
+		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize)];
+		this.angle = Math.PI;
+		this.power = 0;
+		this.reverse = 0;
+		this.velocity = {
+			x: 0,
+			y: 0,
+			angular: 0
+		}
+
+		this.stats = {
+			tilesChecked: 0,
+			survivalTime: 0,
+			distanceTravelled: 0,
+		}
+	}
+
 	update = (tiles: Tile[]) => {
+		this.tiles = tiles
 		// Keep the angle small
 		this.angle = this.angle % (Math.PI * 2);
 
@@ -128,6 +154,10 @@ export class Car {
 			const event = new CustomEvent("terminateRun");
 			dispatchEvent(event);
 		}
+
+		// Update the stats
+		this.stats.distanceTravelled += Math.sqrt(Math.pow(this.velocity.x, 2) + Math.pow(this.velocity.y, 2));
+		this.stats.survivalTime += 1;
 	}
 
 	steer = (forwards: boolean, backwards: boolean, left: boolean, right: boolean) => {
@@ -240,7 +270,7 @@ export class Car {
 	getDistances = (tiles: Tile[]) => {
 		return this.getIntersections(tiles).map(v => {
 			if (v) return Math.hypot(this.coordinates[0] - v[0], this.coordinates[1] - v[1])
-			else return null;
+			else return -1;
 		});
 	}
 }
