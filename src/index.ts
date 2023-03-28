@@ -3,6 +3,7 @@ import { Visualiser } from "./classes/Visualiser.js";
 import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
 import { ActivationFunctions, NEAT } from "./classes/NEAT/NEAT.js";
+import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 
 // =============== ⚙ Settings =============== //
 
@@ -23,24 +24,18 @@ const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution);
 const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
 const Vis = new Visualiser("canvas", Sim);
+const FancyVis = new FancyVisualiser("canvas", Sim);
 Sim.init();
 Vis.init();
 Car.toggleManual();
+
+let fancy = true;
 
 addEventListener("terminateRun", () => {
 	Vis.init();
 	Sim.init();
 	Car.reset();
 });
-
-// function render() {
-// 	Car.update(Sim.tiles);
-// 	Vis.update(Car);
-
-// 	requestAnimationFrame(render);
-// }
-
-// render();
 
 function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
     return new Promise((resolve) => {
@@ -52,7 +47,8 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
         const render = () => {
             Car.update(Sim.tiles);
-            Vis.update(Car);
+            if (fancy) FancyVis.update(Car);
+            else Vis.update(Car);
 
             const response = a.activate(Car.getDistances(Sim.tiles))
 
