@@ -1,23 +1,34 @@
 import { ActivationFunctions, NEAT } from './index.js';
+import { writeFileSync, readFileSync } from "fs";
 
-let best: { score: number, genome: any } = {
+import type { FitnessFunction } from './types.js';
+import type { Genome } from './Genome.js';
+
+const tests: [[number, number], number][] = [
+	[[0, 0], 0],
+	[[0, 1], 1],
+	[[1, 0], 1],
+	[[1, 1], 0],
+];
+
+let best: { score: number, genome: null | Genome } = {
 	score: 0,
 	genome: null,
 };
 
-async function fitnessFunction(a: any) {
+const fitnessFunction: FitnessFunction = async (genome) => {
 	let fitness = 4;
-	fitness -= Math.abs(a.activate([1, 1])[0]);
-	fitness -= Math.abs(a.activate([1, 0])[0] - 1);
-	fitness -= Math.abs(a.activate([0, 1])[0] - 1);
-	fitness -= Math.abs(a.activate([0, 0])[0]);
-	if (a.connections.length < 2) fitness *= 0.001;
+	tests.forEach(test => {
+		fitness -= Math.abs(genome.activate(test[0])[0] - test[1]);
+	});
+
+	if (genome.connections.length < 2) fitness *= 0.001;
 
 	const score = Math.max(fitness, 0.001)
 
 	if (score > best.score) {
 		best.score = score;
-		best.genome = a;
+		best.genome = genome;
 	}
 
 	return score;
@@ -49,13 +60,28 @@ let config = {
 	maxEpoch: Math.round(Math.exp(50)),
 };
 
-const neat = new NEAT(config);
-console.log('Starting...');
+// while (true) {
+const network = new NEAT(config);
+console.log("> Network starting");
+await network.run();
 
-neat.run();
+console.log(`> Best score: ${best.score}`);
+console.log("> Testing best genome");
 
-console.log('Best score: ' + best.score);
-console.log('Best genome: ' + JSON.stringify(best.genome));
-console.log("Testing best genome");
-console.log(0, ":", Math.round(best.genome.activate([1, 1])[0]), Math.round(best.genome.activate([0, 0])[0]));
-console.log(1, ":", Math.round(best.genome.activate([1, 0])[0]), Math.round(best.genome.activate([0, 1])[0]));
+tests.forEach(test => {
+	const result = Math.round(best.genome!.activate(test[0])[0]);
+	console.log(`${result === test[1] ? "✅" : "❌"} ${test[0].join(" ")} | ${result}`)
+})
+
+// const previous = readFileSync(`./genomes/genome-${config.fitnessThreshold}.json`, "utf-8");
+// const current = JSON.stringify(best.genome);
+// const previousNodesAmount = JSON.parse(previous)._nodes.length;
+// const currentNodesAmount = best.genome!.nodes.length;
+
+// if (current.length < previous.length || currentNodesAmount < previousNodesAmount) {
+// 	console.log(`> Improved on the genome:`);
+// 	console.log(`> ${previousNodesAmount} => ${currentNodesAmount} (Δ${previousNodesAmount - currentNodesAmount})`);
+// 	console.log(`> ${previous.length} => ${current.length} (Δ${previous.length - current.length})`);
+// 	writeFileSync(`./genomes/genome-${config.fitnessThreshold}.json`, JSON.stringify(best.genome));
+// }
+// }
