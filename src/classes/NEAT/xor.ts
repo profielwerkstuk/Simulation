@@ -1,7 +1,6 @@
-import { ActivationFunctions, NEAT } from './index.js';
+import { ActivationFunctions, NEAT, FitnessFunction } from './index.js';
 import { writeFileSync, readFileSync } from "fs";
 
-import type { FitnessFunction } from './types.js';
 import type { Genome } from './Genome.js';
 
 const tests: [[number, number], number][] = [

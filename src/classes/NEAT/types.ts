@@ -1,7 +1,10 @@
+import type { Connection } from "./Connection";
 import type { Genome } from "./Genome";
-import type { Node } from "./Neuron"
+import type { Node } from "./Neuron";
+import { ActivationFunctions as AFunctions } from "./ActivationFunctions.js";
 
 export type ActivationFunction = (input: number, alpha?: number) => number;
+export type ActivationFunctions = keyof typeof AFunctions;
 export type FitnessFunction = (input: Genome) => Promise<number>;
 
 export interface StructureConfig {
@@ -45,4 +48,30 @@ export enum NodeType {
 	INPUT = "INPUT",
 	HIDDEN = "HIDDEN",
 	OUTPUT = "OUTPUT"
+}
+
+export interface FrozenGenome {
+	nodes: FrozenNode[],
+	connections: FrozenConnection[],
+	fitness: number,
+	activationFunction: ActivationFunctions
+}
+
+export interface FrozenNode {
+	value: number,
+	innovation: number,
+	_type: NodeType,
+	id: string,
+	replacedConnection: FrozenConnection | {},
+	active: boolean,
+	inputCount: number,
+	inputTimes: number
+}
+
+export interface FrozenConnection {
+	input: FrozenNode,
+	output: FrozenNode,
+	innovation: number,
+	weight: number,
+	active: boolean
 }

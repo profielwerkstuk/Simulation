@@ -58,7 +58,7 @@ export class Genome {
 		for (let i = 0; i < this.nodes.length; i++) {
 			this.nodes[i].inputCount = Connection.outputConnectionsOfirstNode(this.nodes[i], this.connections).length;
 			this.nodes[i].inputTimes = 0;
-			this.nodes[i]._value = 0;
+			this.nodes[i].value = 0;
 		}
 
 		let stack = Node.getNodesByType(NodeType.INPUT, this.nodes);
