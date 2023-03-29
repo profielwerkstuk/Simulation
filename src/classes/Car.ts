@@ -45,10 +45,10 @@ export class Car {
 	}
 
 	stats = {
-		tilesChecked: 0,
-		survivalTime: 0,
-		distanceTravelled: 0,
-		timesHit: -1,
+		tilesChecked: 1,
+		survivalTime: 1,
+		distanceTravelled: 1,
+		timesHit: 0,
 	}
 
 	tiles: Tile[] = []
@@ -94,10 +94,10 @@ export class Car {
 		}
 
 		if (full) this.stats = {
-			tilesChecked: 0,
-			survivalTime: 0,
-			distanceTravelled: 0,
-			timesHit: -1,
+			tilesChecked: 1,
+			survivalTime: 1,
+			distanceTravelled: 1,
+			timesHit: 0,
 		}
 		else this.stats.timesHit++;
 	}

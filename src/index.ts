@@ -57,14 +57,15 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
-			if (Car.stats.survivalTime > 100 && (Car.velocity.x < 0.1 || Car.velocity.x > -0.1) && (Car.velocity.y < 0.1 || Car.velocity.y > -0.1)) {
-				console.log("Car.velocity.x + Car.velocity.y: ", Car.velocity.x - Car.velocity.y);
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-			} else if (Car.stats.survivalTime > 999999) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-			} else {
-				requestAnimationFrame(render);
-			}
+            const minumumSpeed = 0.001;
+            if (Car.stats.timesHit > 0) {
+                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+            } else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
+                console.log("Died to inactivity");
+                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+            } else {
+                requestAnimationFrame(render);
+            }
 		}
 
 		render();
