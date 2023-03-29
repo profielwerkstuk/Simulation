@@ -5,7 +5,7 @@ import type { NEAT } from "./NEAT.js";
 import { ActivationFunction, ConnectionStructure, DistanceConfig, NodeType, StructureConfig } from "./types.js";
 
 export class Genome {
-	private _nodes: Node[] = [];
+	nodes: Node[] = [];
 	connections: Connection[] = [];
 	fitness: number = 0;
 	activationFunction: ActivationFunction;
@@ -14,33 +14,29 @@ export class Genome {
 		this.activationFunction = config.activationFunction;
 
 		for (let i = 0; i < config.in; i++) {
-			this._nodes.push(new Node(i, NodeType.INPUT));
+			this.nodes.push(new Node(i, NodeType.INPUT));
 		}
 
 		for (let i = config.in; i < config.in + config.hidden; i++) {
-			this._nodes.push(new Node(i, NodeType.HIDDEN));
+			this.nodes.push(new Node(i, NodeType.HIDDEN));
 		}
 
 		for (let i = config.in + config.hidden; i < config.in + config.hidden + config.out; i++) {
-			this._nodes.push(new Node(i, NodeType.OUTPUT));
+			this.nodes.push(new Node(i, NodeType.OUTPUT));
 		}
 	}
 
 	toJSON = () => {
 		return {
-			nodes: this._nodes,
+			nodes: this.nodes,
 			connections: this.connections,
 			fitness: this.fitness,
 			activationFunction: this.activationFunction.name
 		}
 	}
 
-	get nodes() {
-		return this._nodes;
-	}
-
 	get outputValues(): number[] {
-		let outNodes = Node.getNodesByType(NodeType.OUTPUT, this._nodes);
+		let outNodes = Node.getNodesByType(NodeType.OUTPUT, this.nodes);
 		outNodes = outNodes.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
 
 		let result: number[] = [];
@@ -59,13 +55,13 @@ export class Genome {
 	}
 
 	activate(input: number[]): number[] {
-		for (let i = 0; i < this._nodes.length; i++) {
-			this._nodes[i].inputCount = Connection.outputConnectionsOfirstNode(this._nodes[i], this.connections).length;
-			this._nodes[i].inputTimes = 0;
-			this._nodes[i]._value = 0;
+		for (let i = 0; i < this.nodes.length; i++) {
+			this.nodes[i].inputCount = Connection.outputConnectionsOfirstNode(this.nodes[i], this.connections).length;
+			this.nodes[i].inputTimes = 0;
+			this.nodes[i]._value = 0;
 		}
 
-		let stack = Node.getNodesByType(NodeType.INPUT, this._nodes);
+		let stack = Node.getNodesByType(NodeType.INPUT, this.nodes);
 		stack = stack.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
 		for (let i = 0; i < stack.length; i++) {
 			stack[i].setValue(input[i]);
@@ -97,8 +93,8 @@ export class Genome {
 	}
 
 	hasSecondNode(innovation: number): Node | null {
-		for (let i = 0; i < this._nodes.length; i++) {
-			if (this._nodes[i].innovation === innovation) return this._nodes[i];
+		for (let i = 0; i < this.nodes.length; i++) {
+			if (this.nodes[i].innovation === innovation) return this.nodes[i];
 		}
 
 		return null;
@@ -106,11 +102,11 @@ export class Genome {
 
 	randomConnectionStructure(): ConnectionStructure | void {
 		let tries = 0;
-		let firstNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
-		let secondNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+		let firstNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
+		let secondNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
 
 		while (firstNode.id === secondNode.id || (firstNode.type === NodeType.INPUT && secondNode.type === NodeType.INPUT) || (firstNode.type === NodeType.OUTPUT && secondNode.type === NodeType.OUTPUT)) {
-			secondNode = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+			secondNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
 			tries++;
 		}
 
@@ -125,7 +121,7 @@ export class Genome {
 			let existing = this.hasSecondNode(nInnovation);
 			if (!existing) {
 				let newNode = new Node(nInnovation, NodeType.HIDDEN, rConnection);
-				this._nodes.push(newNode);
+				this.nodes.push(newNode);
 				return newNode;
 			}
 
@@ -135,7 +131,7 @@ export class Genome {
 
 		neat.nodeInnovation++;
 		let newNode = new Node(neat.nodeInnovation, NodeType.HIDDEN, rConnection);
-		this._nodes.push(newNode);
+		this.nodes.push(newNode);
 		neat.nodeDB.push(newNode);
 		return newNode;
 	}
@@ -203,7 +199,7 @@ export class Genome {
 	}
 
 	mutateDeactivateNode() {
-		let node = this._nodes[Math.floor(Math.random() * this._nodes.length)];
+		let node = this.nodes[Math.floor(Math.random() * this.nodes.length)];
 		if (node.replacedConnection) {
 			node.nodeActivation = false;
 			for (let i = 0; i < this.connections.length; i++) {
@@ -223,7 +219,7 @@ export class Genome {
 		let outNodeConnection;
 		if (!childInNode) {
 			inNodeConnection = new Node(inNode.innovation, inNode.type, inNode.replacedConnection);
-			this._nodes.push(inNodeConnection);
+			this.nodes.push(inNodeConnection);
 		} else {
 			inNodeConnection = childInNode;
 			childInNode.nodeActivation = true;
@@ -231,7 +227,7 @@ export class Genome {
 
 		if (!childOutNode) {
 			outNodeConnection = new Node(outNode.innovation, outNode.type, outNode.replacedConnection);
-			this._nodes.push(outNodeConnection);
+			this.nodes.push(outNodeConnection);
 		} else {
 			outNodeConnection = childOutNode;
 			childOutNode.nodeActivation = true;
