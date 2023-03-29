@@ -26,6 +26,15 @@ export class Genome {
 		}
 	}
 
+	toJSON = () => {
+		return {
+			nodes: this._nodes,
+			connections: this.connections,
+			fitness: this.fitness,
+			activationFunction: this.activationFunction.name
+		}
+	}
+
 	get nodes() {
 		return this._nodes;
 	}
@@ -87,7 +96,7 @@ export class Genome {
 		return null;
 	}
 
-	hasecondNode(innovation: number): Node | null {
+	hasSecondNode(innovation: number): Node | null {
 		for (let i = 0; i < this._nodes.length; i++) {
 			if (this._nodes[i].innovation === innovation) return this._nodes[i];
 		}
@@ -113,7 +122,7 @@ export class Genome {
 		let nInnovation = Node.nodeExists(rConnection.innovation, neat.nodeDB);
 
 		if (nInnovation) {
-			let existing = this.hasecondNode(nInnovation);
+			let existing = this.hasSecondNode(nInnovation);
 			if (!existing) {
 				let newNode = new Node(nInnovation, NodeType.HIDDEN, rConnection);
 				this._nodes.push(newNode);
@@ -207,8 +216,8 @@ export class Genome {
 		let inNode = gene.inputNode;
 		let outNode = gene.outputNode;
 
-		let childInNode = this.hasecondNode(inNode.innovation);
-		let childOutNode = this.hasecondNode(outNode.innovation);
+		let childInNode = this.hasSecondNode(inNode.innovation);
+		let childOutNode = this.hasSecondNode(outNode.innovation);
 
 		let inNodeConnection;
 		let outNodeConnection;
