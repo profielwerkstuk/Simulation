@@ -84,6 +84,7 @@ export class NEAT {
 	async run(): Promise<Genome[] | undefined> {
 		let fitness: Genome[] = [];
 		while (this.config.maxEpoch > this.epoch) {
+			console.log("Epoch: " + this.epoch);
 			fitness = [];
 			let genomes: Genome[] = [];
 			for (let i = 0; i < this.species.length; i++) {
@@ -93,7 +94,7 @@ export class NEAT {
 			for (let i = 0; i < genomes.length; i++) {
 				genomes[i].fitness = Math.max(await this.config.fitnessFunction(genomes[i]), 0.00001);
 				fitness.push(genomes[i]);
-				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) throw new Error("Fitness function returned NaN or undefined.");
+				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
 
 			if (fitness.filter(genome => genome.fitness > this.config.fitnessThreshold).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold);

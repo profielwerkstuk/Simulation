@@ -129,3 +129,17 @@ addEventListener("keypress", (e) => {
 		neat.run();
 	}
 });
+
+// on F pressed
+addEventListener("keypress", (e) => {
+	if (e.key === "f") {
+		fancy = !fancy;
+	}
+});
+
+// on R pressed
+addEventListener("keypress", (e) => {
+	if (e.key === "r") {
+		console.log(AI);
+	}
+});
