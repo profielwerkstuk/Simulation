@@ -5,9 +5,9 @@ import type { Connection } from "./Connection";
 
 
 export class Node {
-	_value: number;
+	private _type: NodeType;
+	value: number;
 	innovation: number;
-	_type: NodeType;
 	id: string;
 	replacedConnection: Connection;
 	active: boolean = true;
@@ -15,7 +15,7 @@ export class Node {
 	inputTimes: number = 0;
 
 	constructor(innovation: number, type: NodeType, replacedConnection?: Connection, id?: string, value?: number) {
-		this._value = value ? value : 0;
+		this.value = value ? value : 0;
 		this.innovation = innovation;
 		this._type = type;
 		this.id = id ? id : this.newID();
@@ -23,12 +23,8 @@ export class Node {
 	}
 
 	setValue(value: number) {
-		this._value = value;
+		this.value = value;
 		if (this._type !== NodeType.INPUT) this.inputTimes++;
-	}
-
-	get value() {
-		return this._value;
 	}
 
 	get ID() {
@@ -44,7 +40,7 @@ export class Node {
 	}
 
 	applyActivation(func: ActivationFunction) {
-		this._value = func(this._value);
+		this.value = func(this.value);
 	}
 
 	set nodeActivation(activation: boolean) {
