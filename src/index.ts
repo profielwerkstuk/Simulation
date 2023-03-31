@@ -124,29 +124,21 @@ let config = {
 
 const neat = new NEAT(config);
 
-// on P pressed
-addEventListener("keypress", (e) => {
-	if (e.key === "p") {
+const eventListeners = {
+	"p": () => {
 		console.log("Starting...");
 		neat.run();
-	}
-});
-
-addEventListener("keypress", (e) => {
-	if (e.key === "f") {
-		fancy = !fancy;
-	}
-})
-
-addEventListener("keypress", (e) => {
-	if (e.key === "g") {
+	},
+	"g": () => {
 		console.log(JSON.stringify(AI))
 		console.log(`Node: ${AI?.nodes?.length}`)
-	}
-})
+	},
+	"f": () => fancy = !fancy,
+	"t": () => manualTerminate = true,
+}
 
-addEventListener("keypress", (e) => {
-	if (e.key === "t") {
-		manualTerminate = true;
-	}
-})
+for (const [key, value] of Object.entries(eventListeners)) {
+	addEventListener("keypress", (e) => {
+		if (e.key === key) value();
+	})
+}
