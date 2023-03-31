@@ -10,14 +10,14 @@ import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 // 🧪 Simulation
 
 const simulationSize: [number, number] = [3, 3] // width, height
-const tileSize = 200;
+const tileSize = 250;
 const roadWidth = Math.floor(2 / 7 * tileSize); // Flooring because using integers is just faster for calculations and difference is neglegable 
 const roadCurveResolution = 5; // Increase this to have smoother curves, results in more calculations
 
 // 🚗 Car
 const carWidth = Math.floor(1 / 8 * tileSize);
 const carHeight = carWidth * 2; // Car size, multiplying to ensure integer
-const carViewingDistance = Math.floor(1 / 5 * tileSize)
+const carViewingDistance = Math.floor(1 / 4 * tileSize)
 const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 2 * tileSize)];
 
 
@@ -30,6 +30,7 @@ Vis.init();
 // Car.toggleManual();
 
 let fancy = false;
+let manualTerminate = false;
 
 addEventListener("terminateRun", () => {
 	Vis.init();
@@ -37,7 +38,7 @@ addEventListener("terminateRun", () => {
 	Car.reset();
 });
 
-let AI = {}
+let AI: any = {}
 
 function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
 	AI = a;
@@ -57,15 +58,16 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
-            const minumumSpeed = 0.001;
-            if (Car.stats.timesHit > 0) {
-                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-            } else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
-                console.log("Died to inactivity");
-                resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-            } else {
-                requestAnimationFrame(render);
-            }
+			const minumumSpeed = 0.001;
+			if (Car.stats.timesHit > 0 || manualTerminate) {
+				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+				manualTerminate = false;
+			} else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
+				console.log("Died to inactivity");
+				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+			} else {
+				requestAnimationFrame(render);
+			}
 		}
 
 		render();
@@ -130,16 +132,21 @@ addEventListener("keypress", (e) => {
 	}
 });
 
-// on F pressed
 addEventListener("keypress", (e) => {
 	if (e.key === "f") {
 		fancy = !fancy;
 	}
-});
+})
 
-// on R pressed
 addEventListener("keypress", (e) => {
-	if (e.key === "r") {
-		console.log(AI);
+	if (e.key === "g") {
+		console.log(JSON.stringify(AI))
+		console.log(`Node: ${AI?.nodes?.length}`)
 	}
-});
+})
+
+addEventListener("keypress", (e) => {
+	if (e.key === "t") {
+		manualTerminate = true;
+	}
+})
