@@ -1,8 +1,8 @@
 {
 	"compileOnSave": true,
 	"compilerOptions": {
-		"target": "esnext",
-		"module": "es2022",
+		"target": "ESNext",
+		"module": "ESNext",
 		"watch": true,
 		"strict": true,
 		"outDir": "dist",

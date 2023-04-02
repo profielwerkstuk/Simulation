@@ -13,14 +13,14 @@ export class Simulation {
 		public gridSize: [number, number],
 		public tileSize: number,
 		public roadWidth: number,
-		public roadCurveResolution: number
+		public roadCurveResolution: number,
+		public carSpawnPoint: Coordinate
 	) {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
 
-		if (typeof window === "undefined") {
-			const emi = new Emitter().emitter;
-			emi.on("generateTile", () => {
-				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize);
+		if (typeof window !== "undefined") {
+			addEventListener("generateTile", () => {
+				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
 				const nextTile = this.roadGenerator.createTile(...generatedTile);
 				this.tiles.push(nextTile);
 
@@ -28,8 +28,9 @@ export class Simulation {
 				if (this.tiles.length > 3) this.tiles.shift();
 			})
 		} else {
-			addEventListener("generateTile", () => {
-				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize);
+			const emi = new Emitter().emitter;
+			emi.on("generateTile", () => {
+				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
 				const nextTile = this.roadGenerator.createTile(...generatedTile);
 				this.tiles.push(nextTile);
 
@@ -37,6 +38,8 @@ export class Simulation {
 				if (this.tiles.length > 3) this.tiles.shift();
 			})
 		}
+
+
 	}
 
 	init = () => {

@@ -5,10 +5,10 @@ export function clamp(value: number, min: number, max: number) {
 }
 
 const directions: Direction[] = ["top", "left", "bottom", "right"];
-export function generateTile(lastTile: Tile | null = null, tileSize: number, gridSize: [width: number, height: number]): [tileType, Coordinate] {
+export function generateTile(lastTile: Tile | null = null, tileSize: number, gridSize: [width: number, height: number], carSpawnPoint: Coordinate): [tileType, Coordinate] {
 	// Start with a straight tile by default
 	if (lastTile === null) {
-		return [{ from: "top", to: "bottom" }, [0, 0]];
+		return [{ from: "top", to: "bottom" }, [carSpawnPoint[0] - tileSize / 2, carSpawnPoint[1] - tileSize / 2]];
 	}
 
 	// Invert where the tile came from (if lastTile top->bottom, then it came from top)

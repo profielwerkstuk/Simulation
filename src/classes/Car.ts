@@ -29,6 +29,7 @@ export class Car {
 	private gridCoords = [0, 0];
 	private manualDrive = false;
 
+	public coordinates: Coordinate = [0, 0];
 	public angle = Math.PI; // Angle in rad
 	private power = 0;
 	private reverse = 0;
@@ -46,9 +47,10 @@ export class Car {
 	}
 
 	stats = {
-		tilesChecked: 0,
-		survivalTime: 0,
-		distanceTravelled: 0,
+		tilesChecked: 1,
+		survivalTime: 1,
+		distanceTravelled: 1,
+		timesHit: 0,
 	}
 
 	tiles: Tile[] = []
@@ -68,7 +70,7 @@ export class Car {
 	}
 
 	constructor(
-		public coordinates: Coordinate, // Coordinates of the centre of the car
+		public startCoordinates: Coordinate, // Coordinates of the centre of the car
 		public width: number,
 		public height: number,
 		public tileSize: number,
@@ -82,8 +84,8 @@ export class Car {
 
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
-	reset = () => {
-		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize)];
+	reset = (full = false) => {
+		this.coordinates = this.startCoordinates;
 		this.angle = Math.PI;
 		this.power = 0;
 		this.reverse = 0;
@@ -93,11 +95,13 @@ export class Car {
 			angular: 0
 		}
 
-		this.stats = {
-			tilesChecked: 0,
-			survivalTime: 0,
-			distanceTravelled: 0,
+		if (full) this.stats = {
+			tilesChecked: 1,
+			survivalTime: 1,
+			distanceTravelled: 1,
+			timesHit: 0,
 		}
+		else this.stats.timesHit++;
 	}
 
 	update = (tiles: Tile[]) => {
@@ -111,7 +115,7 @@ export class Car {
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
 			// NodeJS env
-			if (typeof window !== "undefined") {
+			if (typeof window === "undefined") {
 				const emi = new Emitter().emitter;
 				emi.emit("generateTile");
 			} else {
@@ -171,7 +175,6 @@ export class Car {
 	}
 
 	steer = (forwards: boolean, backwards: boolean, left: boolean, right: boolean) => {
-		// console.log(forwards, backwards, left, right);
 		// Key up/down here can be interchanged with the AI input values;
 
 		// If there is enough power, you can steer + the same for reverse

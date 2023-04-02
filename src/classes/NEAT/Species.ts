@@ -1,82 +1,83 @@
-import { Genome, StructureConfig } from "./Genome.js";
-import { DistanceConfig, NEAT } from "./NEAT.js";
+import { Genome } from "./Genome.js";
+import type { NEAT } from "./NEAT.js";
+import type { DistanceConfig, StructureConfig } from "./types.js";
 
 class Species {
-	genomes: Genome[] = [];
+	_genomes: Genome[] = [];
 	populationCap: number = 0;
 	adjustedFitness: number = 0;
 
+	get genomes() {
+		return this._genomes;
+	}
+
+	get specimen() {
+		return this._genomes[0];
+	}
+
 	addGenome(genome: Genome) {
-		this.genomes.push(genome);
-	}
-
-	getGenomes(): Genome[] {
-		return this.genomes;
-	}
-
-	getSpecimen(): Genome {
-		return this.genomes[0];
+		this._genomes.push(genome);
 	}
 
 	randomGenome(): Genome {
-		return this.genomes[Math.floor(Math.random() * this.genomes.length)];
+		return this._genomes[Math.floor(Math.random() * this._genomes.length)];
 	}
 
 	adjustFitness(): number {
 		this.adjustedFitness = 0;
-		this.genomes.forEach(genome => {
-			this.adjustedFitness += genome.fitness / this.genomes.length;
+		this._genomes.forEach(genome => {
+			this.adjustedFitness += genome.fitness / this._genomes.length;
 		});
 		return this.adjustedFitness;
 	}
 
 	repopulate(config: StructureConfig) {
-		this.genomes = this.genomes.sort((a, b) => b.fitness - a.fitness)
-		let half_length = Math.ceil(this.genomes.length / 2);
-		this.genomes = this.genomes.splice(0, half_length);
+		this._genomes = this._genomes.sort((a, b) => b.fitness - a.fitness)
+		let half_length = Math.ceil(this._genomes.length / 2);
+		this._genomes = this._genomes.splice(0, half_length);
 
 		let newGenomes = [];
 		while (newGenomes.length < this.populationCap) {
 			newGenomes.push(Genome.crossover(this.randomGenome(), this.randomGenome(), config));
 		}
-		this.genomes = newGenomes;
+		this._genomes = newGenomes;
 	}
 
 	mutateConnection(rate: number, neat: NEAT) {
-		for (let i = 0; i < this.genomes.length; i++) {
+		for (let i = 0; i < this._genomes.length; i++) {
 			if (Math.random() < rate) {
-				this.genomes[i].mutateConnection(neat);
+				this._genomes[i].mutateConnection(neat);
 			}
 		}
 	}
 
 	mutateDeactivateConnection(rate: number) {
-		for (let i = 0; i < this.genomes.length; i++) {
+		for (let i = 0; i < this._genomes.length; i++) {
 			if (Math.random() < rate) {
-				this.genomes[i].mutateDeactivateConnection();
+				this._genomes[i].mutateDeactivateConnection();
 			}
 		}
 	}
 
 	mutateNode(rate: number, neat: NEAT) {
-		for (let i = 0; i < this.genomes.length; i++) {
+		for (let i = 0; i < this._genomes.length; i++) {
 			if (Math.random() < rate) {
-				this.genomes[i].mutateNode(neat);
+				this._genomes[i].mutateNode(neat);
 			}
 		}
 	}
 
 	mutateDeactivateNode(rate: number) {
-		for (let i = 0; i < this.genomes.length; i++) {
+		for (let i = 0; i < this._genomes.length; i++) {
 			if (Math.random() < rate) {
-				this.genomes[i].mutateDeactivateNode();
+				this._genomes[i].mutateDeactivateNode();
 			}
 		}
 	}
 
 	mutateWeight(rate: number) {
-		for (let i = 0; i < this.genomes.length; i++) {
-			this.genomes[i].mutateWeights(rate);
+		for (let i = 0; i < this._genomes.length; i++) {
+			this._genomes[i].mutateWeights(rate);
 		}
 	}
 
@@ -88,7 +89,7 @@ class Species {
 		for (let i = 1; i < genomes.length; i++) {
 			let foundMatch = false;
 			for (let o = 0; o < species.length; o++) {
-				if (Genome.isCompatible(genomes[i], species[o].getSpecimen(), config)) {
+				if (Genome.isCompatible(genomes[i], species[o].specimen, config)) {
 					species[o].addGenome(genomes[i]);
 					foundMatch = true;
 					break;

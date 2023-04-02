@@ -1,4 +1,7 @@
 dist
 node_modules
-old_src
-old_tests
+genomes
+
+# Data analysis
+data
+result.mw

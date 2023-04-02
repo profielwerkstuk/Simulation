@@ -1,30 +1,18 @@
-import { Node, NodeType } from "./Neuron.js";
+import { Node } from "./Neuron.js";
 import { Connection } from "./Connection.js";
-import { IActivationFunction } from "./ActivationFunctions.js";
-import { NEAT, DistanceConfig } from "./NEAT.js";
 
-interface StructureConfig {
-	in: number;
-	hidden: number;
-	out: number;
-	activationFunction: IActivationFunction;
-}
+import type { NEAT } from "./NEAT.js";
+import { ActivationFunction, ConnectionStructure, DistanceConfig, NodeType, StructureConfig } from "./types.js";
 
-interface ConnectionStructure {
-	fNode: Node,
-	sNode: Node,
-}
-
-class Genome {
+export class Genome {
 	nodes: Node[] = [];
 	connections: Connection[] = [];
 	fitness: number = 0;
-	config: StructureConfig;
-	activationFunction: IActivationFunction;
+	activationFunction: ActivationFunction;
 
 	constructor(config: StructureConfig) {
 		this.activationFunction = config.activationFunction;
-		this.config = config;
+
 		for (let i = 0; i < config.in; i++) {
 			this.nodes.push(new Node(i, NodeType.INPUT));
 		}
@@ -38,9 +26,37 @@ class Genome {
 		}
 	}
 
+	toJSON = () => {
+		return {
+			nodes: this.nodes,
+			connections: this.connections,
+			fitness: this.fitness,
+			activationFunction: this.activationFunction.name
+		}
+	}
+
+	get outputValues(): number[] {
+		let outNodes = Node.getNodesByType(NodeType.OUTPUT, this.nodes);
+		outNodes = outNodes.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
+
+		let result: number[] = [];
+		outNodes.forEach(node => result.push(node.value));
+
+		return result;
+	}
+
+	get genesByInnovation(): Connection[] {
+		let result = [];
+		for (let i = 0; i < this.connections.length; i++) {
+			result[this.connections[i].innovation] = this.connections[i];
+		}
+
+		return result;
+	}
+
 	activate(input: number[]): number[] {
 		for (let i = 0; i < this.nodes.length; i++) {
-			this.nodes[i].inputCount = Connection.outputConnectionsOfNode(this.nodes[i], this.connections).length;
+			this.nodes[i].inputCount = Connection.outputConnectionsOfirstNode(this.nodes[i], this.connections).length;
 			this.nodes[i].inputTimes = 0;
 			this.nodes[i].value = 0;
 		}
@@ -52,58 +68,49 @@ class Genome {
 		}
 
 		while (stack.length) {
-			let node = stack.splice(stack.indexOf(stack.filter(n => n.getState())[0]), 1)[0];
-			let connections = Connection.inputConnectionsOfNode(node, this.connections);
+			let node = stack.splice(stack.indexOf(stack.filter(n => n.state)[0]), 1)[0];
+			let connections = Connection.inputConnectionsOfirstNode(node, this.connections);
+
 			connections.forEach(connection => {
 				connection.feedForward();
-				if (connection.getOutputNode().getState()) {
-					connection.getOutputNode().inputTimes = 0;
-					connection.getOutputNode().applyActivation(this.activationFunction);
-					stack.push(connection.getOutputNode());
+				if (connection.outputNode.state) {
+					connection.outputNode.inputTimes = 0;
+					connection.outputNode.applyActivation(this.activationFunction);
+					stack.push(connection.outputNode);
 				}
 			});
 		}
 
-		return this.getOutputValues();
+		return this.outputValues;
 	}
 
-	getNodes() {
-		return this.nodes;
-	}
-
-	getOutputValues(): number[] {
-		let oNodes = Node.getNodesByType(NodeType.OUTPUT, this.nodes);
-		oNodes = oNodes.sort((a, b) => a.innovation < b.innovation ? -1 : 1);
-		let result: number[] = [];
-		oNodes.forEach(node => {
-			result.push(node.getValue());
-		});
-		return result;
-	}
-
-	hasConnection(innovation: number): Connection | boolean {
+	hasConnection(innovation: number): Connection | null {
 		for (let i = 0; i < this.connections.length; i++) {
 			if (this.connections[i].innovation === innovation) return this.connections[i];
 		}
-		return false;
+
+		return null;
 	}
 
-	hasNode(innovation: number): Node | boolean {
+	hasSecondNode(innovation: number): Node | null {
 		for (let i = 0; i < this.nodes.length; i++) {
 			if (this.nodes[i].innovation === innovation) return this.nodes[i];
 		}
-		return false;
+
+		return null;
 	}
 
 	randomConnectionStructure(): ConnectionStructure | void {
 		let tries = 0;
-		let fNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
-		let sNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
-		while (fNode.id === sNode.id || (fNode.getType() === NodeType.INPUT && sNode.getType() === NodeType.INPUT) || (fNode.getType() === NodeType.OUTPUT && sNode.getType() === NodeType.OUTPUT)) {
-			sNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
+		let firstNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
+		let secondNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
+
+		while (firstNode.id === secondNode.id || (firstNode.type === NodeType.INPUT && secondNode.type === NodeType.INPUT) || (firstNode.type === NodeType.OUTPUT && secondNode.type === NodeType.OUTPUT)) {
+			secondNode = this.nodes[Math.floor(Math.random() * this.nodes.length)];
 			tries++;
 		}
-		if (!(tries > 20 || fNode.getType() === NodeType.OUTPUT || sNode.getType() === NodeType.INPUT)) return { fNode: fNode, sNode: sNode };
+
+		if (!(tries > 20 || firstNode.type === NodeType.OUTPUT || secondNode.type === NodeType.INPUT)) return { firstNode: firstNode, secondNode: secondNode };
 		else return;
 	}
 
@@ -111,25 +118,22 @@ class Genome {
 		let nInnovation = Node.nodeExists(rConnection.innovation, neat.nodeDB);
 
 		if (nInnovation) {
-			let existing = this.hasNode(nInnovation);
+			let existing = this.hasSecondNode(nInnovation);
 			if (!existing) {
 				let newNode = new Node(nInnovation, NodeType.HIDDEN, rConnection);
 				this.nodes.push(newNode);
 				return newNode;
-			} else {
-				// @ts-ignore
-				existing.setNodeActivation(true);
-				// @ts-ignore
-				return existing;
 			}
-		} else {
-			neat.nodeInnovation++;
-			let newNode = new Node(neat.nodeInnovation, NodeType.HIDDEN, rConnection);
-			this.nodes.push(newNode);
-			neat.nodeDB.push(newNode);
-			// @ts-ignore
-			return newNode;
+
+			existing.nodeActivation = true;
+			return existing;
 		}
+
+		neat.nodeInnovation++;
+		let newNode = new Node(neat.nodeInnovation, NodeType.HIDDEN, rConnection);
+		this.nodes.push(newNode);
+		neat.nodeDB.push(newNode);
+		return newNode;
 	}
 
 	addConnection(tNodes: ConnectionStructure, neat: NEAT): Connection | void {
@@ -137,7 +141,7 @@ class Genome {
 		if (innovation) {
 			let existing = this.hasConnection(innovation);
 			if (!existing) {
-				let newConnection = new Connection(tNodes.fNode, tNodes.sNode, innovation);
+				let newConnection = new Connection(tNodes.firstNode, tNodes.secondNode, innovation);
 				if (Connection.isRecurrent(newConnection, this)) {
 					return;
 				} else {
@@ -147,7 +151,7 @@ class Genome {
 			}
 		} else {
 			neat.connectionInnovation++;
-			let newConnection = new Connection(tNodes.fNode, tNodes.sNode, neat.connectionInnovation);
+			let newConnection = new Connection(tNodes.firstNode, tNodes.secondNode, neat.connectionInnovation);
 			if (!Connection.isRecurrent(newConnection, this)) {
 				neat.connectionDB.push(newConnection);
 				this.connections.push(newConnection);
@@ -159,18 +163,10 @@ class Genome {
 		}
 	}
 
-	getGenesByInnovation(): Connection[] {
-		let result = [];
-		for (let i = 0; i < this.connections.length; i++) {
-			result[this.connections[i].innovation] = this.connections[i];
-		}
-		return result;
-	}
-
 	mutateWeights(rate: number) {
 		for (let i = 0; i < this.connections.length; i++) {
 			if (Math.random() < rate) {
-				this.connections[i].randomizeWeight();
+				this.connections[i].randomiseWeight();
 			}
 		}
 	}
@@ -182,7 +178,7 @@ class Genome {
 
 	mutateDeactivateConnection() {
 		let rConnection = this.connections[Math.floor(Math.random() * this.connections.length)];
-		if (rConnection) rConnection.deactivateConnection();
+		if (rConnection) rConnection.active = false;
 	}
 
 	mutateNode(neat: NEAT) {
@@ -190,13 +186,13 @@ class Genome {
 
 		if (rConnection) {
 			if (!rConnection.active) return;
-			rConnection.deactivateConnection();
-			let iNode = rConnection.getInputNode();
-			let oNode = rConnection.getOutputNode();
+			rConnection.active = false;
+			let inNode = rConnection.inputNode;
+			let outNode = rConnection.outputNode;
 
 			let node = this.addNode(rConnection, neat);
-			let fConnection = { fNode: iNode, sNode: node };
-			let sConnection = { fNode: node, sNode: oNode };
+			let fConnection = { firstNode: inNode, secondNode: node };
+			let sConnection = { firstNode: node, secondNode: outNode };
 			this.addConnection(fConnection, neat);
 			this.addConnection(sConnection, neat);
 		}
@@ -205,55 +201,52 @@ class Genome {
 	mutateDeactivateNode() {
 		let node = this.nodes[Math.floor(Math.random() * this.nodes.length)];
 		if (node.replacedConnection) {
-			node.setNodeActivation(false);
+			node.nodeActivation = false;
 			for (let i = 0; i < this.connections.length; i++) {
-				if (this.connections[i].getInputNode().getID() === node.getID() || this.connections[i].getOutputNode().getID() === node.getID()) this.connections[i].deactivateConnection();
+				if (this.connections[i].inputNode.ID === node.ID || this.connections[i].outputNode.ID === node.ID) this.connections[i].active = false;
 			}
 		}
 	}
 
 	addGene(gene: Connection) {
-		let iNode = gene.getInputNode();
-		let oNode = gene.getOutputNode();
+		let inNode = gene.inputNode;
+		let outNode = gene.outputNode;
 
-		let childiNode = this.hasNode(iNode.innovation);
-		let childoNode = this.hasNode(oNode.innovation);
+		let childInNode = this.hasSecondNode(inNode.innovation);
+		let childOutNode = this.hasSecondNode(outNode.innovation);
 
-		let iNodeConnection;
-		let oNodeConnection;
-		if (!childiNode) {
-			iNodeConnection = new Node(iNode.innovation, iNode.getType(), iNode.replacedConnection);
-			this.nodes.push(iNodeConnection);
+		let inNodeConnection;
+		let outNodeConnection;
+		if (!childInNode) {
+			inNodeConnection = new Node(inNode.innovation, inNode.type, inNode.replacedConnection);
+			this.nodes.push(inNodeConnection);
 		} else {
-			iNodeConnection = childiNode;
-			// @ts-ignore
-			childiNode.setNodeActivation(true);
+			inNodeConnection = childInNode;
+			childInNode.nodeActivation = true;
 		}
 
-		if (!childoNode) {
-			oNodeConnection = new Node(oNode.innovation, oNode.getType(), oNode.replacedConnection);
-			this.nodes.push(oNodeConnection);
+		if (!childOutNode) {
+			outNodeConnection = new Node(outNode.innovation, outNode.type, outNode.replacedConnection);
+			this.nodes.push(outNodeConnection);
 		} else {
-			oNodeConnection = childoNode;
-			// @ts-ignore
-			childoNode.setNodeActivation(true);
+			outNodeConnection = childOutNode;
+			childOutNode.nodeActivation = true;
 		}
 
 		let childConnection = this.hasConnection(gene.innovation);
-		if (!childConnection && iNodeConnection != true && oNodeConnection != true) {
-			let connection = new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight);
-			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(iNodeConnection, oNodeConnection, gene.innovation, gene.weight));
+		if (!childConnection) {
+			let connection = new Connection(inNodeConnection, outNodeConnection, gene.innovation, gene.weight);
+			if (!Connection.isRecurrent(connection, this)) this.connections.push(new Connection(inNodeConnection, outNodeConnection, gene.innovation, gene.weight));
 		} else {
-			// @ts-ignore
-			childConnection.activateConnection();
+			childConnection.active = true;
 		}
 	}
 
 	static crossover(genome1: Genome, genome2: Genome, config: StructureConfig): Genome {
 		let child = new Genome(config);
 		const [hFit, lFit] = [genome1, genome2].sort((a, b) => b.fitness - a.fitness);
-		const hFitGenes = hFit.getGenesByInnovation();
-		const lFitGenes = lFit.getGenesByInnovation();
+		const hFitGenes = hFit.genesByInnovation;
+		const lFitGenes = lFit.genesByInnovation;
 
 		for (let i = 0; i < Math.max(hFitGenes.length, lFitGenes.length); i++) {
 			if (hFitGenes[i] !== undefined && lFitGenes[i] !== undefined) {
@@ -273,8 +266,8 @@ class Genome {
 
 	// Using variable names used in the original paper.
 	static isCompatible(genome1: Genome, genome2: Genome, config: DistanceConfig): boolean {
-		let genes1 = genome1.getGenesByInnovation();
-		let genes2 = genome2.getGenesByInnovation();
+		let genes1 = genome1.genesByInnovation;
+		let genes2 = genome2.genesByInnovation;
 		let E = Math.abs(genes1.length - genes2.length);
 		let N = (Math.max(genes1.length, genes2.length) < 20) ? 1 : Math.max(genes1.length, genes2.length);
 		let D = 0;
@@ -296,5 +289,3 @@ class Genome {
 		return (((config.c1 * E) / N) + ((config.c2 * D) / N) + config.c3 * W) < config.compatibilityThreshold;
 	}
 }
-
-export { Genome, StructureConfig, ConnectionStructure };

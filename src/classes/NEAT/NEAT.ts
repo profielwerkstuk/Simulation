@@ -1,38 +1,15 @@
-import { Genome, StructureConfig } from "./Genome.js";
-import { Connection } from "./Connection.js";
-import { Node, NodeType } from "./Neuron.js";
+import { Genome } from "./Genome.js";
 import { Species } from "./Species.js";
 
-interface NEATConfig {
-	populationSize: number;
-	structure: StructureConfig;
-	fitnessThreshold: number;
-	maxEpoch: number;
-	mutationRate?: MutationRateConfig;
-	distanceConstants?: DistanceConfig;
-	fitnessFunction: FitnessFunction;
-}
+import type { Connection } from "./Connection.js";
+import type { Node } from "./Neuron.js";
+import type { DistanceConfig, NEATConfig } from "./types.js";
 
-interface MutationRateConfig {
-	addNodeMR: number;
-	addConnectionMR: number;
-	removeNodeMR: number;
-	removeConnectionMR: number;
-	changeWeightMR: number;
-}
+// ! Import is purely for data collection
+import { appendFileSync, readdirSync, mkdirSync, writeFileSync } from "fs";
+const logFile = initLog();
 
-interface DistanceConfig {
-	c1: number;
-	c2: number;
-	c3: number;
-	compatibilityThreshold: number;
-}
-
-interface FitnessFunction {
-	(input: Genome): Promise<number>;
-}
-
-class NEAT {
+export class NEAT {
 	config: NEATConfig;
 	species: Species[] = [];
 	nodeInnovation: number;
@@ -42,7 +19,6 @@ class NEAT {
 	epoch: number = 0;
 
 	constructor(config: NEATConfig) {
-
 		this.config = config;
 
 		config.structure.hidden = (config.structure.hidden !== undefined) ? config.structure.hidden : 0;
@@ -78,7 +54,7 @@ class NEAT {
 	speciate() {
 		let genomes: Genome[] = [];
 		for (let i = 0; i < this.species.length; i++) {
-			genomes = genomes.concat(this.species[i].getGenomes());
+			genomes = genomes.concat(this.species[i].genomes);
 		}
 
 		this.species = Species.speciate(genomes, this.config.distanceConstants ?? {} as DistanceConfig);
@@ -99,7 +75,7 @@ class NEAT {
 		});
 
 		for (let i = this.species.length - 1; i >= 0; i--) {
-			if (this.species[i].populationCap === 0 || this.species[i].genomes.length < 1) this.species.splice(i, 1);
+			if (this.species[i].populationCap === 0 || this.species[i]._genomes.length < 1) this.species.splice(i, 1);
 		}
 	}
 
@@ -112,19 +88,20 @@ class NEAT {
 	async run(): Promise<Genome[] | undefined> {
 		let fitness: Genome[] = [];
 		while (this.config.maxEpoch > this.epoch) {
+			console.log("Epoch: " + this.epoch);
 			fitness = [];
 			let genomes: Genome[] = [];
 			for (let i = 0; i < this.species.length; i++) {
-				genomes = genomes.concat(this.species[i].getGenomes());
+				genomes = genomes.concat(this.species[i].genomes);
 			}
 
 			for (let i = 0; i < genomes.length; i++) {
 				genomes[i].fitness = Math.max(await this.config.fitnessFunction(genomes[i]), 0.00001);
 				fitness.push(genomes[i]);
-				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) throw new Error("Fitness function returned NaN or undefined.");
+				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
 
-			if (fitness.filter(genome => genome.fitness > this.config.fitnessThreshold).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold);
+			if (this.config.fitnessThreshold && fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!);
 
 			this.speciate();
 			this.assignPopulationLimit();
@@ -132,12 +109,32 @@ class NEAT {
 			this.mutate();
 			this.epoch++;
 
-			console.log("Average fitness this generation: " + fitness.reduce((a, b) => a + b.fitness, 0) / fitness.length);
+			const averageFitness = fitness.reduce((a, b) => a + b.fitness, 0) / fitness.length;
+			console.log(`Average fitness: ${averageFitness}`);
+
+			// ! This line is purely for data collection
+			appendFileSync(logFile, `${this.epoch}\t${averageFitness}\r\n`);
 		}
 
 		return
 	}
 }
 
-export { NEAT, Connection, Node, NEATConfig, NodeType, Genome, MutationRateConfig, DistanceConfig, Species };
-export * from "./ActivationFunctions.js";
+
+// ! Code purely for data collection
+function initLog() {
+	try {
+		readdirSync("./data");
+	} catch (e) {
+		mkdirSync("./data");
+	}
+
+	try {
+		const fileName = `./data/${Date.now()}.mw`;
+		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
+		return fileName;
+	} catch (e) {
+		console.log(e);
+		throw new Error("Failed to create log file.");
+	}
+}
