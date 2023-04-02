@@ -45,7 +45,7 @@ export class Car {
 	}
 
 	stats = {
-		tilesChecked: 1,
+		tilesTravelled: 1,
 		survivalTime: 1,
 		distanceTravelled: 1,
 		timesHit: 0,
@@ -94,7 +94,7 @@ export class Car {
 		}
 
 		if (full) this.stats = {
-			tilesChecked: 1,
+			tilesTravelled: 1,
 			survivalTime: 1,
 			distanceTravelled: 1,
 			timesHit: 0,
@@ -112,6 +112,7 @@ export class Car {
 		let yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
+			this.stats.tilesTravelled++;
 			const event = new CustomEvent("generateTile");
 			dispatchEvent(event);
 		}
