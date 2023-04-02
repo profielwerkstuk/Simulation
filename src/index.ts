@@ -17,7 +17,7 @@ const roadCurveResolution = 5; // Increase this to have smoother curves, results
 // 🚗 Car
 const carWidth = Math.floor(1 / 8 * tileSize);
 const carHeight = carWidth * 2; // Car size, multiplying to ensure integer
-const carViewingDistance = Math.floor(1 / 4 * tileSize)
+const carViewingDistance = Math.floor(1 / 5 * tileSize)
 const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 2 * tileSize)];
 
 
@@ -83,7 +83,7 @@ let config = {
 		compatibilityThreshold: 1.5
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 25,
+	maxEpoch: 200,
 };
 
 const neat = new NEAT(config);
