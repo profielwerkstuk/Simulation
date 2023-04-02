@@ -6,8 +6,8 @@ import type { Node } from "./Neuron.js";
 import type { DistanceConfig, NEATConfig } from "./types.js";
 
 // ! Import is purely for data collection
-import { appendFileSync, readdirSync, mkdirSync, writeFileSync } from "fs";
-const logFile = initLog();
+// import { appendFileSync, readdirSync, mkdirSync, writeFileSync } from "fs";
+// const logFile = initLog();
 
 export class NEAT {
 	config: NEATConfig;
@@ -113,7 +113,7 @@ export class NEAT {
 			console.log(`Average fitness: ${averageFitness}`);
 
 			// ! This line is purely for data collection
-			appendFileSync(logFile, `${this.epoch}\t${averageFitness}\r\n`);
+			// appendFileSync(logFile, `${this.epoch}\t${averageFitness}\r\n`);
 		}
 
 		return
@@ -122,19 +122,19 @@ export class NEAT {
 
 
 // ! Code purely for data collection
-function initLog() {
-	try {
-		readdirSync("./data");
-	} catch (e) {
-		mkdirSync("./data");
-	}
+// function initLog() {
+// 	try {
+// 		readdirSync("./data");
+// 	} catch (e) {
+// 		mkdirSync("./data");
+// 	}
 
-	try {
-		const fileName = `./data/${Date.now()}.mw`;
-		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
-		return fileName;
-	} catch (e) {
-		console.log(e);
-		throw new Error("Failed to create log file.");
-	}
-}
+// 	try {
+// 		const fileName = `./data/${Date.now()}.mw`;
+// 		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
+// 		return fileName;
+// 	} catch (e) {
+// 		console.log(e);
+// 		throw new Error("Failed to create log file.");
+// 	}
+// }
