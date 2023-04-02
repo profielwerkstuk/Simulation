@@ -22,7 +22,7 @@ export interface ConnectionStructure {
 export interface NEATConfig {
 	populationSize: number;
 	structure: StructureConfig;
-	fitnessThreshold: number;
+	fitnessThreshold?: number;
 	maxEpoch: number;
 	mutationRate?: MutationRateConfig;
 	distanceConstants?: DistanceConfig;

@@ -97,7 +97,7 @@ export class NEAT {
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
 
-			if (fitness.filter(genome => genome.fitness > this.config.fitnessThreshold).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold);
+			if (this.config.fitnessThreshold && fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!);
 
 			this.speciate();
 			this.assignPopulationLimit();
