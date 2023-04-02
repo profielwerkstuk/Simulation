@@ -15,11 +15,11 @@ export class Runner extends Genome {
 			activationFunction: ActivationFunctions[genome.activationFunction]
 		});
 
-		const defrostedNodes = genome.nodes.map(node => plainToInstance(Node, node));
-		const defrostedConnections = genome.connections.map(connection => plainToInstance(Connection, connection));
+		// const defrostedNodes = genome.nodes.map(node => plainToInstance(Node, node));
+		// const defrostedConnections = genome.connections.map(connection => plainToInstance(Connection, connection));
 
-		this.connections = defrostedConnections;
-		this.nodes = defrostedNodes;
+		// this.connections = defrostedConnections;
+		// this.nodes = defrostedNodes;
 		this.fitness = genome.fitness;
 	}
 }

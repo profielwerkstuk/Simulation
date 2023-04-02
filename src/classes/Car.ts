@@ -28,6 +28,7 @@ export class Car {
 	private gridCoords = [0, 0];
 	private manualDrive = false;
 
+	public coordinates: Coordinate = [0, 0];
 	public angle = Math.PI; // Angle in rad
 	private power = 0;
 	private reverse = 0;
@@ -68,7 +69,7 @@ export class Car {
 	}
 
 	constructor(
-		public coordinates: Coordinate, // Coordinates of the centre of the car
+		public startCoordinates: Coordinate, // Coordinates of the centre of the car
 		public width: number,
 		public height: number,
 		public tileSize: number,
@@ -83,7 +84,7 @@ export class Car {
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
 	reset = (full = false) => {
-		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize)];
+		this.coordinates = this.startCoordinates;
 		this.angle = Math.PI;
 		this.power = 0;
 		this.reverse = 0;
