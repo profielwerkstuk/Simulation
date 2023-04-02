@@ -18,7 +18,7 @@ export class Simulation {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
 		const emi = new Emitter().emitter;
 		emi.on("generateTile", () => {
-			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
+			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize);
 			const nextTile = this.roadGenerator.createTile(...generatedTile);
 			this.tiles.push(nextTile);
 
