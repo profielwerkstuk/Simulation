@@ -56,7 +56,22 @@ export function setWalls(borders: Line[]) {
 	walls = borders;
 }
 
-export function validatePosition(coordinates: Coordinate, w: number, h: number, angle: number, tiles: Tile[]) {
+export function validatePosition(coordinates: Coordinate, w: number, h: number, angle: number, tiles: Tile[], tileCoords: Coordinate, tileSize: number) {
+	// Check if the tile of the car has road (there is no escape)
+	let validTile = false;
+	tiles.forEach(tile => {
+		// const [carX, carY] = [coordinates[0] / tileSize, coordinates[1] / tileSize].map(Math.floor);
+		const [tileX, tileY] = [tile.topLeft[0] / tileSize, tile.topLeft[1] / tileSize].map(Math.floor);
+		// console.log(carX, carY, tileX, tileY)
+		if (tileX === tileCoords[0] && tileY === tileCoords[1]) validTile = true;
+	});
+	if (!validTile) {
+		console.log(`Trapped in code and screens,
+Car broke free, sought a real world.
+Now, its end draws near.`)
+		return false
+	}
+
 	// Extract the rectangle vertices
 	const [cx, cy] = coordinates;
 	const cos_alpha = Math.cos(angle);

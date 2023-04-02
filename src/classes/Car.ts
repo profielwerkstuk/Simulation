@@ -25,7 +25,7 @@ window.addEventListener("keyup", e => {
 
 
 export class Car {
-	private gridCoords = [0, 0];
+	private gridCoords = [0, 0] as Coordinate;
 	private manualDrive = false;
 
 	public angle = Math.PI; // Angle in rad
@@ -74,7 +74,7 @@ export class Car {
 		public tileSize: number,
 		carViewingDistance: number
 	) {
-		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)];
+		this.gridCoords = [Math.floor(this.coordinates[0] / this.tileSize), Math.floor(this.coordinates[1] / this.tileSize)] as Coordinate;
 		this.settings.viewDistance = carViewingDistance;
 		this.settings.maxPower = 1 / 200 * this.width;
 		this.settings.maxReverse = 1 / 3 * this.settings.maxPower;
@@ -153,7 +153,7 @@ export class Car {
 		this.velocity.angular *= this.settings.angularDrag;
 
 		// Make sure the car is in a valid position
-		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles);
+		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles, this.gridCoords, this.tileSize);
 		if (!valid) {
 			const event = new CustomEvent("terminateRun");
 			dispatchEvent(event);
