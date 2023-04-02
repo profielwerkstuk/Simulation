@@ -1,5 +1,4 @@
 import { ActivationFunctions, NEAT, FitnessFunction } from './index.js';
-import { writeFileSync, readFileSync } from "fs";
 
 import type { Genome } from './Genome.js';
 
@@ -54,9 +53,9 @@ let config = {
 		c3: 1,
 		compatibilityThreshold: 1.5
 	},
-	fitnessThreshold: 3.5,
+	// fitnessThreshold: 3.5,
 	fitnessFunction: fitnessFunction,
-	maxEpoch: Math.round(Math.exp(50)),
+	maxEpoch: 25,
 };
 
 // while (true) {

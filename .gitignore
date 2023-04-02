@@ -1,4 +1,7 @@
 dist
 node_modules
 genomes
+
+# Data analysis
 data
+result.mw
