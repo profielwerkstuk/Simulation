@@ -17,42 +17,23 @@ export class Simulation {
 		public carSpawnPoint: Coordinate
 	) {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
+		const emi = new Emitter().emitter;
+		emi.on("generateTile", () => {
+			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
+			const nextTile = this.roadGenerator.createTile(...generatedTile);
+			this.tiles.push(nextTile);
 
-		if (typeof window !== "undefined") {
-			addEventListener("generateTile", () => {
-				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
-				const nextTile = this.roadGenerator.createTile(...generatedTile);
-				this.tiles.push(nextTile);
-
-				// Only keep 3 tiles on the screen at all times
-				if (this.tiles.length > 3) this.tiles.shift();
-			})
-		} else {
-			const emi = new Emitter().emitter;
-			emi.on("generateTile", () => {
-				const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
-				const nextTile = this.roadGenerator.createTile(...generatedTile);
-				this.tiles.push(nextTile);
-
-				// Only keep 3 tiles on the screen at all times
-				if (this.tiles.length > 3) this.tiles.shift();
-			})
-		}
-
-
+			// Only keep 3 tiles on the screen at all times
+			if (this.tiles.length > 3) this.tiles.shift();
+		})
 	}
 
 	init = () => {
 		this.tiles = [];
-		// NodeJS env
-		if (typeof window === "undefined") {
-			const emi = new Emitter().emitter;
-			emi.emit("generateTile");
-		} else {
-			const event = new CustomEvent("generateTile");
-			dispatchEvent(event);
-			dispatchEvent(event);
-		}
+
+		const emi = new Emitter().emitter;
+		emi.emit("generateTile");
+		emi.emit("generateTile");
 
 
 		const TL = [0, 0] as Coordinate;

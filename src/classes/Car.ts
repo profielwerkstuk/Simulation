@@ -4,27 +4,6 @@ import { Emitter } from "./Emitter.js";
 
 import type { Coordinate, Line, Tile } from "../types";
 
-// Manual control code
-const keyMap = {
-	up: "w",
-	down: "s",
-	left: "a",
-	right: "d"
-}
-
-const isKeyDown: { [key: string]: boolean } = {};
-Object.values(keyMap).forEach(key => isKeyDown[key] = false);
-
-if (typeof window !== "undefined") {
-	window.addEventListener("keydown", e => {
-		if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = true;
-	});
-
-	window.addEventListener("keyup", e => {
-		if (Object.values(keyMap).includes(e.key)) isKeyDown[e.key] = false;
-	});
-}
-
 export class Car {
 	private gridCoords = [0, 0];
 	private manualDrive = false;
@@ -114,21 +93,12 @@ export class Car {
 		let yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
-			// NodeJS env
-			if (typeof window === "undefined") {
-				const emi = new Emitter().emitter;
-				emi.emit("generateTile");
-			} else {
-				const event = new CustomEvent("generateTile");
-				dispatchEvent(event);
-			}
+			const emi = new Emitter().emitter;
+			emi.emit("generateTile");
 		}
 
 		// Update the grid coordinates (is floor used correctly?)
 		this.gridCoords = [Math.floor(xCoord / this.tileSize), Math.floor(yCoord / this.tileSize)];
-
-		// Manual drive for testing
-		if (this.manualDrive) this.steer(isKeyDown[keyMap.up], isKeyDown[keyMap.down], isKeyDown[keyMap.left], isKeyDown[keyMap.right]);
 
 		// If driving forward, increase the power, else slow down (decrease power)
 		if (this.state.isThrottling) this.power += this.settings.powerFactor;
@@ -163,14 +133,8 @@ export class Car {
 		// Make sure the car is in a valid position
 		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles);
 		if (!valid) {
-			// NodeJS env
-			if (typeof window !== "undefined") {
-				const emi = new Emitter().emitter;
-				emi.emit("terminateRun");
-			} else {
-				const event = new CustomEvent("terminateRun");
-				dispatchEvent(event);
-			}
+			const emi = new Emitter().emitter;
+			emi.emit("terminateRun");
 		}
 	}
 

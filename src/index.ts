@@ -1,9 +1,7 @@
 import { Simulation } from "./classes/Simulation.js";
-import { Visualiser } from "./classes/Visualiser.js";
 import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
 import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
-import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 
 import { Emitter } from "./classes/Emitter.js";
 
@@ -25,14 +23,7 @@ const carSpawnPoint: Coordinate = [Math.floor(5 / 2 * tileSize), Math.floor(5 / 
 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution, carSpawnPoint);
 const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
-// const Vis = new Visualiser("canvas", Sim);
-// const FancyVis = new FancyVisualiser("canvas", Sim);
 Sim.init();
-// Vis.init();
-// Car.toggleManual();
-
-let fancy = false;
-let manualTerminate = false;
 
 const emi = new Emitter().emitter;
 emi.on("terminateRun", () => {
@@ -41,14 +32,7 @@ emi.on("terminateRun", () => {
 	Car.reset();
 })
 
-if (typeof window !== "undefined") {
-	addEventListener("terminateRun", () => {
-		Sim.init();
-		Car.reset();
-	});
-}
-
-let AI: any = {}
+let AI: any = {};
 
 function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
 	AI = a;
@@ -58,8 +42,6 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 		while (true) {
 			Car.update(Sim.tiles);
-			// if (fancy) FancyVis.update(Car);
-			// else Vis.update(Car);
 
 			Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
 			Car.stats.survivalTime += 1;
@@ -69,38 +51,13 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
 			const minumumSpeed = 0.001;
-			if (Car.stats.timesHit > 0 || manualTerminate) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-				manualTerminate = false;
-			} else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+			if (Car.stats.timesHit > 0) break;
+			else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
+				break;
 			}
 		}
 
-		const render = () => {
-			Car.update(Sim.tiles);
-			// if (fancy) FancyVis.update(Car);
-			// else Vis.update(Car);
-
-			Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
-			Car.stats.survivalTime += 1;
-
-			const response = a.activate(Car.getDistances(Sim.tiles))
-
-			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
-
-			const minumumSpeed = 0.001;
-			if (Car.stats.timesHit > 0 || manualTerminate) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-				manualTerminate = false;
-			} else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
-			} else {
-				requestAnimationFrame(render);
-			}
-		}
-
-		render();
+		resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
 	});
 }
 
@@ -133,24 +90,3 @@ const neat = new NEAT(config);
 console.log("Starting...");
 
 neat.run();
-
-const eventListeners = {
-	"p": () => {
-		console.log("Starting...");
-		neat.run();
-	},
-	"g": () => {
-		console.log(JSON.stringify(AI))
-		console.log(`Node: ${AI?.nodes?.length}`)
-	},
-	"f": () => fancy = !fancy,
-	"t": () => manualTerminate = true,
-}
-
-if (typeof window !== "undefined") {
-	for (const [key, value] of Object.entries(eventListeners)) {
-		addEventListener("keypress", (e) => {
-			if (e.key === key) value();
-		})
-	}
-}
