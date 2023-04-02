@@ -54,6 +54,9 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 			if (Car.stats.timesHit > 0) break;
 			else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
 				break;
+			} else if (Car.stats.tilesDriven >= 256) {
+				console.log("Car has passed the vibe check")
+				break;
 			}
 		}
 
