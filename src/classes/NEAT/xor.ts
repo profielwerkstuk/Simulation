@@ -39,7 +39,7 @@ let config = {
 		in: 2,
 		hidden: 0,
 		out: 1,
-		activationFunction: ActivationFunctions.RELU
+		activationFunction: ActivationFunctions.STEP
 	},
 	mutationRate: {
 		addNodeMR: 0.005,

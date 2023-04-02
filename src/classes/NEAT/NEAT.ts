@@ -105,7 +105,8 @@ export class NEAT {
 			this.mutate();
 			this.epoch++;
 
-			// console.log("Average fitness this generation: " + fitness.reduce((a, b) => a + b.fitness, 0) / fitness.length);
+			const averageFitness = fitness.reduce((a, b) => a + b.fitness, 0) / fitness.length;
+			console.log(`Average fitness: ${averageFitness}`);
 		}
 
 		return
