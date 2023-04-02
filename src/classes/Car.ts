@@ -92,6 +92,7 @@ export class Car {
 		let yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
+			this.stats.tilesChecked++;
 			const emi = new Emitter().emitter;
 			emi.emit("generateTile");
 		}
