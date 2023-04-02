@@ -49,6 +49,7 @@ export class Car {
 		survivalTime: 1,
 		distanceTravelled: 1,
 		timesHit: 0,
+		tileEntryTime: 1
 	}
 
 	tiles: Tile[] = []
@@ -98,6 +99,7 @@ export class Car {
 			survivalTime: 1,
 			distanceTravelled: 1,
 			timesHit: 0,
+			tileEntryTime: 1
 		}
 		else this.stats.timesHit++;
 	}
@@ -113,6 +115,7 @@ export class Car {
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
 			this.stats.tilesTravelled++;
+			this.stats.tileEntryTime = this.stats.survivalTime;
 			const event = new CustomEvent("generateTile");
 			dispatchEvent(event);
 		}

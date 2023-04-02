@@ -64,6 +64,8 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 				manualTerminate = false;
 			} else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
 				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
+				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
 			} else {
 				requestAnimationFrame(render);
 			}
