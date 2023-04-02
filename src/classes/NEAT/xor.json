@@ -1,0 +1,1686 @@
+{
+  "nodes": [
+    {
+      "_type": "INPUT",
+      "value": 1,
+      "innovation": 0,
+      "id": "26d4a84b-8e70232c",
+      "replacedConnection": {},
+      "active": true,
+      "inputCount": 0,
+      "inputTimes": 0
+    },
+    {
+      "_type": "INPUT",
+      "value": 1,
+      "innovation": 1,
+      "id": "8ea9ad82-14598538",
+      "replacedConnection": {},
+      "active": true,
+      "inputCount": 0,
+      "inputTimes": 0
+    },
+    {
+      "_type": "OUTPUT",
+      "value": 0,
+      "innovation": 2,
+      "id": "f3dd29be-f6353cf5",
+      "replacedConnection": {},
+      "active": true,
+      "inputCount": 6,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0.05105431385829862,
+      "innovation": 3,
+      "id": "4181a254-f3b6f69a",
+      "replacedConnection": {
+        "input": {
+          "_type": "INPUT",
+          "value": 1,
+          "innovation": 0,
+          "id": "05f33bc7-9e045b99",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 0,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "OUTPUT",
+          "value": 0.38204345013515784,
+          "innovation": 2,
+          "id": "faa2419d-d5e116c9",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 2,
+          "inputTimes": 1
+        },
+        "innovation": 1,
+        "weight": -0.1858092439682193,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 3,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0,
+      "innovation": 4,
+      "id": "3073720c-f2a948d5",
+      "replacedConnection": {
+        "input": {
+          "_type": "INPUT",
+          "value": 1,
+          "innovation": 1,
+          "id": "250847d1-86e7f2f9",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 0,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "OUTPUT",
+          "value": 0,
+          "innovation": 2,
+          "id": "32319e26-c386ecd7",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 2,
+          "inputTimes": 1
+        },
+        "innovation": 2,
+        "weight": 0.3510885860438626,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 3,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0,
+      "innovation": 5,
+      "id": "d72f8b2f-0d55f49a",
+      "replacedConnection": {
+        "input": {
+          "_type": "INPUT",
+          "value": 1,
+          "innovation": 0,
+          "id": "e0ca6d7a-e057b0fb",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 0,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "HIDDEN",
+          "value": 1.5905659927650957,
+          "innovation": 3,
+          "id": "a7e43162-9349706c",
+          "replacedConnection": {
+            "input": {
+              "_type": "INPUT",
+              "value": 1,
+              "innovation": 0,
+              "id": "05f33bc7-9e045b99",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 0,
+              "inputTimes": 0
+            },
+            "output": {
+              "_type": "OUTPUT",
+              "value": 0.38204345013515784,
+              "innovation": 2,
+              "id": "faa2419d-d5e116c9",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 2,
+              "inputTimes": 1
+            },
+            "innovation": 1,
+            "weight": -0.1858092439682193,
+            "active": false
+          },
+          "active": true,
+          "inputCount": 3,
+          "inputTimes": 2
+        },
+        "innovation": 3,
+        "weight": 0.4352594699199521,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 2,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0.021463475780591604,
+      "innovation": 6,
+      "id": "a6f12c98-b69a987c",
+      "replacedConnection": {
+        "input": {
+          "_type": "HIDDEN",
+          "value": 0,
+          "innovation": 3,
+          "id": "935156d5-178d9394",
+          "replacedConnection": {
+            "input": {
+              "_type": "INPUT",
+              "value": 1,
+              "innovation": 0,
+              "id": "4591a8a5-6eeedae2",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 0,
+              "inputTimes": 0
+            },
+            "output": {
+              "_type": "OUTPUT",
+              "value": 0,
+              "innovation": 2,
+              "id": "8b46e5c5-b110a7cf",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 2,
+              "inputTimes": 1
+            },
+            "innovation": 1,
+            "weight": -0.2770152754548332,
+            "active": false
+          },
+          "active": true,
+          "inputCount": 1,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "OUTPUT",
+          "value": 0.640294633316282,
+          "innovation": 2,
+          "id": "c78194b0-eb0351db",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 3,
+          "inputTimes": 2
+        },
+        "innovation": 4,
+        "weight": 0.591288042766192,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 1,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0,
+      "innovation": 7,
+      "id": "142af290-bf13df44",
+      "replacedConnection": {
+        "input": {
+          "_type": "HIDDEN",
+          "value": 0.05909255797118984,
+          "innovation": 4,
+          "id": "7af9ad0a-335b4491",
+          "replacedConnection": {
+            "input": {
+              "_type": "INPUT",
+              "value": 1,
+              "innovation": 1,
+              "id": "250847d1-86e7f2f9",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 0,
+              "inputTimes": 0
+            },
+            "output": {
+              "_type": "OUTPUT",
+              "value": 0,
+              "innovation": 2,
+              "id": "32319e26-c386ecd7",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 2,
+              "inputTimes": 1
+            },
+            "innovation": 2,
+            "weight": 0.3510885860438626,
+            "active": false
+          },
+          "active": true,
+          "inputCount": 2,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "OUTPUT",
+          "value": -0.8002028920047195,
+          "innovation": 2,
+          "id": "a1c623b0-d677a57c",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 3,
+          "inputTimes": 2
+        },
+        "innovation": 6,
+        "weight": 0.33915609787094025,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 1,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0.3633730658043728,
+      "innovation": 8,
+      "id": "e6b587d6-b0266a43",
+      "replacedConnection": {
+        "input": {
+          "_type": "INPUT",
+          "value": 1,
+          "innovation": 1,
+          "id": "4047f2e2-c8310be2",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 0,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "HIDDEN",
+          "value": 0.34680138722505355,
+          "innovation": 4,
+          "id": "53e77280-0ac2d97a",
+          "replacedConnection": {
+            "input": {
+              "_type": "INPUT",
+              "value": 1,
+              "innovation": 1,
+              "id": "0e8cc675-87501eb1",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 0,
+              "inputTimes": 0
+            },
+            "output": {
+              "_type": "OUTPUT",
+              "value": 0.7661332879167498,
+              "innovation": 2,
+              "id": "559b6f58-917090e8",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 4,
+              "inputTimes": 3
+            },
+            "innovation": 2,
+            "weight": -0.8100943965348169,
+            "active": false
+          },
+          "active": true,
+          "inputCount": 2,
+          "inputTimes": 1
+        },
+        "innovation": 5,
+        "weight": 0.9696004440420118,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 1,
+      "inputTimes": 0
+    },
+    {
+      "_type": "HIDDEN",
+      "value": 0.3184288571842919,
+      "innovation": 9,
+      "id": "4226a52d-06ac71c2",
+      "replacedConnection": {
+        "input": {
+          "_type": "INPUT",
+          "value": 1,
+          "innovation": 0,
+          "id": "60142c32-434b4eb8",
+          "replacedConnection": {},
+          "active": true,
+          "inputCount": 0,
+          "inputTimes": 0
+        },
+        "output": {
+          "_type": "HIDDEN",
+          "value": 0,
+          "innovation": 5,
+          "id": "3094178f-fe0bece9",
+          "replacedConnection": {
+            "input": {
+              "_type": "INPUT",
+              "value": 1,
+              "innovation": 0,
+              "id": "31f7bf81-a825ada8",
+              "replacedConnection": {},
+              "active": true,
+              "inputCount": 0,
+              "inputTimes": 0
+            },
+            "output": {
+              "_type": "HIDDEN",
+              "value": 0.07736976931664233,
+              "innovation": 3,
+              "id": "8a6cd268-d14aa6ca",
+              "replacedConnection": {
+                "input": {
+                  "_type": "INPUT",
+                  "value": 1,
+                  "innovation": 0,
+                  "id": "5eaa23ac-7ec10aa0",
+                  "replacedConnection": {},
+                  "active": true,
+                  "inputCount": 0,
+                  "inputTimes": 0
+                },
+                "output": {
+                  "_type": "OUTPUT",
+                  "value": 0,
+                  "innovation": 2,
+                  "id": "4a380618-ae5d8a1b",
+                  "replacedConnection": {},
+                  "active": true,
+                  "inputCount": 2,
+                  "inputTimes": 1
+                },
+                "innovation": 1,
+                "weight": -0.09307491240179733,
+                "active": false
+              },
+              "active": true,
+              "inputCount": 2,
+              "inputTimes": 1
+            },
+            "innovation": 3,
+            "weight": -0.6407262875929889,
+            "active": false
+          },
+          "active": true,
+          "inputCount": 2,
+          "inputTimes": 1
+        },
+        "innovation": 7,
+        "weight": 0.615673166453111,
+        "active": false
+      },
+      "active": true,
+      "inputCount": 1,
+      "inputTimes": 0
+    }
+  ],
+  "connections": [
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 0,
+        "id": "26d4a84b-8e70232c",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 1,
+      "weight": -0.9910462873089161,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 1,
+        "id": "8ea9ad82-14598538",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 2,
+      "weight": 0.715076739021903,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 0,
+        "id": "26d4a84b-8e70232c",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.05105431385829862,
+        "innovation": 3,
+        "id": "4181a254-f3b6f69a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "05f33bc7-9e045b99",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.38204345013515784,
+            "innovation": 2,
+            "id": "faa2419d-d5e116c9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 1,
+          "weight": -0.1858092439682193,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 3,
+      "weight": 0.7629529705944451,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0.05105431385829862,
+        "innovation": 3,
+        "id": "4181a254-f3b6f69a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "05f33bc7-9e045b99",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.38204345013515784,
+            "innovation": 2,
+            "id": "faa2419d-d5e116c9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 1,
+          "weight": -0.1858092439682193,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 4,
+      "weight": 0.648012134263209,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 1,
+        "id": "8ea9ad82-14598538",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 4,
+        "id": "3073720c-f2a948d5",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "250847d1-86e7f2f9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0,
+            "innovation": 2,
+            "id": "32319e26-c386ecd7",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 2,
+          "weight": 0.3510885860438626,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 5,
+      "weight": -0.9223542257097739,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 4,
+        "id": "3073720c-f2a948d5",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "250847d1-86e7f2f9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0,
+            "innovation": 2,
+            "id": "32319e26-c386ecd7",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 2,
+          "weight": 0.3510885860438626,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 6,
+      "weight": 0.8817648611752351,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 0,
+        "id": "26d4a84b-8e70232c",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 5,
+        "id": "d72f8b2f-0d55f49a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "e0ca6d7a-e057b0fb",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 1.5905659927650957,
+            "innovation": 3,
+            "id": "a7e43162-9349706c",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "05f33bc7-9e045b99",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0.38204345013515784,
+                "innovation": 2,
+                "id": "faa2419d-d5e116c9",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 1,
+              "weight": -0.1858092439682193,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 3,
+          "weight": 0.4352594699199521,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 2,
+        "inputTimes": 0
+      },
+      "innovation": 7,
+      "weight": -0.9983304475388302,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 5,
+        "id": "d72f8b2f-0d55f49a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "e0ca6d7a-e057b0fb",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 1.5905659927650957,
+            "innovation": 3,
+            "id": "a7e43162-9349706c",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "05f33bc7-9e045b99",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0.38204345013515784,
+                "innovation": 2,
+                "id": "faa2419d-d5e116c9",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 1,
+              "weight": -0.1858092439682193,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 3,
+          "weight": 0.4352594699199521,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 2,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.05105431385829862,
+        "innovation": 3,
+        "id": "4181a254-f3b6f69a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "05f33bc7-9e045b99",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.38204345013515784,
+            "innovation": 2,
+            "id": "faa2419d-d5e116c9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 1,
+          "weight": -0.1858092439682193,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 8,
+      "weight": -0.22079534313015392,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0.05105431385829862,
+        "innovation": 3,
+        "id": "4181a254-f3b6f69a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "05f33bc7-9e045b99",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.38204345013515784,
+            "innovation": 2,
+            "id": "faa2419d-d5e116c9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 1,
+          "weight": -0.1858092439682193,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.021463475780591604,
+        "innovation": 6,
+        "id": "a6f12c98-b69a987c",
+        "replacedConnection": {
+          "input": {
+            "_type": "HIDDEN",
+            "value": 0,
+            "innovation": 3,
+            "id": "935156d5-178d9394",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "4591a8a5-6eeedae2",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0,
+                "innovation": 2,
+                "id": "8b46e5c5-b110a7cf",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 1,
+              "weight": -0.2770152754548332,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 1,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.640294633316282,
+            "innovation": 2,
+            "id": "c78194b0-eb0351db",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 4,
+          "weight": 0.591288042766192,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "innovation": 9,
+      "weight": 0.42040474464437105,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0.021463475780591604,
+        "innovation": 6,
+        "id": "a6f12c98-b69a987c",
+        "replacedConnection": {
+          "input": {
+            "_type": "HIDDEN",
+            "value": 0,
+            "innovation": 3,
+            "id": "935156d5-178d9394",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "4591a8a5-6eeedae2",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0,
+                "innovation": 2,
+                "id": "8b46e5c5-b110a7cf",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 1,
+              "weight": -0.2770152754548332,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 1,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.640294633316282,
+            "innovation": 2,
+            "id": "c78194b0-eb0351db",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 4,
+          "weight": 0.591288042766192,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 10,
+      "weight": 0.8041706850661918,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 1,
+        "id": "8ea9ad82-14598538",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.05105431385829862,
+        "innovation": 3,
+        "id": "4181a254-f3b6f69a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "05f33bc7-9e045b99",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0.38204345013515784,
+            "innovation": 2,
+            "id": "faa2419d-d5e116c9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 1,
+          "weight": -0.1858092439682193,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 11,
+      "weight": -0.7118986567361465,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 4,
+        "id": "3073720c-f2a948d5",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "250847d1-86e7f2f9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0,
+            "innovation": 2,
+            "id": "32319e26-c386ecd7",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 2,
+          "weight": 0.3510885860438626,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 7,
+        "id": "142af290-bf13df44",
+        "replacedConnection": {
+          "input": {
+            "_type": "HIDDEN",
+            "value": 0.05909255797118984,
+            "innovation": 4,
+            "id": "7af9ad0a-335b4491",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 1,
+                "id": "250847d1-86e7f2f9",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0,
+                "innovation": 2,
+                "id": "32319e26-c386ecd7",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 2,
+              "weight": 0.3510885860438626,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": -0.8002028920047195,
+            "innovation": 2,
+            "id": "a1c623b0-d677a57c",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 6,
+          "weight": 0.33915609787094025,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "innovation": 12,
+      "weight": 0.6660573954900748,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 7,
+        "id": "142af290-bf13df44",
+        "replacedConnection": {
+          "input": {
+            "_type": "HIDDEN",
+            "value": 0.05909255797118984,
+            "innovation": 4,
+            "id": "7af9ad0a-335b4491",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 1,
+                "id": "250847d1-86e7f2f9",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0,
+                "innovation": 2,
+                "id": "32319e26-c386ecd7",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 2,
+              "weight": 0.3510885860438626,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": -0.8002028920047195,
+            "innovation": 2,
+            "id": "a1c623b0-d677a57c",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 6,
+          "weight": 0.33915609787094025,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "OUTPUT",
+        "value": 0,
+        "innovation": 2,
+        "id": "f3dd29be-f6353cf5",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 6,
+        "inputTimes": 0
+      },
+      "innovation": 13,
+      "weight": 0.9400043128842817,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 1,
+        "id": "8ea9ad82-14598538",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.3633730658043728,
+        "innovation": 8,
+        "id": "e6b587d6-b0266a43",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "4047f2e2-c8310be2",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 0.34680138722505355,
+            "innovation": 4,
+            "id": "53e77280-0ac2d97a",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 1,
+                "id": "0e8cc675-87501eb1",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0.7661332879167498,
+                "innovation": 2,
+                "id": "559b6f58-917090e8",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 4,
+                "inputTimes": 3
+              },
+              "innovation": 2,
+              "weight": -0.8100943965348169,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 5,
+          "weight": 0.9696004440420118,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "innovation": 14,
+      "weight": 0.3633730658043728,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0.3633730658043728,
+        "innovation": 8,
+        "id": "e6b587d6-b0266a43",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "4047f2e2-c8310be2",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 0.34680138722505355,
+            "innovation": 4,
+            "id": "53e77280-0ac2d97a",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 1,
+                "id": "0e8cc675-87501eb1",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0.7661332879167498,
+                "innovation": 2,
+                "id": "559b6f58-917090e8",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 4,
+                "inputTimes": 3
+              },
+              "innovation": 2,
+              "weight": -0.8100943965348169,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 5,
+          "weight": 0.9696004440420118,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 4,
+        "id": "3073720c-f2a948d5",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "250847d1-86e7f2f9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0,
+            "innovation": 2,
+            "id": "32319e26-c386ecd7",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 2,
+          "weight": 0.3510885860438626,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 15,
+      "weight": -0.9318718912980373,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 0,
+        "id": "26d4a84b-8e70232c",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 4,
+        "id": "3073720c-f2a948d5",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 1,
+            "id": "250847d1-86e7f2f9",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "OUTPUT",
+            "value": 0,
+            "innovation": 2,
+            "id": "32319e26-c386ecd7",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 2,
+          "weight": 0.3510885860438626,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 3,
+        "inputTimes": 0
+      },
+      "innovation": 16,
+      "weight": 0.695676696796804,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "INPUT",
+        "value": 1,
+        "innovation": 0,
+        "id": "26d4a84b-8e70232c",
+        "replacedConnection": {},
+        "active": true,
+        "inputCount": 0,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0.3184288571842919,
+        "innovation": 9,
+        "id": "4226a52d-06ac71c2",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "60142c32-434b4eb8",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 0,
+            "innovation": 5,
+            "id": "3094178f-fe0bece9",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "31f7bf81-a825ada8",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "HIDDEN",
+                "value": 0.07736976931664233,
+                "innovation": 3,
+                "id": "8a6cd268-d14aa6ca",
+                "replacedConnection": {
+                  "input": {
+                    "_type": "INPUT",
+                    "value": 1,
+                    "innovation": 0,
+                    "id": "5eaa23ac-7ec10aa0",
+                    "replacedConnection": {},
+                    "active": true,
+                    "inputCount": 0,
+                    "inputTimes": 0
+                  },
+                  "output": {
+                    "_type": "OUTPUT",
+                    "value": 0,
+                    "innovation": 2,
+                    "id": "4a380618-ae5d8a1b",
+                    "replacedConnection": {},
+                    "active": true,
+                    "inputCount": 2,
+                    "inputTimes": 1
+                  },
+                  "innovation": 1,
+                  "weight": -0.09307491240179733,
+                  "active": false
+                },
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 3,
+              "weight": -0.6407262875929889,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 7,
+          "weight": 0.615673166453111,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "innovation": 17,
+      "weight": 0.3184288571842919,
+      "active": true
+    },
+    {
+      "input": {
+        "_type": "HIDDEN",
+        "value": 0.3184288571842919,
+        "innovation": 9,
+        "id": "4226a52d-06ac71c2",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "60142c32-434b4eb8",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 0,
+            "innovation": 5,
+            "id": "3094178f-fe0bece9",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "31f7bf81-a825ada8",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "HIDDEN",
+                "value": 0.07736976931664233,
+                "innovation": 3,
+                "id": "8a6cd268-d14aa6ca",
+                "replacedConnection": {
+                  "input": {
+                    "_type": "INPUT",
+                    "value": 1,
+                    "innovation": 0,
+                    "id": "5eaa23ac-7ec10aa0",
+                    "replacedConnection": {},
+                    "active": true,
+                    "inputCount": 0,
+                    "inputTimes": 0
+                  },
+                  "output": {
+                    "_type": "OUTPUT",
+                    "value": 0,
+                    "innovation": 2,
+                    "id": "4a380618-ae5d8a1b",
+                    "replacedConnection": {},
+                    "active": true,
+                    "inputCount": 2,
+                    "inputTimes": 1
+                  },
+                  "innovation": 1,
+                  "weight": -0.09307491240179733,
+                  "active": false
+                },
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 3,
+              "weight": -0.6407262875929889,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 2,
+            "inputTimes": 1
+          },
+          "innovation": 7,
+          "weight": 0.615673166453111,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 1,
+        "inputTimes": 0
+      },
+      "output": {
+        "_type": "HIDDEN",
+        "value": 0,
+        "innovation": 5,
+        "id": "d72f8b2f-0d55f49a",
+        "replacedConnection": {
+          "input": {
+            "_type": "INPUT",
+            "value": 1,
+            "innovation": 0,
+            "id": "e0ca6d7a-e057b0fb",
+            "replacedConnection": {},
+            "active": true,
+            "inputCount": 0,
+            "inputTimes": 0
+          },
+          "output": {
+            "_type": "HIDDEN",
+            "value": 1.5905659927650957,
+            "innovation": 3,
+            "id": "a7e43162-9349706c",
+            "replacedConnection": {
+              "input": {
+                "_type": "INPUT",
+                "value": 1,
+                "innovation": 0,
+                "id": "05f33bc7-9e045b99",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 0,
+                "inputTimes": 0
+              },
+              "output": {
+                "_type": "OUTPUT",
+                "value": 0.38204345013515784,
+                "innovation": 2,
+                "id": "faa2419d-d5e116c9",
+                "replacedConnection": {},
+                "active": true,
+                "inputCount": 2,
+                "inputTimes": 1
+              },
+              "innovation": 1,
+              "weight": -0.1858092439682193,
+              "active": false
+            },
+            "active": true,
+            "inputCount": 3,
+            "inputTimes": 2
+          },
+          "innovation": 3,
+          "weight": 0.4352594699199521,
+          "active": false
+        },
+        "active": true,
+        "inputCount": 2,
+        "inputTimes": 0
+      },
+      "innovation": 18,
+      "weight": -0.5679353125222724,
+      "active": true
+    }
+  ],
+  "fitness": 3.5253544534607086,
+  "activationFunction": "RELU"
+}
