@@ -4,19 +4,22 @@
 	"description": "",
 	"main": "dist/index.js",
 	"type": "module",
-	"scripts": {
-		"test": "vitest"
-	},
 	"keywords": [],
-	"author": "",
+	"contributors": [
+		{
+			"name": "Maurits Wilke"
+		},
+		{
+			"name": "Martijn Vriesman"
+		}
+	],
 	"license": "ISC",
 	"dependencies": {
 		"class-transformer": "^0.5.1",
-		"reflect-metadata": "^0.1.13",
-		"vitest": "^0.28.4"
+		"reflect-metadata": "^0.1.13"
 	},
 	"devDependencies": {
-		"@vitest/ui": "^0.28.4",
-		"vite": "^4.1.1"
+		"@types/node": "^18.15.11",
+		"typescript": "^5.0.3"
 	}
 }
