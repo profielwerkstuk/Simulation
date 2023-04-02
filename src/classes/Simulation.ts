@@ -13,8 +13,7 @@ export class Simulation {
 		public gridSize: [number, number],
 		public tileSize: number,
 		public roadWidth: number,
-		public roadCurveResolution: number,
-		public carSpawnPoint: Coordinate
+		public roadCurveResolution: number
 	) {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
 		const emi = new Emitter().emitter;
