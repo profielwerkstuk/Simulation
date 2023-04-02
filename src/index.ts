@@ -55,7 +55,8 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 			else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
 				break;
 			} else if (Car.stats.tilesDriven >= 256) {
-				console.log("Car has passed the vibe check")
+				console.log("Car has passed the vibe check");
+				console.log(Car.stats.distanceTravelled / Car.stats.survivalTime);
 				break;
 			}
 		}
@@ -86,10 +87,16 @@ let config = {
 		compatibilityThreshold: 1.5
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 200,
+	maxEpoch: 50,
 };
+
 
 const neat = new NEAT(config);
 console.log("Starting...");
 
 neat.run();
+
+process.on("exit", () => {
+	console.log("=== PASTE THIS AFTER CONFIG IN GOOGLE SHEETS ===");
+	console.log(JSON.stringify(config));
+})
