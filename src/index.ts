@@ -9,7 +9,7 @@ import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 
 // 🧪 Simulation
 
-const simulationSize: [number, number] = [5, 5] // width, height
+const simulationSize: [number, number] = [3, 3] // width, height
 const tileSize = 250;
 const roadWidth = Math.floor(2 / 7 * tileSize); // Flooring because using integers is just faster for calculations and difference is neglegable 
 const roadCurveResolution = 5; // Increase this to have smoother curves, results in more calculations
@@ -18,10 +18,10 @@ const roadCurveResolution = 5; // Increase this to have smoother curves, results
 const carWidth = Math.floor(1 / 8 * tileSize);
 const carHeight = carWidth * 2; // Car size, multiplying to ensure integer
 const carViewingDistance = Math.floor(1 / 4 * tileSize)
-const carSpawnPoint: Coordinate = [Math.floor(5 / 2 * tileSize), Math.floor(5 / 2 * tileSize)];
+const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 2 * tileSize)];
 
 
-const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution, carSpawnPoint);
+const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution);
 const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
 const Vis = new Visualiser("canvas", Sim);
 const FancyVis = new FancyVisualiser("canvas", Sim);

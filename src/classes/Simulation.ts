@@ -12,13 +12,12 @@ export class Simulation {
 		public gridSize: [number, number],
 		public tileSize: number,
 		public roadWidth: number,
-		public roadCurveResolution: number,
-		public carSpawnPoint: Coordinate
+		public roadCurveResolution: number
 	) {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
 
 		addEventListener("generateTile", () => {
-			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.carSpawnPoint);
+			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize);
 			const nextTile = this.roadGenerator.createTile(...generatedTile);
 			this.tiles.push(nextTile);
 
