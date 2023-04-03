@@ -52,7 +52,7 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 			const minumumSpeed = 0.001;
 			if (Car.stats.timesHit > 0) break;
-			else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
+			else if (Car.stats.survivalTime > 50 && Car.power < minumumSpeed) {
 				break;
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
 				break;
