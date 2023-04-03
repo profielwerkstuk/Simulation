@@ -25,10 +25,11 @@ export class Car {
 	}
 
 	stats = {
-		tilesDriven: 1,
+		tilesTravelled: 1,
 		survivalTime: 1,
 		distanceTravelled: 1,
 		timesHit: 0,
+		tileEntryTime: 1
 	}
 
 	tiles: Tile[] = []
@@ -74,10 +75,11 @@ export class Car {
 		}
 
 		if (full) this.stats = {
-			tilesDriven: 1,
+			tilesTravelled: 1,
 			survivalTime: 1,
 			distanceTravelled: 1,
 			timesHit: 0,
+			tileEntryTime: 1
 		}
 		else this.stats.timesHit++;
 	}
@@ -92,7 +94,8 @@ export class Car {
 		let yCoord = this.coordinates[1];
 
 		if ((this.gridCoords[0] !== Math.floor(xCoord / this.tileSize) || this.gridCoords[1] !== Math.floor(yCoord / this.tileSize))) {
-			this.stats.tilesDriven++;
+			this.stats.tilesTravelled++;
+			this.stats.tileEntryTime = this.stats.survivalTime;
 			const emi = new Emitter().emitter;
 			emi.emit("generateTile");
 		}
