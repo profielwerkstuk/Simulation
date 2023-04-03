@@ -2,6 +2,7 @@ import { Simulation } from "./classes/Simulation.js";
 import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
 import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
+// import { Visualiser } from "./classes/Visualiser.js";
 
 import { Emitter } from "./classes/Emitter.js";
 
@@ -23,6 +24,7 @@ const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 
 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution);
 const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
+// const Vis = new Visualiser(Sim);
 Sim.init();
 
 const emi = new Emitter().emitter;
@@ -34,7 +36,7 @@ emi.on("terminateRun", () => {
 
 let AI: any = {};
 
-function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
+function fitnessFunction(a: { activate: (arg0: number[]) => any }, epoch: number): Promise<number> {
 	AI = a;
 	return new Promise((resolve) => {
 		Car.reset(true);
@@ -42,6 +44,7 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 		while (true) {
 			Car.update(Sim.tiles);
+			// Vis.update(Car, epoch);
 
 			Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
 			Car.stats.survivalTime += 1;
