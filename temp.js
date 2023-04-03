@@ -13,7 +13,7 @@ if (dataFiles.length !== 25) throw new Error("❌ There aren't exactly 25 runs!"
 for (const fileName of dataFiles) {
 	const file = readFileSync(`./data/${fileName}`, "utf-8");
 	const data = file.split("\r\n").slice(1, -1); // Remove headers and empty bottom line
-	if (data.length !== 25) throw new Error("❌ Run doesn't have 25 epochs");
+	if (data.length !== 30) throw new Error("❌ Run doesn't have 30 epochs");
 
 	data.forEach(line => {
 		const [epoch, fitness] = line.split("\t").map(Number);

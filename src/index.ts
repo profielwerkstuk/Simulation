@@ -92,7 +92,7 @@ let config = {
 		compatibilityThreshold: 1.5
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 50,
+	maxEpoch: 30,
 };
 
 
