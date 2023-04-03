@@ -88,7 +88,7 @@ export class NEAT {
 	async run(): Promise<Genome[] | undefined> {
 		let fitness: Genome[] = [];
 		while (this.config.maxEpoch > this.epoch) {
-			console.log(`[${Date.now().toTimeString().slice(0, 8)}] Epoch: ` + this.epoch);
+			console.log(`[${new Date().toLocaleTimeString().slice(0, 8)}] Epoch: ` + this.epoch);
 			fitness = [];
 			let genomes: Genome[] = [];
 			for (let i = 0; i < this.species.length; i++) {
