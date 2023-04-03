@@ -1,6 +1,6 @@
 // * Nifty commands to use
 // Runs 25 times for you and calculates the averages so you can grab a drink
-// 1..25 | % { node dist/classes/NEAT/xor.js } ; node temp.js
+// 1..25 | % { node . } ; node temp.js
 
 import { writeFileSync, readdirSync, readFileSync } from "fs";
 
