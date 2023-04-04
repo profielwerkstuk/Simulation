@@ -8,3 +8,5 @@ for (const fileName of files) {
 		unlinkSync(`./data/${fileName}`)
 	}
 }
+
+console.log(files.length);
