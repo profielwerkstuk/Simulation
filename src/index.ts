@@ -36,11 +36,13 @@ emi.on("terminateRun", () => {
 
 let AI: any = {};
 
-function fitnessFunction(a: { activate: (arg0: number[]) => any }, epoch: number): Promise<number> {
+function fitnessFunction(a: { activate: (arg0: number[]) => any }, epoch: number): Promise<[number, number]> {
 	AI = a;
 	return new Promise((resolve) => {
 		Car.reset(true);
 		Sim.reset();
+
+		let passed = 0;
 
 		while (true) {
 			Car.update(Sim.tiles);
@@ -62,11 +64,12 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any }, epoch: number
 			} else if (Car.stats.tilesTravelled >= 256) {
 				console.log("Car has passed the vibe check");
 				console.log(Car.stats.distanceTravelled / Car.stats.survivalTime);
+				passed = 1;
 				break;
 			}
 		}
 
-		resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+		resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, passed]);
 	});
 }
 
@@ -76,7 +79,7 @@ let config = {
 		in: 5,
 		hidden: 0,
 		out: 4,
-		activationFunction: ActivationFunctions.RELU
+		activationFunction: ActivationFunctions.SIGMOID
 	},
 	mutationRate: {
 		addNodeMR: 0.7,
