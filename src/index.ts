@@ -79,7 +79,7 @@ let config = {
 		in: 5,
 		hidden: 0,
 		out: 4,
-		activationFunction: ActivationFunctions.SIGMOID
+		activationFunction: ActivationFunctions.RELU
 	},
 	mutationRate: {
 		addNodeMR: 0.7,
