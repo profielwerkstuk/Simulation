@@ -29,7 +29,7 @@ export class Car {
 	private manualDrive = false;
 
 	public angle = Math.PI; // Angle in rad
-	private power = 0;
+	public power = 0;
 	private reverse = 0;
 
 	private state = {
@@ -44,7 +44,7 @@ export class Car {
 		angular: 0
 	}
 
-	stats = {
+	public stats = {
 		tilesTravelled: 1,
 		survivalTime: 1,
 		distanceTravelled: 1,

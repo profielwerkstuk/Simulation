@@ -88,15 +88,18 @@ export class NEAT {
 	async run(): Promise<Genome[] | undefined> {
 		let fitness: Genome[] = [];
 		while (this.config.maxEpoch > this.epoch) {
-			console.log("Epoch: " + this.epoch);
+			console.log(`[${new Date().toLocaleTimeString().slice(0, 8)}] Epoch: ` + this.epoch);
 			fitness = [];
+			let amountPassed = 0;
 			let genomes: Genome[] = [];
 			for (let i = 0; i < this.species.length; i++) {
 				genomes = genomes.concat(this.species[i].genomes);
 			}
 
 			for (let i = 0; i < genomes.length; i++) {
-				genomes[i].fitness = Math.max(await this.config.fitnessFunction(genomes[i]), 0.00001);
+				const [genomeFitness, didPass] = await this.config.fitnessFunction(genomes[i], this.epoch);
+				genomes[i].fitness = Math.max(genomeFitness, 0.00001);
+				amountPassed += didPass;
 				fitness.push(genomes[i]);
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
@@ -113,7 +116,7 @@ export class NEAT {
 			console.log(`Average fitness: ${averageFitness}`);
 
 			// ! This line is purely for data collection
-			// appendFileSync(logFile, `${this.epoch}\t${averageFitness}\r\n`);
+			// appendFileSync(logFile, `${this.epoch}\t${amountPassed}\r\n`);
 		}
 
 		return
@@ -122,19 +125,19 @@ export class NEAT {
 
 
 // ! Code purely for data collection
-// function initLog() {
-// 	try {
-// 		readdirSync("./data");
-// 	} catch (e) {
-// 		mkdirSync("./data");
-// 	}
+function initLog() {
+	// try {
+	// 	readdirSync("./data");
+	// } catch (e) {
+	// 	mkdirSync("./data");
+	// }
 
-// 	try {
-// 		const fileName = `./data/${Date.now()}.mw`;
-// 		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
-// 		return fileName;
-// 	} catch (e) {
-// 		console.log(e);
-// 		throw new Error("Failed to create log file.");
-// 	}
-// }
+	// try {
+	// 	const fileName = `./data/${Date.now()}.mw`;
+	// 	writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
+	// 	return fileName;
+	// } catch (e) {
+	// 	console.log(e);
+	// 	throw new Error("Failed to create log file.");
+	// }
+}

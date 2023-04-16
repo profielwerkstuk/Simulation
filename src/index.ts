@@ -40,7 +40,7 @@ addEventListener("terminateRun", () => {
 
 let AI: any = {}
 
-function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<number> {
+function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<[number, number]> {
 	AI = a;
 	return new Promise((resolve) => {
 		Car.reset(true);
@@ -60,12 +60,12 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<num
 
 			const minumumSpeed = 0.001;
 			if (Car.stats.timesHit > 0 || manualTerminate) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 0]);
 				manualTerminate = false;
-			} else if (Car.stats.survivalTime > 50 && !(Car.velocity.x > minumumSpeed || Car.velocity.x < -minumumSpeed || Car.velocity.y > minumumSpeed || Car.velocity.y < -minumumSpeed)) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+			} else if (Car.stats.survivalTime > 50 && Car.power < minumumSpeed) {
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 0]);
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
-				resolve(Car.stats.distanceTravelled / Car.stats.survivalTime);
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 1]);
 			} else {
 				requestAnimationFrame(render);
 			}
@@ -81,19 +81,19 @@ let config = {
 		in: 5,
 		hidden: 0,
 		out: 4,
-		activationFunction: ActivationFunctions.RELU
+		activationFunction: ActivationFunctions.STEP
 	},
 	mutationRate: {
-		addNodeMR: 0.7,
+		addNodeMR: 0.8,
 		addConnectionMR: 0.4,
-		removeNodeMR: 0.00001,
-		removeConnectionMR: 0.001,
-		changeWeightMR: 0.2
+		removeNodeMR: 0.001,
+		removeConnectionMR: 0.00001,
+		changeWeightMR: 0.1
 	},
 	distanceConstants: {
-		c1: 2,
-		c2: 0.5,
-		c3: 1,
+		c1: 4,
+		c2: 2.5,
+		c3: 2,
 		compatibilityThreshold: 1.5
 	},
 	fitnessFunction: fitnessFunction,
