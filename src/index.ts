@@ -4,6 +4,8 @@ import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
 import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
 import { FancyVisualiser } from "./classes/FancyVisualiser.js";
+import { Genome } from "./classes/NEAT/Genome.js";
+import { MersenneTwister } from "./utils.js";
 
 // =============== ⚙ Settings =============== //
 
@@ -40,11 +42,12 @@ addEventListener("terminateRun", () => {
 
 let AI: any = {}
 
-function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<[number, number]> {
+function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: number, seed: number, loaded = false): Promise<[number, number]> {
 	AI = a;
 	return new Promise((resolve) => {
-		Car.reset(true);
 		Sim.reset();
+		Car.reset(true);
+		Sim.mersenneTwister = new MersenneTwister(seed);
 
 		const render = () => {
 			Car.update(Sim.tiles);
@@ -60,12 +63,16 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<[nu
 
 			const minumumSpeed = 0.001;
 			if (Car.stats.timesHit > 0 || manualTerminate) {
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 0]);
+				console.log("Terminated");
 				manualTerminate = false;
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 0]);
+			} else if (!loaded && Car.stats.survivalTime > 15_000) {
+				console.log("Lived too long", Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled);
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1]);
 			} else if (Car.stats.survivalTime > 50 && Car.power < minumumSpeed) {
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 0]);
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 0]);
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime, 1]);
+				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1]);
 			} else {
 				requestAnimationFrame(render);
 			}
@@ -76,7 +83,7 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }): Promise<[nu
 }
 
 let config = {
-	populationSize: 25,
+	populationSize: 100,
 	structure: {
 		in: 5,
 		hidden: 0,
@@ -97,7 +104,7 @@ let config = {
 		compatibilityThreshold: 1.5
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 9999,
+	maxEpoch: 9999999,
 };
 
 const neat = new NEAT(config);
@@ -107,12 +114,22 @@ const eventListeners = {
 		console.log("Starting...");
 		neat.run();
 	},
-	"g": () => {
-		console.log(JSON.stringify(AI))
-		console.log(`Node: ${AI?.nodes?.length}`)
-	},
 	"f": () => fancy = !fancy,
 	"t": () => manualTerminate = true,
+	"l": () => {
+		console.log("Loading...");
+		const bestGenomeDataLoaded = JSON.parse(localStorage.getItem("bestGenomeData") ?? "");
+		const loaded = new Genome(config.structure).import(bestGenomeDataLoaded, config.structure)
+		fitnessFunction(loaded, 0, Math.random() * 100_000, true).then((fitness) => {
+			console.log(fitness[0], Car.stats);
+		});
+	},
+	"s": () => {
+		console.log("Saving...");
+		const bestGenomeData = JSON.stringify(neat.best.genome.export())
+		console.log(bestGenomeData);
+		localStorage.setItem("bestGenomeData", bestGenomeData);
+	}
 }
 
 for (const [key, value] of Object.entries(eventListeners)) {

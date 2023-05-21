@@ -9,8 +9,21 @@ export class Connection {
 		private input: Node,
 		private output: Node,
 		public innovation: number,
-		public weight: number = (Math.random() * 2) - 1
+		public weight: number = (Math.random() * 2) - 1,
 	) { }
+
+	export() {
+		return {
+			inputNode: this.input.export(),
+			outputNode: this.output.export(),
+			weight: this.weight,
+			active: this.active,
+		};
+	}
+
+	static import(connection: Connection, inputNode: Node, outputNode: Node) {
+		return new Connection(inputNode, outputNode, connection.innovation, connection.weight);
+	}
 
 	randomiseWeight = () => this.weight = (Math.random() * 2) - 1;
 
@@ -32,9 +45,9 @@ export class Connection {
 
 		while (stack.length !== 0) {
 			let connection = stack.shift();
-			if (connection?.output.ID === node.ID) return true;
+			if (connection?.output.id === node.id) return true;
 			stack.push(
-				...genome.connections.filter(gene => gene.inputNode.ID === connection?.outputNode.ID)
+				...genome.connections.filter(gene => gene.inputNode.id === connection?.outputNode.id)
 			);
 		}
 
@@ -52,7 +65,7 @@ export class Connection {
 	static inputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.inputNode.ID === node.ID) result.push(connection);
+			if (connection.inputNode.id === node.id) result.push(connection);
 		});
 
 		return result;
@@ -61,7 +74,8 @@ export class Connection {
 	static outputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.outputNode.ID === node.ID) result.push(connection);
+			if (!connection.outputNode) console.log(connection);
+			if (connection.outputNode.id === node.id) result.push(connection);
 		});
 
 		return result;

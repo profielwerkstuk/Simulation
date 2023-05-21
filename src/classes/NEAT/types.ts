@@ -1,11 +1,10 @@
-import type { Connection } from "./Connection";
 import type { Genome } from "./Genome";
 import type { Node } from "./Neuron";
 import { ActivationFunctions as AFunctions } from "./ActivationFunctions.js";
 
 export type ActivationFunction = (input: number, alpha?: number) => number;
 export type ActivationFunctions = keyof typeof AFunctions;
-export type FitnessFunction = (input: Genome, epoch: number) => Promise<[number, number]>;
+export type FitnessFunction = (input: Genome, epoch: number, seed: number) => Promise<[number, number]>;
 
 export interface StructureConfig {
 	in: number;

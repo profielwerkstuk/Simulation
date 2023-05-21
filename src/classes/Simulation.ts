@@ -1,4 +1,4 @@
-import { generateTile } from "../utils.js";
+import { MersenneTwister, generateTile } from "../utils.js";
 import { RoadGenerator } from "./RoadGenerator.js";
 
 import type { Coordinate, Tile } from "../types";
@@ -7,6 +7,7 @@ import { getLineFormula, setWalls } from "../Mathamphetamine.js";
 export class Simulation {
 	public tiles: Tile[] = [];
 	private roadGenerator: RoadGenerator;
+	public mersenneTwister = new MersenneTwister(0);
 
 	constructor(
 		public gridSize: [number, number],
@@ -17,7 +18,7 @@ export class Simulation {
 		this.roadGenerator = new RoadGenerator(this.tileSize, this.roadCurveResolution, this.roadWidth);
 
 		addEventListener("generateTile", () => {
-			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize);
+			const generatedTile = generateTile(this.tiles[this.tiles.length - 1], this.tileSize, this.gridSize, this.mersenneTwister);
 			const nextTile = this.roadGenerator.createTile(...generatedTile);
 			this.tiles.push(nextTile);
 

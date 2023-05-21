@@ -55,8 +55,8 @@ export class Car {
 	tiles: Tile[] = []
 
 	// Default settings
-	private settings = {
-		maxPower: 0.030,
+	public settings = {
+		maxPower: 0.070,
 		maxReverse: 0.015,
 		powerFactor: 0.001,
 		reverseFactor: 0.0005,

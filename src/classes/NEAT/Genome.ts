@@ -26,13 +26,32 @@ export class Genome {
 		}
 	}
 
-	toJSON = () => {
+	export() {
 		return {
-			nodes: this.nodes,
-			connections: this.connections,
-			fitness: this.fitness,
-			activationFunction: this.activationFunction.name
-		}
+			nodes: this.nodes.map(node => node.export()),
+			connections: this.connections.map(connection => connection.export()),
+			fitness: this.fitness
+		};
+	}
+
+	import(data: Genome, config: StructureConfig) {
+		let genome = new Genome(config);
+		genome.nodes = data.nodes.map(node => Node.import(node));
+
+
+		genome.connections = data.connections.map(connection => {
+			// get node from genome.nodes where the property id === connection.inputNode.id
+			const inputNode = genome.nodes.find(node => node.id === connection.inputNode.id);
+			const outputNode = genome.nodes.find(node => node.id === connection.outputNode.id);
+
+			if (!inputNode || !outputNode) {
+				throw new Error('Invalid connection data');
+			}
+
+			return Connection.import(connection, inputNode, outputNode);
+		});
+
+		return genome;
 	}
 
 	get outputValues(): number[] {
@@ -203,7 +222,7 @@ export class Genome {
 		if (node.replacedConnection) {
 			node.nodeActivation = false;
 			for (let i = 0; i < this.connections.length; i++) {
-				if (this.connections[i].inputNode.ID === node.ID || this.connections[i].outputNode.ID === node.ID) this.connections[i].active = false;
+				if (this.connections[i].inputNode.id === node.id || this.connections[i].outputNode.id === node.id) this.connections[i].active = false;
 			}
 		}
 	}

@@ -17,6 +17,10 @@ export class NEAT {
 	connectionDB: Connection[] = [];
 	nodeDB: Node[] = [];
 	epoch: number = 0;
+	best = {
+		genome: new Genome({ in: 0, hidden: 0, out: 0, activationFunction: () => 0 }),
+		fitness: 0,
+	}
 
 	constructor(config: NEATConfig) {
 		this.config = config;
@@ -97,10 +101,27 @@ export class NEAT {
 			}
 
 			for (let i = 0; i < genomes.length; i++) {
-				const [genomeFitness, didPass] = await this.config.fitnessFunction(genomes[i], this.epoch);
+
+				const [genomeFitness, didPass] = await this.config.fitnessFunction(genomes[i], this.epoch, Math.random() * 100_000);
 				genomes[i].fitness = Math.max(genomeFitness, 0.00001);
 				amountPassed += didPass;
 				fitness.push(genomes[i]);
+
+				if (genomes[i].fitness > this.best.fitness) {
+					this.best.genome = genomes[i];
+					this.best.fitness = genomes[i].fitness;
+
+					if (window) {
+						const bestGenomeData = JSON.stringify(this.best.genome.export())
+						if (parseFloat((JSON.parse(localStorage.getItem("bestGenomeData")) ?? {"fitness": 0}).fitness) < this.best.fitness) localStorage.setItem("bestGenomeData", bestGenomeData);
+					} else {
+						const bestGenomeData = JSON.stringify(this.best.genome.export())
+						import("fs").then(fs => {
+							fs.writeFileSync("bestGenomeData.json", bestGenomeData);
+						});
+					}
+				}
+
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
 
