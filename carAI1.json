@@ -1,32 +1,32 @@
 {
   "nodes": [
-    { "type": "INPUT", "id": "45e51324-454c090b", "active": true },
-    { "type": "INPUT", "id": "e6188883-403797ef", "active": true },
-    { "type": "INPUT", "id": "e25b7dea-3f0644f6", "active": true },
-    { "type": "INPUT", "id": "a1b11044-1c3faff3", "active": true },
-    { "type": "INPUT", "id": "d8f7e679-c5fdb3ac", "active": true },
-    { "type": "OUTPUT", "id": "026c8930-015956a8", "active": true },
-    { "type": "OUTPUT", "id": "1f1073ec-f93fb803", "active": true },
-    { "type": "OUTPUT", "id": "12d1dbd4-c658af3d", "active": true },
-    { "type": "OUTPUT", "id": "3b48d30c-2e4b2457", "active": true },
-    { "type": "HIDDEN", "id": "be2852f2-ffb97aa3", "active": true },
-    { "type": "HIDDEN", "id": "50638c6d-7a2355e0", "active": true },
-    { "type": "HIDDEN", "id": "07781e4a-902e8a91", "active": true },
-    { "type": "HIDDEN", "id": "26e552bf-081efcf1", "active": true },
-    { "type": "HIDDEN", "id": "18015cca-86b4f8c1", "active": true },
-    { "type": "HIDDEN", "id": "8549f9af-9041038a", "active": true },
-    { "type": "HIDDEN", "id": "e75ab79f-848d211e", "active": true }
+    { "type": "INPUT", "id": "34ccdc63-b42338ea", "active": true },
+    { "type": "INPUT", "id": "90e5b124-1184198a", "active": true },
+    { "type": "INPUT", "id": "86f8417a-e2970668", "active": true },
+    { "type": "INPUT", "id": "6374cff7-06944e3c", "active": true },
+    { "type": "INPUT", "id": "18985853-c2d2710e", "active": true },
+    { "type": "OUTPUT", "id": "e4a74f03-682285ce", "active": true },
+    { "type": "OUTPUT", "id": "10584765-ce9434fb", "active": true },
+    { "type": "OUTPUT", "id": "8a82340d-cebb5c83", "active": true },
+    { "type": "OUTPUT", "id": "9284cab9-8451c62c", "active": true },
+    { "type": "HIDDEN", "id": "8ae7fe06-d0ebf106", "active": true },
+    { "type": "HIDDEN", "id": "47519b8e-1d444e12", "active": true },
+    { "type": "HIDDEN", "id": "01b09d60-45a81df4", "active": true },
+    { "type": "HIDDEN", "id": "1dfb7bd8-da9d2844", "active": true },
+    { "type": "HIDDEN", "id": "42b0e382-006fb460", "active": true },
+    { "type": "HIDDEN", "id": "6dc6d3d9-61c49084", "active": true },
+    { "type": "HIDDEN", "id": "35784697-16713e0e", "active": true }
   ],
   "connections": [
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "e6188883-403797ef",
+        "id": "90e5b124-1184198a",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "12d1dbd4-c658af3d",
+        "id": "8a82340d-cebb5c83",
         "active": true
       },
       "weight": -0.38263256869649176,
@@ -35,12 +35,12 @@
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "d8f7e679-c5fdb3ac",
+        "id": "18985853-c2d2710e",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "026c8930-015956a8",
+        "id": "e4a74f03-682285ce",
         "active": true
       },
       "weight": 0.6582503389022971,
@@ -49,12 +49,12 @@
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "d8f7e679-c5fdb3ac",
+        "id": "18985853-c2d2710e",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "be2852f2-ffb97aa3",
+        "id": "8ae7fe06-d0ebf106",
         "active": true
       },
       "weight": 0.5587021630456199,
@@ -63,26 +63,26 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "be2852f2-ffb97aa3",
+        "id": "8ae7fe06-d0ebf106",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "026c8930-015956a8",
+        "id": "e4a74f03-682285ce",
         "active": true
       },
-      "weight": 0.9080023291662336,
+      "weight": 0.6678324409698937,
       "active": true
     },
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "e25b7dea-3f0644f6",
+        "id": "86f8417a-e2970668",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "12d1dbd4-c658af3d",
+        "id": "8a82340d-cebb5c83",
         "active": true
       },
       "weight": -0.7756217392535016,
@@ -91,12 +91,12 @@
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "a1b11044-1c3faff3",
+        "id": "6374cff7-06944e3c",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "3b48d30c-2e4b2457",
+        "id": "9284cab9-8451c62c",
         "active": true
       },
       "weight": -0.9247849626901781,
@@ -105,12 +105,12 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "be2852f2-ffb97aa3",
+        "id": "8ae7fe06-d0ebf106",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "50638c6d-7a2355e0",
+        "id": "47519b8e-1d444e12",
         "active": true
       },
       "weight": -0.9646767231092435,
@@ -119,26 +119,26 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "50638c6d-7a2355e0",
+        "id": "47519b8e-1d444e12",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "026c8930-015956a8",
+        "id": "e4a74f03-682285ce",
         "active": true
       },
-      "weight": 0.22861612562830702,
-      "active": true
+      "weight": 0.34408773776377855,
+      "active": false
     },
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "d8f7e679-c5fdb3ac",
+        "id": "18985853-c2d2710e",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "07781e4a-902e8a91",
+        "id": "01b09d60-45a81df4",
         "active": true
       },
       "weight": -0.24404937621303935,
@@ -147,12 +147,12 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "07781e4a-902e8a91",
+        "id": "01b09d60-45a81df4",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "be2852f2-ffb97aa3",
+        "id": "8ae7fe06-d0ebf106",
         "active": true
       },
       "weight": 0.6184435370309127,
@@ -161,12 +161,12 @@
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "e25b7dea-3f0644f6",
+        "id": "86f8417a-e2970668",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "26e552bf-081efcf1",
+        "id": "1dfb7bd8-da9d2844",
         "active": true
       },
       "weight": 0.6954805371361816,
@@ -175,12 +175,12 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "26e552bf-081efcf1",
+        "id": "1dfb7bd8-da9d2844",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "12d1dbd4-c658af3d",
+        "id": "8a82340d-cebb5c83",
         "active": true
       },
       "weight": 0.9156126479429032,
@@ -189,26 +189,26 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "07781e4a-902e8a91",
+        "id": "01b09d60-45a81df4",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "18015cca-86b4f8c1",
+        "id": "42b0e382-006fb460",
         "active": true
       },
-      "weight": -0.06442756517894832,
+      "weight": 0.4072927826081161,
       "active": true
     },
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "18015cca-86b4f8c1",
+        "id": "42b0e382-006fb460",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "be2852f2-ffb97aa3",
+        "id": "8ae7fe06-d0ebf106",
         "active": true
       },
       "weight": -0.40606023010886805,
@@ -217,12 +217,12 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "50638c6d-7a2355e0",
+        "id": "47519b8e-1d444e12",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "8549f9af-9041038a",
+        "id": "6dc6d3d9-61c49084",
         "active": true
       },
       "weight": -0.24300278879242665,
@@ -231,26 +231,26 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "8549f9af-9041038a",
+        "id": "6dc6d3d9-61c49084",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "026c8930-015956a8",
+        "id": "e4a74f03-682285ce",
         "active": true
       },
-      "weight": 0.3810074697050174,
+      "weight": 0.7235296861914016,
       "active": true
     },
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "8549f9af-9041038a",
+        "id": "6dc6d3d9-61c49084",
         "active": true
       },
       "outputNode": {
         "type": "HIDDEN",
-        "id": "e75ab79f-848d211e",
+        "id": "35784697-16713e0e",
         "active": true
       },
       "weight": 0.8019348011965062,
@@ -259,31 +259,31 @@
     {
       "inputNode": {
         "type": "HIDDEN",
-        "id": "e75ab79f-848d211e",
+        "id": "35784697-16713e0e",
         "active": true
       },
       "outputNode": {
         "type": "OUTPUT",
-        "id": "026c8930-015956a8",
+        "id": "e4a74f03-682285ce",
         "active": true
       },
-      "weight": 0.969195304757132,
+      "weight": 0.1788718850079407,
       "active": true
     },
     {
       "inputNode": {
         "type": "INPUT",
-        "id": "45e51324-454c090b",
+        "id": "90e5b124-1184198a",
         "active": true
       },
       "outputNode": {
-        "type": "HIDDEN",
-        "id": "e75ab79f-848d211e",
+        "type": "OUTPUT",
+        "id": "9284cab9-8451c62c",
         "active": true
       },
-      "weight": 0.0861879031066719,
+      "weight": 0.3979196939420744,
       "active": true
     }
   ],
-  "fitness": 168.3133034240448
+  "fitness": 169.649260401482
 }
