@@ -45,8 +45,7 @@ export class Genome {
 			const outputNode = genome.nodes.find(node => node.id === connection.outputNode.id);
 
 			if (!inputNode || !outputNode) {
-				console.error('Invalid connection data');
-				return;
+				throw new Error('Invalid connection data');
 			}
 
 			return Connection.import(connection, inputNode, outputNode);

@@ -33,7 +33,7 @@ export class Node {
 			// inputTimes: this.inputTimes,
 		};
 	}
-	
+
 	static import(node: Node) {
 		return new Node(node.innovation, node.type, node.replacedConnection, node.id, node.value);
 	}

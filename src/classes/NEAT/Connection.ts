@@ -9,7 +9,7 @@ export class Connection {
 		private input: Node,
 		private output: Node,
 		public innovation: number,
-		public weight: number = (Math.random() * 2) - 1
+		public weight: number = (Math.random() * 2) - 1,
 	) { }
 
 	export() {
@@ -45,9 +45,9 @@ export class Connection {
 
 		while (stack.length !== 0) {
 			let connection = stack.shift();
-			if (connection?.output.ID === node.ID) return true;
+			if (connection?.output.id === node.id) return true;
 			stack.push(
-				...genome.connections.filter(gene => gene.inputNode.ID === connection?.outputNode.ID)
+				...genome.connections.filter(gene => gene.inputNode.id === connection?.outputNode.id)
 			);
 		}
 
@@ -65,7 +65,7 @@ export class Connection {
 	static inputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.inputNode.ID === node.ID) result.push(connection);
+			if (connection.inputNode.id === node.id) result.push(connection);
 		});
 
 		return result;
@@ -74,7 +74,8 @@ export class Connection {
 	static outputConnectionsOfirstNode(node: Node, connections: Connection[]): Connection[] {
 		let result: Connection[] = [];
 		connections.forEach(connection => {
-			if (connection.outputNode.ID === node.ID) result.push(connection);
+			if (!connection.outputNode) console.log(connection);
+			if (connection.outputNode.id === node.id) result.push(connection);
 		});
 
 		return result;

@@ -64,6 +64,9 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
 				console.log("Done");
 				break;
+			} else if (Car.stats.tilesTravelled > 256) {
+				console.log("Car is competent :D")
+				break;
 			}
 		}
 
@@ -72,7 +75,7 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 }
 
 let config = {
-	populationSize: 25,
+	populationSize: 100,
 	structure: {
 		in: 5,
 		hidden: 0,
