@@ -8,6 +8,7 @@
 		"outDir": "dist",
 		"noImplicitReturns": true,
 		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
 		"lib": [
 			"DOM"
 		]

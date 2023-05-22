@@ -1,8 +1,61 @@
+/** SERVER CODE */
+import { parentPort, workerData } from "worker_threads";
+
+// node . activationFunction=STEP addNodeMR=0.8 addConnectionMR=0.4 removeNodeMR=0.001 removeConnectionMR=0.00001 changeWeightMR=0.1 c1=4 c2=2.5 c3=2 compatibilityThreshold=1.5
+// /?activationFunction=STEP&addNodeMR=0.8&addConnectionMR=0.4&removeNodeMR=0.001&removeConnectionMR=0.00001&changeWeightMR=0.1&c1=4&c2=2.5&c3=2&compatibilityThreshold=1.5
+
+interface args {
+	activationFunction: keyof typeof ActivationFunctions,
+
+	addNodeMR: number,
+	addConnectionMR: number,
+	removeNodeMR: number,
+	removeConnectionMR: number,
+	changeWeightMR: number
+
+	c1: number,
+	c2: number,
+	c3: number,
+	compatibilityThreshold: number
+
+}
+
+const data = workerData || process.argv.slice(2)
+
+// @ts-ignore
+const ARGS = Object.fromEntries(data.map(v => v.split("="))) as args;
+
+let config = {
+	populationSize: 100,
+	structure: {
+		in: 5,
+		hidden: 0,
+		out: 4,
+		activationFunction: ActivationFunctions[ARGS.activationFunction]
+	},
+	mutationRate: {
+		addNodeMR: ARGS.addNodeMR,
+		addConnectionMR: ARGS.addConnectionMR,
+		removeNodeMR: ARGS.removeNodeMR,
+		removeConnectionMR: ARGS.removeConnectionMR,
+		changeWeightMR: ARGS.changeWeightMR
+	},
+	distanceConstants: {
+		c1: ARGS.c1,
+		c2: ARGS.c2,
+		c3: ARGS.c3,
+		compatibilityThreshold: ARGS.compatibilityThreshold
+	},
+	fitnessFunction: fitnessFunction,
+	maxEpoch: 200,
+};
+/**             */
+
+
 import { Simulation } from "./classes/Simulation.js";
 import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
-import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
-// import { Visualiser } from "./classes/Visualiser.js";
+import { ActivationFunction, ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
 
 import { Emitter } from "./classes/Emitter.js";
 import { MersenneTwister } from "./utils.js";
@@ -25,12 +78,10 @@ const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 
 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution);
 const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
-// const Vis = new Visualiser(Sim);
 Sim.init();
 
 const emi = new Emitter().emitter;
 emi.on("terminateRun", () => {
-	// Vis.init();
 	Sim.init();
 	Car.reset();
 })
@@ -56,16 +107,14 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 
 			const minumumSpeed = 0.001;
 			if (Car.stats.timesHit > 0) {
-				// console.log("Terminated");
 				break;
 			} else if (Car.stats.survivalTime > 50 && Car.power < minumumSpeed) {
-				// console.log("Too slow");
 				break;
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
-				console.log("Done");
 				break;
 			} else if (Car.stats.tilesTravelled > 256) {
-				console.log("Car is competent :D")
+				parentPort?.postMessage([true, global.bestGenomeData]);
+				process.exit();
 				break;
 			}
 		}
@@ -74,37 +123,6 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 	});
 }
 
-let config = {
-	populationSize: 100,
-	structure: {
-		in: 5,
-		hidden: 0,
-		out: 4,
-		activationFunction: ActivationFunctions.RELU
-	},
-	mutationRate: {
-		addNodeMR: 0.8,
-		addConnectionMR: 0.4,
-		removeNodeMR: 0.001,
-		removeConnectionMR: 0.00001,
-		changeWeightMR: 0.1
-	},
-	distanceConstants: {
-		c1: 4,
-		c2: 2.5,
-		c3: 2,
-		compatibilityThreshold: 1.5
-	},
-	fitnessFunction: fitnessFunction,
-	maxEpoch: 200,
-};
-
 const neat = new NEAT(config);
-console.log("Starting...");
 
 neat.run();
-
-// process.on("exit", () => {
-// 	console.log("=== PASTE THIS AFTER CONFIG IN GOOGLE SHEETS ===");
-// 	console.log(JSON.stringify(config));
-// })

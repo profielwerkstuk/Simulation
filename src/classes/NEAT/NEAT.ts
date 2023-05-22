@@ -109,8 +109,8 @@ export class NEAT {
 					this.best.genome = genomes[i];
 					this.best.fitness = genomes[i].fitness;
 
-					const bestGenomeData = JSON.stringify(this.best.genome.export())
-					writeFileSync("bestGenomeData.json", bestGenomeData);
+					global.bestGenomeData = JSON.stringify(this.best.genome.export())
+					// writeFileSync("bestGenomeData.json", bestGenomeData);
 				}
 
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
