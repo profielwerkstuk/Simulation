@@ -12,6 +12,19 @@ export class Connection {
 		public weight: number = (Math.random() * 2) - 1
 	) { }
 
+	export() {
+		return {
+			inputNode: this.input.export(),
+			outputNode: this.output.export(),
+			weight: this.weight,
+			active: this.active,
+		};
+	}
+
+	static import(connection: Connection, inputNode: Node, outputNode: Node) {
+		return new Connection(inputNode, outputNode, connection.innovation, connection.weight);
+	}
+
 	randomiseWeight = () => this.weight = (Math.random() * 2) - 1;
 
 	feedForward = () => {

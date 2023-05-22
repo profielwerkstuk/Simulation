@@ -17,6 +17,10 @@ export class NEAT {
 	connectionDB: Connection[] = [];
 	nodeDB: Node[] = [];
 	epoch: number = 0;
+	best = {
+		genome: new Genome({ in: 0, hidden: 0, out: 0, activationFunction: () => 0 }),
+		fitness: 0,
+	};
 
 	constructor(config: NEATConfig) {
 		this.config = config;
@@ -96,13 +100,26 @@ export class NEAT {
 				genomes = genomes.concat(this.species[i].genomes);
 			}
 
+			const seed = Math.random() * 100_000;
+
 			for (let i = 0; i < genomes.length; i++) {
-				const [genomeFitness, didPass] = await this.config.fitnessFunction(genomes[i], this.epoch);
+				const [genomeFitness, didPass] = await this.config.fitnessFunction(genomes[i], this.epoch, seed);
 				genomes[i].fitness = Math.max(genomeFitness, 0.00001);
 				amountPassed += didPass;
 				fitness.push(genomes[i]);
+
+				if (genomes[i].fitness > this.best.fitness) {
+					this.best.genome = genomes[i];
+					this.best.fitness = genomes[i].fitness;
+
+					const bestGenomeData = JSON.stringify(this.best.genome.export())
+					writeFileSync("bestGenomeData.json", bestGenomeData);
+				}
+
 				if (isNaN(genomes[i].fitness) || genomes[i].fitness === undefined) genomes[i].fitness = 0.00001;
 			}
+
+			console.log(`Best: ${this.best.fitness}`);
 
 			if (this.config.fitnessThreshold && fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!).length > 0) return fitness.filter(genome => genome.fitness > this.config.fitnessThreshold!);
 
@@ -116,7 +133,7 @@ export class NEAT {
 			console.log(`Average fitness: ${averageFitness}`);
 
 			// ! This line is purely for data collection
-			appendFileSync(logFile, `${this.epoch}\t${amountPassed}\r\n`);
+			// appendFileSync(logFile, `${this.epoch}\t${amountPassed}\r\n`);
 		}
 
 		return
@@ -125,19 +142,19 @@ export class NEAT {
 
 
 // ! Code purely for data collection
-function initLog() {
-	try {
-		readdirSync("./data");
-	} catch (e) {
-		mkdirSync("./data");
-	}
+// function initLog() {
+// 	try {
+// 		readdirSync("./data");
+// 	} catch (e) {
+// 		mkdirSync("./data");
+// 	}
 
-	try {
-		const fileName = `./data/${Date.now()}.mw`;
-		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
-		return fileName;
-	} catch (e) {
-		console.log(e);
-		throw new Error("Failed to create log file.");
-	}
-}
+// 	try {
+// 		const fileName = `./data/${Date.now()}.mw`;
+// 		writeFileSync(fileName, `Epoch\taverageFitness\r\n`);
+// 		return fileName;
+// 	} catch (e) {
+// 		console.log(e);
+// 		throw new Error("Failed to create log file.");
+// 	}
+// }

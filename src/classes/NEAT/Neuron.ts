@@ -22,6 +22,22 @@ export class Node {
 		this.replacedConnection = replacedConnection ?? {} as Connection;
 	}
 
+	export() {
+		return {
+			type: this._type,
+			// value: this.value,
+			// innovation: this.innovation,
+			id: this.id,
+			active: true,
+			// inputCount: this.inputCount,
+			// inputTimes: this.inputTimes,
+		};
+	}
+	
+	static import(node: Node) {
+		return new Node(node.innovation, node.type, node.replacedConnection, node.id, node.value);
+	}
+
 	setValue(value: number) {
 		this.value = value;
 		if (this._type !== NodeType.INPUT) this.inputTimes++;
