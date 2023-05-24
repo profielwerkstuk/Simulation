@@ -12,6 +12,8 @@ async function runWorker(workerData: any) {
 		return "No parameters provided!";
 	}
 
+	console.log(workerData);
+
 	return new Promise((resolve, reject) => {
 		const worker = new Worker("./dist/index.js", {
 			workerData: workerData
@@ -34,6 +36,11 @@ async function runWorker(workerData: any) {
 		worker.on("exit", () => console.log("Worker stopped!"))
 	})
 }
+
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*'); // Change later
+	next();
+});
 
 app.get("/", async (req, res) => {
 	const params = [];

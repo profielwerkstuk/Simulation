@@ -47,7 +47,7 @@ let config = {
 		compatibilityThreshold: ARGS.compatibilityThreshold
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 999999999,
+	maxEpoch: 25,
 };
 /**             */
 
