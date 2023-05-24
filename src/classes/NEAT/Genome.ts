@@ -26,11 +26,12 @@ export class Genome {
 		}
 	}
 
-	export() {
+	export(stats: any = {}) {
 		return {
 			nodes: this.nodes.map(node => node.export()),
 			connections: this.connections.map(connection => connection.export()),
-			fitness: this.fitness
+			fitness: this.fitness,
+			stats: stats
 		};
 	}
 

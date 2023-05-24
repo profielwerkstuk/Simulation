@@ -47,7 +47,7 @@ let config = {
 		compatibilityThreshold: ARGS.compatibilityThreshold
 	},
 	fitnessFunction: fitnessFunction,
-	maxEpoch: 200,
+	maxEpoch: 999999999,
 };
 /**             */
 
@@ -55,10 +55,11 @@ let config = {
 import { Simulation } from "./classes/Simulation.js";
 import { Car as _Car } from "./classes/Car.js";
 import type { Coordinate } from "./types.js";
-import { ActivationFunction, ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
+import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
 
 import { Emitter } from "./classes/Emitter.js";
 import { MersenneTwister } from "./utils.js";
+import { Genome } from "./classes/NEAT/Genome.js";
 
 // =============== ⚙ Settings =============== //
 
@@ -88,8 +89,8 @@ emi.on("terminateRun", () => {
 
 let AI: any = {};
 
-function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: number, seed: number, loaded = false): Promise<[number, number]> {
-	AI = a;
+function fitnessFunction(genome: Genome, epoch: number, seed: number, loaded = false): Promise<[number, number, any]> {
+	AI = genome;
 	return new Promise((resolve) => {
 		Sim.reset();
 		Car.reset(true);
@@ -101,7 +102,7 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 			Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
 			Car.stats.survivalTime += 1;
 
-			const response = a.activate(Car.getDistances(Sim.tiles))
+			const response = genome.activate(Car.getDistances(Sim.tiles))
 
 			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 
@@ -113,13 +114,14 @@ function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: numbe
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
 				break;
 			} else if (Car.stats.tilesTravelled > 256) {
+				genome.fitness = Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled;
+				global.bestGenomeData = JSON.stringify(genome.export(Car.stats));
 				parentPort?.postMessage([true, global.bestGenomeData]);
 				process.exit();
-				break;
 			}
 		}
 
-		resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1]);
+		resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1, Car.stats]);
 	});
 }
 

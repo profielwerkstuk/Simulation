@@ -8,7 +8,7 @@ let best: { score: number, genome: any } = {
 	genome: null,
 };
 
-function fitnessFunction(a: any): Promise<[number, number]> {
+function fitnessFunction(a: any): Promise<[number, number, any]> {
 	return new Promise((resolve, reject) => {
 		let fitness = 4;
 		fitness -= Math.abs(a.activate([1, 1])[0]);
@@ -23,7 +23,7 @@ function fitnessFunction(a: any): Promise<[number, number]> {
 			best.genome = a;
 		}
 
-		resolve([score, 1]);
+		resolve([score, 1, {}]);
 	});
 };
 let config = {
