@@ -1,5 +1,6 @@
 import type { Simulation } from "./Simulation";
 import type { Car } from "./Car";
+import { Genome } from "./NEAT/Genome";
 
 export class Visualiser {
 	canvas: HTMLCanvasElement;
@@ -33,7 +34,7 @@ export class Visualiser {
 		}
 	}
 
-	update = (Car: Car) => {
+	update = (Cars: { CarInstance: Car, genome: Genome }[]) => {
 		// Clear the canvas
 		this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -55,43 +56,46 @@ export class Visualiser {
 			})
 		});
 
+		for (const _Car of Cars) {
+			const Car = _Car.CarInstance;
 
-		// # Render car
-		this.ctx.fillStyle = "blue";
+			// # Render car
+			this.ctx.fillStyle = "blue";
 
-		// This rotates and transforms the canvas so the car is properly drawn
-		this.ctx.translate(Car.coordinates[0], Car.coordinates[1]);
-		this.ctx.rotate(Car.angle);
-		this.ctx.translate(-Car.coordinates[0], -Car.coordinates[1]);
+			// This rotates and transforms the canvas so the car is properly drawn
+			this.ctx.translate(Car.coordinates[0], Car.coordinates[1]);
+			this.ctx.rotate(Car.angle);
+			this.ctx.translate(-Car.coordinates[0], -Car.coordinates[1]);
 
-		this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
+			this.ctx.fillRect(Car.coordinates[0] - Car.width / 2, Car.coordinates[1] - Car.height / 2, Car.width, Car.height);
 
-		// Draw a red dot in the centre of the car
-		this.ctx.fillStyle = "red"
-		this.ctx.fillRect(Car.coordinates[0] - 1, Car.coordinates[1] - 1, 2, 2);
+			// Draw a red dot in the centre of the car
+			this.ctx.fillStyle = "red"
+			this.ctx.fillRect(Car.coordinates[0] - 1, Car.coordinates[1] - 1, 2, 2);
 
-		// Reset all the canvas transformations of the car
-		this.ctx.resetTransform();
+			// Reset all the canvas transformations of the car
+			this.ctx.resetTransform();
 
-		const lines = Car.getLines();
+			const lines = Car.getLines();
 
-		lines.forEach(p => {
-			if (!p.startingPoint || !p.endingPoint) return;
+			lines.forEach(p => {
+				if (!p.startingPoint || !p.endingPoint) return;
 
-			this.ctx.fillRect(p.startingPoint[0], p.startingPoint[1], 1, 1)
+				this.ctx.fillRect(p.startingPoint[0], p.startingPoint[1], 1, 1)
 
-			this.ctx.strokeStyle = "red";
-			this.ctx.beginPath();
-			this.ctx.moveTo(...p.startingPoint);
+				this.ctx.strokeStyle = "red";
+				this.ctx.beginPath();
+				this.ctx.moveTo(...p.startingPoint);
 
-			this.ctx.lineTo(...p.endingPoint);
-			this.ctx.stroke();
-		})
+				this.ctx.lineTo(...p.endingPoint);
+				this.ctx.stroke();
+			})
 
-		const intersections = Car.getIntersections(this.Simulation.tiles);
-		this.ctx.fillStyle = "purple";
-		intersections.forEach(point => {
-			if (point) this.ctx.fillRect(point[0] - 2, point[1] - 2, 4, 4);
-		});
+			const intersections = Car.getIntersections(this.Simulation.tiles);
+			this.ctx.fillStyle = "purple";
+			intersections.forEach(point => {
+				if (point) this.ctx.fillRect(point[0] - 2, point[1] - 2, 4, 4);
+			});
+		}
 	}
 }

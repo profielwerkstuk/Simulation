@@ -24,7 +24,7 @@ const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 
 
 
 const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution, true);
-const Cars: {CarInstance: _Car, genome: Genome}[] = [];
+const Cars: { CarInstance: _Car, genome: Genome }[] = [];
 const Vis = new Visualiser("canvas", Sim);
 const FancyVis = new FancyVisualiser("canvas", Sim);
 Sim.init();
@@ -66,8 +66,6 @@ async function runSim() {
 	const render = () => {
 		Cars.forEach(Car => {
 			Car.CarInstance.update(Sim.tiles);
-			if (fancy) FancyVis.update(Car.CarInstance);
-			else Vis.update(Car.CarInstance);
 
 			Car.CarInstance.stats.distanceTravelled += Math.sqrt(Math.pow(Car.CarInstance.velocity.x, 2) + Math.pow(Car.CarInstance.velocity.y, 2));
 			Car.CarInstance.stats.survivalTime += 1;
@@ -76,6 +74,9 @@ async function runSim() {
 
 			Car.CarInstance.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
 		});
+
+		if (fancy) FancyVis.update(Cars)
+		else Vis.update(Cars)
 
 		requestAnimationFrame(render);
 	}

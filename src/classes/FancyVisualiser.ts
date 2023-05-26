@@ -2,6 +2,7 @@ import { Visualiser } from "./Visualiser.js";
 
 import type { Car } from "./Car";
 import type { Direction } from "../types.js";
+import { Genome } from "./NEAT/Genome.js";
 
 const directions: Direction[] = ["top", "left", "bottom", "right"];
 
@@ -37,7 +38,7 @@ export class FancyVisualiser extends Visualiser {
 		}
 	}
 
-	update = (Car: Car) => {
+	update = (Cars: { CarInstance: Car, genome: Genome }[]) => {
 		// # Clear the canvas
 		// this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -96,35 +97,39 @@ export class FancyVisualiser extends Visualiser {
 			this.ctx.setLineDash([]);
 		}
 
-		// # Render car
-		this.ctx.fillStyle = "blue";
+		for (const _Car of Cars) {
+			const Car = _Car.CarInstance;
 
-		// This rotates and transforms the canvas so the car is properly drawn
-		this.ctx.translate(Car.coordinates[0], Car.coordinates[1]);
-		this.ctx.rotate(Car.angle);
-		this.ctx.translate(-Car.coordinates[0], -Car.coordinates[1]);
+			// # Render car
+			this.ctx.fillStyle = "blue";
+
+			// This rotates and transforms the canvas so the car is properly drawn
+			this.ctx.translate(Car.coordinates[0], Car.coordinates[1]);
+			this.ctx.rotate(Car.angle);
+			this.ctx.translate(-Car.coordinates[0], -Car.coordinates[1]);
 
 
-		this.ctx.shadowColor = "black";
-		this.ctx.shadowBlur = Math.floor(Car.width / 10);
-		this.ctx.drawImage(
-			carImage,
-			0,
-			0,
-			carImage.width,
-			carImage.height,
-			Car.coordinates[0] - Car.width / 2,
-			Car.coordinates[1] - Car.height / 2,
-			Car.width,
-			Car.height
-		);
-		this.ctx.shadowBlur = 0;
+			this.ctx.shadowColor = "black";
+			this.ctx.shadowBlur = Math.floor(Car.width / 10);
+			this.ctx.drawImage(
+				carImage,
+				0,
+				0,
+				carImage.width,
+				carImage.height,
+				Car.coordinates[0] - Car.width / 2,
+				Car.coordinates[1] - Car.height / 2,
+				Car.width,
+				Car.height
+			);
+			this.ctx.shadowBlur = 0;
 
-		// Draw a red dot in the centre of the car
-		this.ctx.fillStyle = "red"
-		this.ctx.fillRect(Car.coordinates[0] - 1, Car.coordinates[1] - 1, 2, 2);
+			// Draw a red dot in the centre of the car
+			this.ctx.fillStyle = "red"
+			this.ctx.fillRect(Car.coordinates[0] - 1, Car.coordinates[1] - 1, 2, 2);
 
-		// Reset all the canvas transformations of the car
-		this.ctx.resetTransform();
+			// Reset all the canvas transformations of the car
+			this.ctx.resetTransform();
+		}
 	}
 }
