@@ -84,7 +84,7 @@ export class Car {
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
 	reset = (full = false) => {
-		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize)];
+		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize) + this.tileSize];
 		this.angle = Math.PI;
 		this.power = 0;
 		this.reverse = 0;

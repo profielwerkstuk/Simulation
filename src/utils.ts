@@ -170,3 +170,36 @@ export function generateTile(lastTile: Tile | null = null, tileSize: number, gri
 
 	return [type, coords];
 }
+
+export function generateSpecifiedTile(lastTile: Tile, tileTo: Direction, tileSize: number, gridSize: [width: number, height: number]): [tileType, Coordinate] {
+	// Invert where the tile came from (if lastTile top->bottom, then it came from top)
+	const cameFrom = directions[(directions.indexOf(lastTile.type.to) + 2) % 4];
+	const disallowedDirections: Direction[] = [cameFrom];
+
+	// validating (but valid)
+	// Check if the next tile would bring you out of bounds
+	const gridCoords = [lastTile.topLeft[0] / tileSize, lastTile.topLeft[1] / tileSize];
+	if (lastTile.type.to === "left") gridCoords[0]--
+	if (lastTile.type.to === "right") gridCoords[0]++
+	if (lastTile.type.to === "bottom") gridCoords[1]++
+	if (lastTile.type.to === "top") gridCoords[1]--
+
+	if (gridCoords[0] - 1 === -1) disallowedDirections.push("left");
+	if (gridCoords[0] + 1 === gridSize[0]) disallowedDirections.push("right");
+	if (gridCoords[1] - 1 === -1) disallowedDirections.push("top");
+	if (gridCoords[1] + 1 === gridSize[1]) disallowedDirections.push("bottom");
+
+	// Randominteger uses some scuffed way of truncating the number
+	const possibleDirections = directions.filter((direction) => !disallowedDirections.includes(direction));
+
+	const type: tileType = { from: cameFrom, to: tileTo };
+	let coords: Coordinate = [lastTile.topLeft[0], lastTile.topLeft[1]];
+
+	// Update coordinates to match the tile
+	if (cameFrom == "left") coords[0] += tileSize;
+	else if (cameFrom == "right") coords[0] -= tileSize;
+	else if (cameFrom == "bottom") coords[1] -= tileSize;
+	else if (cameFrom == "top") coords[1] += tileSize;
+
+	return [type, coords];
+}

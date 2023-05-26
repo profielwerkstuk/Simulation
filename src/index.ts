@@ -1,11 +1,11 @@
 import { Simulation } from "./classes/Simulation.js";
 import { Visualiser } from "./classes/Visualiser.js";
 import { Car as _Car } from "./classes/Car.js";
-import type { Coordinate } from "./types.js";
+import type { Coordinate, Tile } from "./types.js";
 import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
 import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 import { Genome } from "./classes/NEAT/Genome.js";
-import { MersenneTwister } from "./utils.js";
+import { MersenneTwister, generateSpecifiedTile } from "./utils.js";
 
 // =============== ⚙ Settings =============== //
 
@@ -23,13 +23,12 @@ const carViewingDistance = Math.floor(1 / 5 * tileSize)
 const carSpawnPoint: Coordinate = [Math.floor(1 / 2 * tileSize), Math.floor(1 / 2 * tileSize)];
 
 
-const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution);
-const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
+const Sim = new Simulation(simulationSize, tileSize, roadWidth, roadCurveResolution, true);
+const Cars: {CarInstance: _Car, genome: Genome}[] = [];
 const Vis = new Visualiser("canvas", Sim);
 const FancyVis = new FancyVisualiser("canvas", Sim);
 Sim.init();
 Vis.init();
-// Car.toggleManual();
 
 let fancy = false;
 let manualTerminate = false;
@@ -37,99 +36,63 @@ let manualTerminate = false;
 addEventListener("terminateRun", () => {
 	Vis.init();
 	Sim.init();
-	Car.reset();
+
+	Cars.forEach(Car => {
+		Car.CarInstance.reset(true);
+	});
 });
 
-let AI: any = {}
-
-function fitnessFunction(a: { activate: (arg0: number[]) => any; }, epoch: number, seed: number, loaded = false): Promise<[number, number]> {
-	AI = a;
-	return new Promise((resolve) => {
-		Sim.reset();
-		Car.reset(true);
-		Sim.mersenneTwister = new MersenneTwister(seed);
-
-		const render = () => {
-			Car.update(Sim.tiles);
-			if (fancy) FancyVis.update(Car);
-			else Vis.update(Car);
-
-			Car.stats.distanceTravelled += Math.sqrt(Math.pow(Car.velocity.x, 2) + Math.pow(Car.velocity.y, 2));
-			Car.stats.survivalTime += 1;
-
-			const response = a.activate(Car.getDistances(Sim.tiles))
-
-			Car.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
-
-			const minumumSpeed = 0.001;
-			if (Car.stats.timesHit > 0 || manualTerminate) {
-				console.log("Terminated");
-				manualTerminate = false;
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 0]);
-			} else if (!loaded && Car.stats.survivalTime > 15_000) {
-				console.log("Lived too long", Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled);
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1]);
-			} else if (Car.stats.survivalTime > 50 && Car.power < minumumSpeed) {
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 0]);
-			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
-				resolve([Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled, 1]);
-			} else {
-				requestAnimationFrame(render);
-			}
-		}
-
-		render();
-	});
-}
-
 let config = {
-	populationSize: 100,
 	structure: {
 		in: 5,
 		hidden: 0,
 		out: 4,
 		activationFunction: ActivationFunctions.STEP
-	},
-	mutationRate: {
-		addNodeMR: 0.8,
-		addConnectionMR: 0.4,
-		removeNodeMR: 0.001,
-		removeConnectionMR: 0.00001,
-		changeWeightMR: 0.1
-	},
-	distanceConstants: {
-		c1: 4,
-		c2: 2.5,
-		c3: 2,
-		compatibilityThreshold: 1.5
-	},
-	fitnessFunction: fitnessFunction,
-	maxEpoch: 9999999,
+	}
 };
 
-const neat = new NEAT(config);
+function addCar() {
+	const bestGenomeDataLoaded = JSON.parse(localStorage.getItem("bestGenomeData") ?? "");
+	const loaded = new Genome(config.structure).import(bestGenomeDataLoaded, config.structure)
+	const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
+
+	// Car.reset(true);
+	Cars.push({ CarInstance: Car, genome: loaded });
+
+	console.log("Added car", Cars);
+}
+
+async function runSim() {
+	const render = () => {
+		Cars.forEach(Car => {
+			Car.CarInstance.update(Sim.tiles);
+			if (fancy) FancyVis.update(Car.CarInstance);
+			else Vis.update(Car.CarInstance);
+
+			Car.CarInstance.stats.distanceTravelled += Math.sqrt(Math.pow(Car.CarInstance.velocity.x, 2) + Math.pow(Car.CarInstance.velocity.y, 2));
+			Car.CarInstance.stats.survivalTime += 1;
+
+			const response = Car.genome.activate(Car.CarInstance.getDistances(Sim.tiles))
+
+			Car.CarInstance.steer(response[0] > 0, response[1] > 0, response[2] > 0, response[3] > 0);
+		});
+
+		requestAnimationFrame(render);
+	}
+
+	render();
+}
 
 const eventListeners = {
-	"p": () => {
-		console.log("Starting...");
-		neat.run();
-	},
 	"f": () => fancy = !fancy,
 	"t": () => manualTerminate = true,
 	"l": () => {
 		console.log("Loading...");
-		const bestGenomeDataLoaded = JSON.parse(localStorage.getItem("bestGenomeData") ?? "");
-		const loaded = new Genome(config.structure).import(bestGenomeDataLoaded, config.structure)
-		fitnessFunction(loaded, 0, Math.random() * 100_000, true).then((fitness) => {
-			console.log(fitness[0], Car.stats);
-		});
+		Sim.reset();
+
+		runSim();
 	},
-	"s": () => {
-		console.log("Saving...");
-		const bestGenomeData = JSON.stringify(neat.best.genome.export())
-		console.log(bestGenomeData);
-		localStorage.setItem("bestGenomeData", bestGenomeData);
-	}
+	"a": addCar
 }
 
 for (const [key, value] of Object.entries(eventListeners)) {
