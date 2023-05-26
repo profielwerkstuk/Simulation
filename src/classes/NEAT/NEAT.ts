@@ -113,7 +113,7 @@ export class NEAT {
 
 					if (window) {
 						const bestGenomeData = JSON.stringify(this.best.genome.export())
-						if (parseFloat((JSON.parse(localStorage.getItem("bestGenomeData")) ?? {"fitness": 0}).fitness) < this.best.fitness) localStorage.setItem("bestGenomeData", bestGenomeData);
+						if (parseFloat((JSON.parse(localStorage.getItem("bestGenomeData")!) ?? {"fitness": 0}).fitness) < this.best.fitness) localStorage.setItem("bestGenomeData", bestGenomeData);
 					} else {
 						const bestGenomeData = JSON.stringify(this.best.genome.export())
 						import("fs").then(fs => {
