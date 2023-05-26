@@ -1,11 +1,12 @@
 import { Simulation } from "./classes/Simulation.js";
 import { Visualiser } from "./classes/Visualiser.js";
 import { Car as _Car } from "./classes/Car.js";
-import type { Coordinate, Tile } from "./types.js";
-import { ActivationFunctions, NEAT } from "./classes/NEAT/index.js";
+import type { Coordinate } from "./types.js";
+import { ActivationFunctions } from "./classes/NEAT/index.js";
 import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 import { Genome } from "./classes/NEAT/Genome.js";
-import { MersenneTwister, generateSpecifiedTile } from "./utils.js";
+import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { firebase } from "./firebaseControl.js";
 
 // =============== ⚙ Settings =============== //
 
@@ -61,6 +62,17 @@ function addCar() {
 
 	console.log("Added car", Cars);
 }
+
+const unsubscribe = onSnapshot(collection(firebase, "genomes"), (snapshot: { docChanges: () => any[]; }) => {
+	snapshot.docChanges().forEach((change) => {
+		if (change.type === "added") {
+			const loaded = new Genome(config.structure).import(change.doc.data(), config.structure)
+			const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
+			Cars.push({ CarInstance: Car, genome: loaded });
+		}
+	});
+});
+
 
 async function runSim() {
 	const render = () => {
