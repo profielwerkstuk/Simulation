@@ -7,6 +7,7 @@ import { parentPort, workerData } from "worker_threads";
 interface args {
 	activationFunction: keyof typeof ActivationFunctions,
 
+	populationSize: number,
 	addNodeMR: number,
 	addConnectionMR: number,
 	removeNodeMR: number,
@@ -26,7 +27,7 @@ const data = workerData || process.argv.slice(2)
 const ARGS = Object.fromEntries(data.map(v => v.split("="))) as args;
 
 let config = {
-	populationSize: 100,
+	populationSize: ARGS.populationSize,
 	structure: {
 		in: 5,
 		hidden: 0,
