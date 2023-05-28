@@ -27,6 +27,7 @@ window.addEventListener("keyup", e => {
 export class Car {
 	private gridCoords = [0, 0] as Coordinate;
 	private manualDrive = false;
+	public id = Math.random().toString(36).substr(2, 9);
 
 	public angle = Math.PI; // Angle in rad
 	public power = 0;
@@ -84,6 +85,7 @@ export class Car {
 	toggleManual = () => this.manualDrive = !this.manualDrive;
 
 	reset = (full = false) => {
+		console.log("Resetting car");
 		this.coordinates = [Math.floor(1 / 2 * this.tileSize), Math.floor(1 / 2 * this.tileSize) + this.tileSize];
 		this.angle = Math.PI;
 		this.power = 0;
@@ -159,7 +161,7 @@ export class Car {
 		// Make sure the car is in a valid position
 		const valid = validatePosition(this.coordinates, this.width, this.height, this.angle, tiles, this.gridCoords, this.tileSize);
 		if (!valid) {
-			const event = new CustomEvent("terminateRun");
+			const event = new CustomEvent("resetCar", { detail: { id: this.id } });
 			dispatchEvent(event);
 		}
 	}

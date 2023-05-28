@@ -5,7 +5,7 @@ import type { Coordinate } from "./types.js";
 import { ActivationFunctions } from "./classes/NEAT/index.js";
 import { FancyVisualiser } from "./classes/FancyVisualiser.js";
 import { Genome } from "./classes/NEAT/Genome.js";
-import { onSnapshot, collection } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
+import { onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.4.0/firebase-firestore.js";
 import { firebase } from "./firebaseControl.js";
 
 // =============== ⚙ Settings =============== //
@@ -35,6 +35,7 @@ let fancy = false;
 let manualTerminate = false;
 
 addEventListener("terminateRun", () => {
+	console.log("Terminating run");
 	Vis.init();
 	Sim.init();
 
@@ -42,6 +43,12 @@ addEventListener("terminateRun", () => {
 		Car.CarInstance.reset(true);
 	});
 });
+
+
+addEventListener("resetCar", (data) => {
+	Cars.find(Car => Car.CarInstance.id === data.detail.id)!.CarInstance.reset(true);
+});
+
 
 let config = {
 	structure: {
@@ -62,6 +69,16 @@ function addCar() {
 
 	console.log("Added car", Cars);
 }
+
+getDocs(collection(firebase, "genomes")).then((snapshot: { docs: any; }) => {
+	snapshot.docs.forEach((doc: { data: () => any; }) => {
+		const loaded = new Genome(config.structure).import(doc.data(), config.structure)
+		const Car = new _Car(carSpawnPoint, carWidth, carHeight, tileSize, carViewingDistance);
+
+		// Car.reset(true);
+		Cars.push({ CarInstance: Car, genome: loaded });
+	});
+});
 
 const unsubscribe = onSnapshot(collection(firebase, "genomes"), (snapshot: { docChanges: () => any[]; }) => {
 	snapshot.docChanges().forEach((change) => {
@@ -92,6 +109,8 @@ async function runSim() {
 
 		requestAnimationFrame(render);
 	}
+
+	localStorage.setItem("cars", JSON.stringify(Cars));
 
 	render();
 }
