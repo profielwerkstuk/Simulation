@@ -1,5 +1,6 @@
 /** SERVER CODE */
 import { parentPort, workerData } from "worker_threads";
+import * as fs from "fs";
 
 // node . activationFunction=STEP addNodeMR=0.8 addConnectionMR=0.4 removeNodeMR=0.001 removeConnectionMR=0.00001 changeWeightMR=0.1 c1=4 c2=2.5 c3=2 compatibilityThreshold=1.5
 // /?activationFunction=STEP&addNodeMR=0.8&addConnectionMR=0.4&removeNodeMR=0.001&removeConnectionMR=0.00001&changeWeightMR=0.1&c1=4&c2=2.5&c3=2&compatibilityThreshold=1.5
@@ -88,10 +89,9 @@ emi.on("terminateRun", () => {
 	Car.reset();
 })
 
-let AI: any = {};
+const startTime = Date.now();
 
 function fitnessFunction(genome: Genome, epoch: number, seed: number, loaded = false): Promise<[number, number, any]> {
-	AI = genome;
 	return new Promise((resolve) => {
 		Sim.reset();
 		Car.reset(true);
@@ -114,7 +114,7 @@ function fitnessFunction(genome: Genome, epoch: number, seed: number, loaded = f
 				break;
 			} else if (Car.stats.survivalTime - Car.stats.tileEntryTime > 1000) {
 				break;
-			} else if (Car.stats.tilesTravelled > 256) {
+			} else if (Car.stats.tilesTravelled > 256 || startTime + 1000 * 30 < Date.now()) {
 				genome.fitness = Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled;
 				global.bestGenomeData = JSON.stringify(genome.export(Car.stats));
 				parentPort?.postMessage([true, global.bestGenomeData]);
