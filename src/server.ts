@@ -50,6 +50,10 @@ app.get("/", async (req, res) => {
 	res.send(response);
 })
 
+app.get("/test", (req, res) => {
+	res.send("Hello world!");
+})
+
 app.listen(PORT, () => {
 	console.log(`Listening on port ${PORT}`)
 })
