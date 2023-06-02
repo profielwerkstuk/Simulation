@@ -1,6 +1,7 @@
 import { Worker } from 'worker_threads';
 import express from "express";
 import { uploadNewGenome } from './firebaseControl.js';
+import { ActivationFunctions } from './classes/NEAT/index.js';
 
 const app = express();
 
@@ -52,6 +53,10 @@ app.get("/", async (req, res) => {
 
 app.get("/test", (req, res) => {
 	res.send("Hello world!");
+})
+
+app.get("/activationFunctions", (req, res) => {
+	res.send(Object.keys(ActivationFunctions));
 })
 
 app.listen(PORT, () => {
