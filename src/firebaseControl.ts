@@ -1,7 +1,7 @@
 import admin from "firebase-admin"
 import { readFileSync } from "fs";
 
-const credentials = JSON.parse(readFileSync("superSecretCreds.json", "utf8"));
+const credentials = JSON.parse(readFileSync("./dist/superSecretCreds.json", "utf8"));
 
 
 const app = admin.initializeApp({
