@@ -9,7 +9,7 @@ const PORT = 3000;
 const TIMEOUT = 1.5 * 60 * 1000;
 
 async function runWorker(workerData: any) {
-	if (workerData.length !== 11) {
+	if (workerData.length !== 12) {
 		return "Invalid number of arguments!";
 	}
 
