@@ -26,13 +26,14 @@ export class Genome {
 		}
 	}
 
-	export(stats: any = {}, carName: string = '') {
+	export(stats: any = {}, carColour: string = '', carName: string = '') {
 		return {
 			nodes: this.nodes.map(node => node.export()),
 			connections: this.connections.map(connection => connection.export()),
 			fitness: this.fitness,
 			stats: stats,
-			carName: carName
+			carName: carName,
+			carColour: carColour
 		};
 	}
 

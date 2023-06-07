@@ -20,7 +20,8 @@ interface args {
 	c3: number,
 	compatibilityThreshold: number,
 
-	carName: string
+	carColour: string,
+	carName: string,
 
 }
 
@@ -118,7 +119,7 @@ function fitnessFunction(genome: Genome, epoch: number, seed: number, loaded = f
 				break;
 			} else if (Car.stats.tilesTravelled > 256 || startTime + 1000 * 30 < Date.now()) {
 				genome.fitness = Car.stats.distanceTravelled / Car.stats.survivalTime * Car.stats.tilesTravelled;
-				global.bestGenomeData = JSON.stringify(genome.export(Car.stats, ARGS.carName));
+				global.bestGenomeData = JSON.stringify(genome.export(Car.stats, ARGS.carColour, ARGS.carName));
 				parentPort?.postMessage([true, global.bestGenomeData]);
 				process.exit();
 			}
