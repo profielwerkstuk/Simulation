@@ -33,7 +33,8 @@ export class Genome {
 			fitness: this.fitness,
 			stats: stats,
 			carName: carName,
-			carColour: carColour
+			carColour: carColour,
+			show: true
 		};
 	}
 
