@@ -34,7 +34,7 @@ export class Genome {
 			stats: stats,
 			carName: carName,
 			carColour: carColour,
-			show: true
+			show: false
 		};
 	}
 

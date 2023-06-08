@@ -10,7 +10,9 @@ const app = admin.initializeApp({
 const firestore = admin.firestore(app);
 
 function uploadNewGenome(data: any) {
-    firestore.collection("genomes").add(JSON.parse(data)).then((docRef) => {
+    data = JSON.parse(data)
+    data.uploadDate = admin.firestore.Timestamp.now();
+    firestore.collection("genomes").add(data).then((docRef) => {
         console.log("Document written with ID: ", docRef.id);
     }).catch((error) => {
         console.error("Error adding document: ", error);
